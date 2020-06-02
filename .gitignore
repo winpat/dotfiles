@@ -1,0 +1,8 @@
+*.key
+*.html
+*.pyc
+*.swp
+*.tmp
+
+.ssh/*
+!.ssh/config

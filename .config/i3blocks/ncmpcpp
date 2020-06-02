@@ -1,0 +1,2 @@
+#!/bin/sh
+ncmpcpp --current-song -h 10.1.2.30

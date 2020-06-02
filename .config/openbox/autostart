@@ -1,0 +1,9 @@
+xrdb -merge $HOME/.Xresources $HOME/.Xdefaults &
+xmodmap $HOME/.Xmodmap &
+xcape -e 'Shift_L=Shift_L|parenleft;Shift_R=Shift_R|parenright' &
+copyq &
+nm-applet &
+udiskie &
+#xplanet -latitude 47.519141 -longitude 8.017082 -wait 60 -fork &
+feh --bg-scale /home/patrick/.wallpapers/ISS.jpg
+tint2 &

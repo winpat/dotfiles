@@ -1,0 +1,10 @@
+! Rebind ctrl to caps lock
+keycode 66 = Control_L
+clear Lock
+add Control = Control_L
+
+! Rebind caps lock to HOME and END
+keycode 110 = Caps_Lock
+add Lock = Caps_Lock
+keycode 115 = Caps_Lock
+add Lock = Caps_Lock

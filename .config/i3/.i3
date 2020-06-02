@@ -1,0 +1,1 @@
+/home/patrick/vcs/dotfiles/.i3

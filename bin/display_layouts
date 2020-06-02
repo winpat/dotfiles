@@ -1,0 +1,39 @@
+#!/bin/sh
+
+case "$1" in
+    home)
+        xrandr \
+          --output eDP-1   --mode 2560x1440 --pos 0x0 --rotate normal --dpi 140
+          --output DP-1-1  --mode 1920x1080 --pos 0x0 --rotate normal
+          --output DP-1-2  --off \
+          --output DP-1-3  --off \
+          --output HDMI-2  --off \
+          --output HDMI-1  --off \
+          --output DP-1  --off \
+          --output DP-2  --off \
+	;;
+    home)
+        xrandr \
+          --output eDP-1  --off \
+          --output DP-1-2  --off \
+          --output HDMI-2  --off \
+          --output HDMI-1  --off \
+          --output DP-1  --off \
+          --output DP-1-3  --off \
+          --output DP-2  --off \
+          --output DP-1-1  --mode 2560x1440  --pos 0x0  --rotate normal --dpi 110
+	;;
+    internal|*)
+	xrandr \
+          --output DP-1-1  --off \
+          --output DP-1-2  --off \
+          --output HDMI-2  --off \
+          --output HDMI-1  --off \
+          --output DP-1  --off \
+          --output DP-1-3  --off \
+          --output DP-2  --off \
+          --output eDP-1 --mode 2560x1440  --pos 0x0  --rotate normal --dpi 140
+	;;
+esac
+
+i3-msg restart

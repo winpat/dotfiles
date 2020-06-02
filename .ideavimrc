@@ -1,0 +1,25 @@
+" .vimrc of Patrick Winter <patrickwinter@posteo.ch>
+
+" Ergnomic replacement for esc
+:imap jk <Esc>
+:imap kj <Esc>
+
+nnoremap <Space>R :action Run<CR>
+nnoremap <Space>r :action Rerun<CR>
+nnoremap <Space>d :action Debug<CR>
+
+nnoremap <Space>cf :action ReformatCode<CR>
+nnoremap <Space>cr :action Refactorings.QuickListPopupAction<CR>
+nnoremap <Space>cd :action QuickJavaDoc<CR>
+nnoremap <Space>ccb :action CommentByBlockComment<CR>
+nnoremap <Space>ccl :action CommentByLineComment<CR>
+
+nmap <Space>nc :action NewClass<CR>
+nmap <Space>gf :action GotoFile<CR>
+nmap <Space>gc :action GotoClass<CR>
+
+" Reload .ideavimrc
+nnoremap <Space>vs :source ~/.ideavimrc<CR>
+
+" Disable bell on windows
+set visualbell

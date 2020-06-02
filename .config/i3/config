@@ -1,0 +1,241 @@
+# i3 configuration file (v4) of Patrick Winter <patrickwinter@posteo.ch>
+
+# Start certain applications at launch of i3
+exec --no-startup-id udiskie
+exec --no-startup-id copyq
+exec --no-startup-id nm-applet
+exec --no-startup-id xrdb -merge $HOME/.Xresources $HOME/.Xdefaults
+exec --no-startup-id xmodmap $HOME/.Xmodmap
+exec --no-startup-id xcape -e 'Shift_L=Shift_L|parenleft;Shift_R=Shift_R|parenright'
+exec --no-startup-id feh --bg-scale /home/patrick/shared/media/images/Wallpaper/3840×2160/nixos_inverted.png
+
+# Font
+font 	pango:Hack 10
+
+# Workspace tags
+set $tag0 "1:1"
+set $tag1 "2:2"
+set $tag2 "3:3"
+set $tag3 "4:4"
+set $tag4 "5:5"
+set $tag5 "6:6"
+set $tag6 "7:7"
+set $tag7 "8:8"
+set $tag8 "9:9"
+set $tag9 "10:10"
+
+# Set movement key vars
+set $right h
+set $up    k
+set $down  j
+set $left  l
+
+# Allow to alt+tab between workspaces
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
+
+# Use super key as main modifier
+set $mod Mod4
+
+# Align window title in the center
+title_align center
+
+# Launch common applications
+bindsym $mod+Return exec termite -t termite
+# bindsym $mod+d exec i3-dmenu-desktop --dmenu="dmenu -b -l 12 -i"
+bindsym $mod+d exec rofi -show drun -show-icons -theme "solarized" -line-padding 4 -columns 4 -width 100 -padding 50 -location 1 -font "Hack 15"
+bindsym $mod+p exec passmenu
+bindsym $mod+w exec raiseorlaunch -r -e "termite --class termite_scratchpad --name floating" -c termite_scratchpad
+bindsym $mod+Shift+f exec firefox
+bindsym $mod+Shift+p exec firefox --private-window
+bindsym $mod+Shift+e exec emacsclient -c
+bindsym $mod+m exec emacsclient -c -e '(mu4e)'
+
+# Launch floating pavucontrol
+for_window [class="Pavucontrol"] floating enable
+bindsym $mod+Shift+a exec raiseorlaunch -r -e pavucontrol -c Pavucontrol
+
+# Launch floating pcmanfm
+for_window [class="Pcmanfm"] floating enable
+bindsym $mod+z exec raiseorlaunch -r -e pcmanfm -c Pcmanfm
+
+# Launch layout manager and my custom layouts
+bindsym $mod+Control+l exec layout_manager
+bindsym $mod+Control+1 exec layout_manager 1_TERM_2_EDITOR
+bindsym $mod+Control+2 exec layout_manager 4_TERM
+
+# Launch urxvt in floating mode
+for_window [class="Termite" instance="floating"] floating enable
+bindsym Shift+$mod+Return exec termite --title termite --name floating
+
+# Change tiling strategy for current windows
+# bindsym $mod+w layout stacking
+bindsym $mod+Shift+t layout tabbed
+# bindsym $mod+v layout toggle split
+bindsym $mod+e split toggle
+
+# Make floating window sticky on every window
+bindsym $mod+Shift+s sticky toggle
+
+# Screenshots
+bindsym --release $mod+s exec "flameshot gui"
+
+# Switch display layout
+bindsym $mod+F1 exec autorandr --load internal
+bindsym $mod+F2 exec autorandr --load home
+
+# Display backlight
+bindsym XF86MonBrightnessUp exec sudo backlight incr
+bindsym XF86MonBrightnessDown exec sudo backlight decr
+
+# Mediaplayer
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+# Audio controls
+bindsym XF86AudioRaiseVolume exec "amixer -D default sset Master '5%+'"
+bindsym XF86AudioLowerVolume exec "amixer -D default sset Master '5%-'"
+bindsym XF86AudioMute exec "amixer -D default set Master toggle"
+#bindsym XF86AudioRaiseVolume exec amixer -q set Master 2dB+ unmute
+#bindsym XF86AudioLowerVolume exec amixer -q set Master 2dB- unmute
+#bindsym XF86AudioMute exec amixer -q set Master toggle
+
+# Modifier to drag floating windows across the screen
+floating_modifier $mod
+
+# Binding to kill the currently focused window
+bindsym $mod+q kill
+
+# Change focus to the child/parent container
+bindsym $mod+c focus child
+bindsym $mod+a focus parent
+
+# Change focs to the urgent container (e.g. chat notifcation)
+bindsym $mod+u [urgent=latest] focus
+
+# Open currently focused  window in fullscreen mode
+bindsym $mod+f fullscreen
+
+# Toggle floating mode for currenty focused window
+bindsym $mod+g floating toggle
+
+# Change the focus between tiling/floating windows
+#bindsym $mod+z focus mode_toggle
+
+# Disable title bar but keep borders clearly visible
+default_border pixel 1
+
+# Move windows with the name "scratchpad" automatically to the scratchpad
+for_window [instance="scratchpad"] move scratchpad
+
+# Make the currently focused window a scratchpad
+bindsym $mod+Shift+w move scratchpad
+
+# Don't display borders if there is only one window (browser, tmux, ...)
+hide_edge_borders smart
+
+# Show windows in the scratchpad
+# bindsym $mod+w scratchpad show
+
+# Bindings to change the window focus shortcuts
+bindsym $mod+$right focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$left focus right
+
+# Bindings to move windows around and change the layout that way
+bindsym $mod+Shift+$right move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$left move right
+
+# Switch to certain workspace
+bindsym $mod+1 workspace $tag0
+bindsym $mod+2 workspace $tag1
+bindsym $mod+3 workspace $tag2
+bindsym $mod+4 workspace $tag3
+bindsym $mod+5 workspace $tag4
+bindsym $mod+6 workspace $tag5
+bindsym $mod+7 workspace $tag6
+bindsym $mod+8 workspace $tag7
+bindsym $mod+9 workspace $tag8
+bindsym $mod+0 workspace $tag9
+
+# Switch window/workspace with mod+scroll and mod+shift scroll
+bindsym --whole-window --border $mod+button4 focus left
+bindsym --whole-window --border $mod+button5 focus right
+bindsym --whole-window --border $mod+shift+button4 workspace prev
+bindsym --whole-window --border $mod+shift+button5 workspace next
+
+# Move focused window to certain workspace
+bindsym $mod+Shift+1 move container to workspace $tag0
+bindsym $mod+Shift+2 move container to workspace $tag1
+bindsym $mod+Shift+3 move container to workspace $tag2
+bindsym $mod+Shift+4 move container to workspace $tag3
+bindsym $mod+Shift+5 move container to workspace $tag4
+bindsym $mod+Shift+6 move container to workspace $tag5
+bindsym $mod+Shift+7 move container to workspace $tag6
+bindsym $mod+Shift+8 move container to workspace $tag7
+bindsym $mod+Shift+9 move container to workspace $tag8
+bindsym $mod+Shift+0 move container to workspace $tag9
+
+# Allow fast back and forth switching between workspace
+workspace_auto_back_and_forth yes
+
+# Reload the configuration file
+#bindsym $mod+Shift+w reload
+
+# Restart i3
+bindsym $mod+Shift+r restart
+
+# Logout of X session
+bindsym $mod+Shift+o exec "i3-nagbar -t warning -m 'Do you really want to exit i3?' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# Lock the screen
+bindsym $mod+o exec i3lock-color -k  -c 000000 --timecolor ffffffff --datecolor ffffffff --datestr='%d/%m/%Y'
+
+mode "resize" {
+    # These bindings trigger as soon as you enter the resize mode
+    bindsym $right resize shrink width 5 px or 5 ppt
+    bindsym $up resize grow height 5 px or 5 ppt
+    bindsym $down resize shrink height 5 px or 5 ppt
+    bindsym $left resize grow width 5 px or 5 ppt
+    # same bindings, but for the arrow keys
+    bindsym Left        resize shrink width 5 px or 5 ppt
+    bindsym Down        resize grow height 5 px or 5 ppt
+    bindsym Up          resize shrink height 5 px or 5 ppt
+    bindsym Right       resize grow width 5 px or 5 ppt
+    # Back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# Resize focused window
+bindsym $mod+r mode "resize"
+
+bar {
+  status_command          i3blocks -c $HOME/.config/i3blocks/config
+  position                top
+  workspace_buttons       yes
+  font                    pango: Hack 9
+  strip_workspace_numbers yes
+  separator_symbol        |
+  colors {
+      background	 #000000
+      statusline 	 #eaeaea
+      separator  	 #586e75
+      focused_workspace  #000000 #000000 #B58900
+      active_workspace   #eaeaea #eaeaea #000000
+      inactive_workspace #000000 #000000 #eaeaea
+      urgent_workspace   #dc322f #dc322f #eaeaea
+  }
+}
+
+# class                 border  bground text    indicator child_border
+client.focused          #1E1E1E #2F343F #FFFFFF #B58900   #2F343F
+client.focused_inactive #1E1E1E #2F343F #7F8388 #1E1E1E   #2F343F
+client.unfocused        #1E1E1E #2F343F #7F8388 #1E1E1E   #2F343F
+client.urgent           #1E1E1E #900000 #FFFFFF #1E1E1E   #900000
+client.placeholder      #1E1E1E #2F343F #7F8388 #1E1E1E   #2F343F
+client.background       #FFFFFF

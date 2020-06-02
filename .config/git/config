@@ -1,0 +1,39 @@
+[user]
+    name = Patrick Winter
+    email = patrick.winter@adfinis-sygroup.ch
+    editor = "emacsclient"
+    signingkey = 5D442A7A
+
+[http]
+    sslVerify = true
+
+[alias]
+    l = log --graph --show-signature --abbrev-commit
+    cs = commit -S
+    co = checkout
+    c = commit
+    st = status -s
+	praise = blame
+	d = difftool
+    cleanup-branches = !git fetch --all --prune && git branch -d $(git branch --merged=origin/master | grep -vE `git rev-parse --abbrev-ref HEAD`'|master')
+
+[tag]
+    gpgsign = true
+
+[core]
+    autocrlf = input
+
+[url "git@github.com:"]
+    insteadOf = gh:
+
+[url "git@git.winpat.ch:"]
+    insteadOf = g:
+
+[url "git@git.adfinis-sygroup.ch:"]
+    insteadOf = gl:
+
+[diff]
+	tool = vimdiff
+
+[diff "zip"]
+	textconv = unzip -c -a

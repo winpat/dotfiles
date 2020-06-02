@@ -1,0 +1,13 @@
+#!/bin/sh
+
+case "${1%%:*}" in
+	http|https)
+		exec firefox "$1" &
+		;;
+	*.pdf)
+		zathura "$1" &
+		;;
+	*)
+		exec /run/current-system/sw/bin/xdg-open "$@" &
+		;;
+esac

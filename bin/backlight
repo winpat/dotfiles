@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+INCREMENT=440
+BACKLIGHT=$(cat /sys/class/backlight/intel_backlight/brightness)
+MAX=$(cat /sys/class/backlight/intel_backlight/max_brightness)
+BLFILE="/sys/class/backlight/intel_backlight/brightness"
+
+case "$1" in
+    incr)
+	TOTAL=`expr $BACKLIGHT + $INCREMENT`
+	if [ $TOTAL -gt "$MAX" ]; then
+		exit 1
+	fi
+	SET_VALUE=1
+	;;
+    decr)
+	TOTAL=`expr $BACKLIGHT - $INCREMENT`
+	if [ $TOTAL -lt "0" ]; then
+		exit 1
+	fi
+	SET_VALUE=1
+	;;
+    *)
+	exit 1
+	;;
+esac
+
+if [ $SET_VALUE -eq "1" ]; then
+	echo $TOTAL > $BLFILE
+fi
+
+exit 0

@@ -1,0 +1,106 @@
+# .mbsyncrc
+
+# To initalize the mail directory use:
+#
+#     mkdir -p ~/mail/{adfinis,fhnw,hotmail,posteo}
+#     mu index -m ~/mail
+
+# Posteo
+IMAPAccount posteo
+Host posteo.de
+User patrickwinter@posteo.de
+PassCmd "pass mail/posteo/patrickwinter@posteo.ch | head -1"
+SSLType IMAPS
+SSLVersions TLSv1.2
+
+IMAPStore posteo-remote
+Account posteo
+
+MaildirStore posteo-local
+SubFolders Verbatim
+Path ~/mail/posteo/
+Inbox ~/mail/posteo/INBOX
+
+Channel posteo
+Master :posteo-remote:
+Slave :posteo-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *
+
+# Adfinis
+IMAPAccount adfinis
+Host imap.adfinis.com
+User patrick.winter@adfinis.com
+PassCmd "pass adfinis/ldap_users/patrickw | head -1"
+Port 993
+SSLType IMAPS
+SSLVersions TLSv1.2
+
+IMAPStore adfinis-remote
+Account adfinis
+
+MaildirStore adfinis-local
+SubFolders Verbatim
+Path ~/mail/adfinis/
+Inbox ~/mail/adfinis/INBOX
+
+Channel adfinis
+Master :adfinis-remote:
+Slave :adfinis-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *
+
+# FHNW
+IMAPAccount fhnw
+Host imap.fhnw.ch
+User patrick.winter@students.fhnw.ch
+PassCmd "pass fhnw/active_directory/patrick.winter | head -1"
+Port 993
+AuthMechs PLAIN
+SSLType IMAPS
+SSLVersions TLSv1.2
+
+IMAPStore fhnw-remote
+Account fhnw
+
+MaildirStore fhnw-local
+SubFolders Verbatim
+Path ~/mail/fhnw/
+Inbox ~/mail/fhnw/INBOX
+
+Channel fhnw
+Master :fhnw-remote:
+Slave :fhnw-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *
+
+# Hotmail
+IMAPAccount hotmail
+Host imap-mail.outlook.com
+User patrick.winter@hotmail.ch
+PassCmd "pass mail/hotmail/patrick.winter@hotmail.ch  | awk -F': ' '$1 ==  \"App Password\" { print $2 }'"
+Port 993
+AuthMechs PLAIN
+SSLType IMAPS
+
+IMAPStore hotmail-remote
+Account hotmail
+
+MaildirStore hotmail-local
+SubFolders Verbatim
+Path ~/mail/hotmail/
+Inbox ~/mail/hotmail/INBOX
+
+Channel hotmail
+Master :hotmail-remote:
+Slave :hotmail-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *

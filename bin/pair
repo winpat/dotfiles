@@ -1,0 +1,12 @@
+#!/bin/sh
+
+SOCKET="/tmp/tmux-pair"
+SESSION="pair"
+
+if tmux -S ${SOCKET} has-session -t ${SESSION}; then
+    echo "Attaching to existing session"
+    tmux -S ${SOCKET} attach -t ${SESSION}
+else
+    echo "Creating new session"
+    tmux -S ${SOCKET} new -s ${SESSION}
+fi

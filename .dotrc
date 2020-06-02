@@ -1,0 +1,31 @@
+---
+
+all:
+ - .emacs
+ - .vimrc
+ - .tmux.conf
+ - .bash_profile
+ - .bashrc
+ - .inputrc
+ - .config/nixpkgs
+ - .config/git
+
+tron|clu:
+ - .Xmodmap
+ - .gtkrc-2.0
+ - .ideavimrc
+ - .mbsyncrc
+ - .config/dunst
+ - .config/zathura
+ - .config/termite
+ - nixos/configuration.nix -> /etc/nixos/configuration.nix
+
+tron:
+ - .config/i3
+ - .config/i3blocks
+ - nixos/tron-configuration.nix -> /etc/nixos/host-configuration.nix
+
+clu:
+ - .config/openbox
+ - .config/tint2
+ - nixos/clu-configuration.nix -> /etc/nixos/host-configuration.nix

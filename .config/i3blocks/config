@@ -1,0 +1,53 @@
+command=$HOME/.config/i3blocks/$BLOCK_NAME
+separator_block_width=30
+color=#eaeaea
+
+[vnc]
+interval=1
+color=#FF0000
+
+[mediaplayer]
+instance=spotify
+interval=1
+signal=10
+color=#859900
+
+[mediaplayer]
+instance=vlc
+interval=1
+signal=10
+color=#FFAD00
+
+# [unison]
+# interval=60
+# separator=true
+
+[disk]
+interval=60
+separator=true
+
+[load_average]
+interval=10
+separator=true
+
+[vpn]
+interval=10
+separator=true
+
+[iface]
+interval=10
+separator=true
+
+[battery]
+markup=pango
+interval=10
+
+[volume]
+interval=1
+signal=10
+separator=true
+
+[time]
+separator=true
+command=date '+%a %e. %b %H:%M'
+interval=5
