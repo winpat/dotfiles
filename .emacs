@@ -38,7 +38,6 @@
 ;; (set-default-coding-systems 'utf-8)
 ;; (define-coding-system-alias 'UTF-8 'utf-8)
 
-;; Set some general variables about me
 (setq user-full-name "Patrick Winter"
 	  user-mail-address "patrickwinter@posteo.ch")
 
@@ -227,206 +226,83 @@
    ;; Who had the idea that the path of the directory should have a bright blue background?
    '(dired-header ((t (:background "#002b36" :foreground "#268bd2"))))))
 
-(use-package hydra
-  :ensure t
-  :config
-  (defhydra hydra-org-agenda-show-todo-list (:idle 1 :exit t)
-	"todo"
-	("a" (winpat/org-agenda-show "a") "adfinis")
-	("f" (winpat/org-agenda-show "f") "fhnw")
-	("p" (winpat/org-agenda-show "p") "personal"))
-
-  (defhydra hydra-dired-bookmarks (:idle 1 :exit t)
-	"dired"
-	("." (lambda () (interactive) (dired ".")) "current")
-	("h" (lambda () (interactive) (dired "~")) "home")
-	("d" (lambda () (interactive) (dired "~/downloads/")) "downloads")
-	("j" (lambda () (interactive) (dired "/ssh:jump:/")) "jump")
-	("v" (lambda () (interactive) (dired "~/vcs/")) "vcs")
-	("s" (lambda () (interactive) (dired "~/shared/")) "unison")
-	("f" (lambda () (interactive) (dired "~/shared/fhnw")) "fhnw"))
-
-  (defhydra hydra-file-bookmarks (:idle 1 :exit t)
-	"dired"
-	("h" (lambda () (interactive) (find-file "/etc/nixos/host-configuration.nix")) "host-configuration.nix")
-	("c" (lambda () (interactive) (find-file "/etc/nixos/configuration.nix")) "configuration.nix")
-	("i" (lambda () (interactive) (find-file "~/.config/i3/config")) "i3")
-	("e" (lambda () (interactive) (find-file "~/.emacs")) "emacs")))
-
-(use-package which-key
-  :ensure t
-  :diminish which-key-mode
-  :init (which-key-mode 1))
-
 (use-package key-chord
   :ensure t
-  :init (key-chord-mode 1))
-
-;; (use-package command-log-mode
-;;   :ensure t)
-
-;; (use-package keyfreq
-;;   :ensure t
-;;   :init
-;;   (keyfreq-mode 1)
-;;   (keyfreq-autosave-mode 1))
-
-(use-package general
-  :ensure t
-  :after which-key
+  :init (key-chord-mode 1)
+  :after (evil)
   :config
-  (general-override-mode 1)
+  (setq key-chord-two-keys-delay 0.5)
+  (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
+  (key-chord-define evil-insert-state-map "kj" 'evil-normal-state))
 
-  (defun counsel-open-notes ()
-	(interactive)
-	(counsel-find-file notes-directory))
+(defun counsel-open-notes ()
+  (interactive)
+  (counsel-find-file notes-directory))
 
-  (defun counsel-open-org-files ()
-	(interactive)
-	(counsel-find-file org-directory))
+(defun counsel-open-org-files ()
+  (interactive)
+  (counsel-find-file org-directory))
 
-  ;; Taken from http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
-  (defun rename-file-and-buffer ()
-	"Rename the current buffer and file it is visiting."
-	(interactive)
-	(let ((filename (buffer-file-name)))
-	  (if (not (and filename (file-exists-p filename)))
-		  (message "Buffer is not visiting a file!")
-		(let ((new-name (read-file-name "New name: " filename)))
-		  (cond
-		   ((vc-backend filename) (vc-rename-file filename new-name))
-		   (t
-			(rename-file filename new-name t)
-			(set-visited-file-name new-name t t)))))))
+;; Taken from http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
+(defun rename-file-and-buffer ()
+  "Rename the current buffer and file it is visiting."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+	(if (not (and filename (file-exists-p filename)))
+		(message "Buffer is not visiting a file!")
+	  (let ((new-name (read-file-name "New name: " filename)))
+		(cond
+		 ((vc-backend filename) (vc-rename-file filename new-name))
+		 (t
+		  (rename-file filename new-name t)
+		  (set-visited-file-name new-name t t)))))))
 
-  ;; Taken from https://emacs.stackexchange.com/questions/10348/revert-buffer-discard-unsaved-changes-without-y-n-prompt
-  (defun revert-buffer-no-confirm ()
-	"Revert buffer without confirmation."
-	(interactive) (revert-buffer t t))
+;; Taken from https://emacs.stackexchange.com/questions/10348/revert-buffer-discard-unsaved-changes-without-y-n-prompt
+(defun revert-buffer-no-confirm ()
+  "Revert buffer without confirmation."
+  (interactive) (revert-buffer t t))
 
-  (general-define-key :keymaps 'evil-insert-state-map
-					  (general-chord "jk") 'evil-normal-state
-					  (general-chord "kj") 'evil-normal-state)
+(defun toggle-window-split ()
+  (interactive)
+  (if (= (count-windows) 2)
+	  (let* ((this-win-buffer (window-buffer))
+			 (next-win-buffer (window-buffer (next-window)))
+			 (this-win-edges (window-edges (selected-window)))
+			 (next-win-edges (window-edges (next-window)))
+			 (this-win-2nd (not (and (<= (car this-win-edges)
+										 (car next-win-edges))
+									 (<= (cadr this-win-edges)
+										 (cadr next-win-edges)))))
+			 (splitter
+			  (if (= (car this-win-edges)
+					 (car (window-edges (next-window))))
+				  'split-window-horizontally
+				'split-window-vertically)))
+		(delete-other-windows)
+		(let ((first-win (selected-window)))
+		  (funcall splitter)
+		  (if this-win-2nd (other-window 1))
+		  (set-window-buffer (selected-window) this-win-buffer)
+		  (set-window-buffer (next-window) next-win-buffer)
+		  (select-window first-win)
+		  (if this-win-2nd (other-window 1))))))
 
-  (defun toggle-window-split ()
-	(interactive)
-	(if (= (count-windows) 2)
-		(let* ((this-win-buffer (window-buffer))
-			   (next-win-buffer (window-buffer (next-window)))
-			   (this-win-edges (window-edges (selected-window)))
-			   (next-win-edges (window-edges (next-window)))
-			   (this-win-2nd (not (and (<= (car this-win-edges)
-										   (car next-win-edges))
-									   (<= (cadr this-win-edges)
-										   (cadr next-win-edges)))))
-			   (splitter
-				(if (= (car this-win-edges)
-					   (car (window-edges (next-window))))
-					'split-window-horizontally
-				  'split-window-vertically)))
-		  (delete-other-windows)
-		  (let ((first-win (selected-window)))
-			(funcall splitter)
-			(if this-win-2nd (other-window 1))
-			(set-window-buffer (selected-window) this-win-buffer)
-			(set-window-buffer (next-window) next-win-buffer)
-			(select-window first-win)
-			(if this-win-2nd (other-window 1))))))
-
-  (defun transpose-windows (arg)
-	"Transpose the buffers shown in two windows."
-	(interactive "p")
-	(let ((selector (if (>= arg 0) 'next-window 'previous-window)))
-	  (while (/= arg 0)
-		(let ((this-win (window-buffer))
-			  (next-win (window-buffer (funcall selector))))
-		  (set-window-buffer (selected-window) next-win)
-		  (set-window-buffer (funcall selector) this-win)
-		  (select-window (funcall selector)))
-		(setq arg (if (plusp arg) (1- arg) (1+ arg))))))
+(defun transpose-windows (arg)
+  "Transpose the buffers shown in two windows."
+  (interactive "p")
+  (let ((selector (if (>= arg 0) 'next-window 'previous-window)))
+	(while (/= arg 0)
+	  (let ((this-win (window-buffer))
+			(next-win (window-buffer (funcall selector))))
+		(set-window-buffer (selected-window) next-win)
+		(set-window-buffer (funcall selector) this-win)
+		(select-window (funcall selector)))
+	  (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
 
   (defun copy-pwd ()
 	"Copy PWD to clipboard."
 	(interactive)
 	(kill-new (buffer-file-name)))
-
-  (general-create-definer leader-def
-	:states '(normal visual emacs)
-	:keymaps 'general-override-mode-map
-	:prefix "SPC"
-	:non-normal-prefix "C-SPC")
-
-  (general-define-key
-   "C-c r" 'redo
-   "C-c u" 'undo
-   "C-c c" 'comment-or-uncomment-region
-   "C-c C-p" 'copy-pwd
-   "M-o"   'other-window)
-
-  (general-define-key
-   "C-x f" 'hydra-file-bookmarks/body
-
-   "M-r" 'isearch-query-regexp
-
-   ;; Window navigation
-   "C-c 1" 'delete-other-windows
-   "C-c 2" (lambda () (interactive) (split-window-vertically) (other-window 1))
-   "C-c 3" (lambda () (interactive) (split-window-horizontally) (other-window 1))
-   "C-c m" 'mu4e)
-
-  (leader-def
-	"" nil
-	"c" (general-simulate-key "C-c")
-	;; "h" (general-simulate-key "C-h")
-	"u" (general-simulate-key "C-u")
-	"x" (general-simulate-key "C-x")
-
-	;;
-	"," 'xref-pop-marker-stack
-	"." 'xref-find-definitions
-
-	;; Misc emacs applications
-	"a" '(:ignore t :which-key "Application")
-	"ap" 'list-packages
-	"ac" 'calc
-	"am" 'mu4e
-	"aw" 'woman
-
-	;; Buffer
-	"o" '(:ignore t :which-key "Open")
-	"on" 'counsel-open-notes
-	"oo" 'counsel-open-org-files
-
-	;; Buffer
-	"b" '(:ignore t :which-key "Buffer")
-	"bk" 'kill-buffer
-	"bl" 'ibuffer
-	"bn" 'switch-to-next-buffer
-	"bp" 'switch-to-prev-buffer
-	"bR" 'rename-file-and-buffer
-	"br" 'revert-buffer-no-confirm
-	"b," 'text-scale-increase
-	"b." 'text-scale-decrease
-
-	;; Common file
-	"f" '(:ignore t :which-key "File")
-	"ff" 'find-file
-	"fb" 'hydra-file-bookmarks/body
-
-	;; Window manipulation
-	"w"   '(:ignore t :which-key "Window")
-	"wh" 'windmove-left
-	"wj" 'windmove-down
-	"wk" 'windmove-up
-	"wl" 'windmove-right
-	"wt" 'transpose-windows
-	"ws" 'toggle-window-split
-	"w1" 'delete-other-windows
-	"w2" (lambda () (interactive) (split-window-vertically) (other-window 1))
-	"w3" (lambda () (interactive) (split-window-horizontally) (other-window 1))
-	"wo" 'other-window
-	"wd" 'delete-window
-	"w=" 'balance-windows))
 
 (use-package eyebrowse
   :ensure t
@@ -460,11 +336,76 @@
   (add-to-list 'evil-emacs-state-modes 'inferior-python-mode)
   (add-to-list 'evil-emacs-state-modes 'eshell-mode))
 
-;; (use-package evil-leader
-;;   :ensure t
-;;   :init (global-evil-leader-mode)
-;;   :config
-;;   (evil-leader/set-leader "<SPC>"))
+;; Allow to undo/redo window changes
+(winner-mode 1)
+(evil-leader/set-key
+  "wu" 'winner-undo
+  "wr" 'winner-redo)
+
+;; Add evil bindings for emacs-lisp-mode
+(evil-leader/set-key-for-mode
+  'emacs-lisp-mode-map
+  "mt" 'ert
+  "mr" 'eval-region
+  "mb" 'eval-buffer
+  "me" 'eval-last-sexp)
+
+
+;; Add evil-keybindings for list-packages menu
+(evil-define-key 'normal package-menu-mode-map
+  "i" 'package-menu-mark-install
+  "U" 'package-menu-mark-upgrades
+  "d" 'package-menu-mark-delete
+  "u" 'package-menu-mark-unmark
+  "x" 'package-menu-execute
+  "q" 'quit-window)
+
+(use-package evil-leader
+  :ensure t
+  :init (global-evil-leader-mode)
+  :config
+  (evil-leader/set-leader "<SPC>")
+  (evil-leader/set-key
+	"ap" 'list-packages
+	"ac" 'calc
+	"am" 'mu4e
+	"aw" 'woman
+	"bk" 'kill-buffer
+	"bl" 'ibuffer
+	"bn" 'switch-to-next-buffer
+	"bp" 'switch-to-prev-buffer
+	"bR" 'rename-file-and-buffer
+	"br" 'revert-buffer-no-confirm
+	"b," 'text-scale-increase
+	"b." 'text-scale-decrease
+	"on" 'counsel-open-notes
+	"oo" 'counsel-open-org-files
+	"," 'xref-pop-marker-stack
+	"." 'xref-find-definitions
+	"ff" 'find-file
+	"wh" 'windmove-left
+	"wj" 'windmove-down
+	"wk" 'windmove-up
+	"wl" 'windmove-right
+	"wt" 'transpose-windows
+	"ws" 'toggle-window-split
+	"w1" 'delete-other-windows
+	"w2" (lambda () (interactive) (split-window-vertically) (other-window 1))
+	"w3" (lambda () (interactive) (split-window-horizontally) (other-window 1))
+	"wo" 'other-window
+	"wd" 'delete-window
+	"w=" 'balance-windows
+	"d." (lambda () (interactive) (dired "."))
+	"dh" (lambda () (interactive) (dired "~"))
+	"dd" (lambda () (interactive) (dired "~/downloads/"))
+	"dj" (lambda () (interactive) (dired "/ssh:jump:/"))
+	"dv" (lambda () (interactive) (dired "~/vcs/"))
+	"ds" (lambda () (interactive) (dired "~/shared/"))
+	"df" (lambda () (interactive) (dired "~/shared/fhnw"))
+	"fbh" (lambda () (interactive) (find-file "/etc/nixos/host-configuration.nix"))
+	"fbc" (lambda () (interactive) (find-file "/etc/nixos/configuration.nix"))
+	"fbi" (lambda () (interactive) (find-file "~/.config/i3/config"))
+	"fbe" (lambda () (interactive) (find-file "~/.emacs"))))
 
 ;; Make a visual selection with v or V, and then hit * to search that
 ;; selection forward, or # to search that selection backward.
@@ -472,9 +413,7 @@
   :ensure t
   :after evil
   :config
-  (setq evilmi-always-simple-jump t)
   (global-evil-visualstar-mode 1))
-
 
 ;; Ergonomically navigate around text
 (use-package evil-easymotion
@@ -487,19 +426,11 @@
 (use-package evil-commentary
   :ensure t
   :after evil
-  :config (evil-commentary-mode 1)
-  :general
-  ('normal override-global-map
-		   "gc" 'evil-commentary
-		   "gC" 'evil-commentary-line))
+  :config (evil-commentary-mode 1))
 
 (use-package evil-numbers
   :ensure t
-  :after evil
-  :general
-  ('normal override-global-map
-		   "C-a" 'evil-numbers/inc-at-pt
-		   "C-x" 'evil-numbers/dec-at-pt))
+  :after evil)
 
 (use-package evil-surround
   :ensure t
@@ -515,15 +446,15 @@
   :config (evil-collection-init))
 
 (use-package compile
-  :config (setq compilation-scroll-output 'first-error)
-  :general (leader-def
-			 "c" 'compile))
+  :config
+  (setq compilation-scroll-output 'first-error)
+  (evil-leader/set-key "c" 'compile))
 
 (use-package deadgrep
   :ensure t
   :bind (("C-c r" . deadgrep))
-  :general
-  (leader-def
+  :config
+  (evil-leader/set-key
 	"r"   'deadgrep))
 
 (use-package projectile-ripgrep
@@ -539,9 +470,8 @@
    '((move counsel-projectile-switch-project-action-vc 1)
 	 (setkey counsel-projectile-switch-project-action-vc "o")
 	 (setkey counsel-projectile-switch-project-action " ")))
-  :general
-  (leader-def
-	"p"   '(:ignore t :which-key "projectile")
+
+  (evil-leader/set-key
 	"pp"  'counsel-projectile-switch-project
 	"pd"  'counsel-projectile-dired-find-dir
 	"pg"  'counsel-projectile-grep
@@ -553,27 +483,9 @@
 
 (use-package swiper
   :ensure t
-  :general
-  ("C-s" 'swiper)
-  (general-def 'normal
-	"/" 'swiper
-	"?" 'swiper))
-
-(use-package winner-mode
-  :init (winner-mode 1)
-  :general (leader-def
-			 "wu" 'winner-undo
-			 "wr" 'winner-redo))
-
-(use-package package-menu-mode
-  :general
-  ('normal package-menu-mode-map
-		   "i" 'package-menu-mark-install
-		   "U" 'package-menu-mark-upgrades
-		   "d" 'package-menu-mark-delete
-		   "u" 'package-menu-mark-unmark
-		   "x" 'package-menu-execute
-		   "q" 'quit-window))
+  :config
+  (define-key evil-normal-state-map "/" 'swiper)
+  (define-key evil-normal-state-map "?" 'swiper))
 
 (use-package unfill
   :ensure t
@@ -581,7 +493,8 @@
 
 (use-package suggest
   :ensure t
-  :general (leader-def "as" 'suggest))
+  :config
+  (evil-leader/set-key "as" 'suggest))
 
 (use-package dimmer
   :ensure t
@@ -607,14 +520,6 @@
 
 (use-package flycheck-package
   :ensure t)
-
-(use-package emacs-lisp-mode
-  :hook (prettify-symbols-mode)
-  :general (leader-def emacs-lisp-mode-map
-			 "mt" 'ert
-			 "mr" 'eval-region
-			 "mb" 'eval-buffer
-			 "me" 'eval-last-sexp))
 
 (use-package font-lock-studio
   :ensure t)
@@ -714,23 +619,8 @@
 						(set-window-configuration wnd))))
 		(error "no more than 2 files should be marked"))))
 
-  :general
-  (general-define-key
-   :keymaps 'dired-mode-map
-   "e" 'winpat/dired-ediff-files
-   "o" 'dired-start-process)
-
-  (general-define-key
-   :states '(normal)
-   :keymaps 'dired-mode-map
-   "e" 'winpat/dired-ediff-files
-   "o" 'dired-start-process)
-
-  (general-define-key
-   "C-x d" 'hydra-dired-bookmarks/body)
-
-  (leader-def
-	"d" 'hydra-dired-bookmarks/body))
+  (evil-define-key 'normal dired-mode-map "e" 'winpat/dired-ediff-files)
+  (evil-define-key 'normal dired-mode-map "o" 'dired-start-process))
 
 
 (use-package org
@@ -943,21 +833,12 @@
 							 (?B . (:foreground "orange"))
 							 (?C . (:foreground "yellow"))))
 
-  :bind (("C-x t" . hydra-org-agenda-show-todo-list/body)
-		 :map org-mode-map
-		 ("M-S-l" . org-shiftmetaright)
-		 ("M-S-h" . org-shiftmetaleft)
-		 ("M-S-j" . org-shiftmetadown)
-		 ("M-S-k" . org-shiftmetalup))
+  (evil-leader/set-key
+   "ol"  'org-store-link
+   "oa"  'org-agenda
+   "oc"  'org-capture)
 
-  :general
-  (leader-def
-	"ol"  'org-store-link
-	"oa"  'org-agenda
-	"ot"  'hydra-org-agenda-show-todo-list/body
-	"oc"  'org-capture)
-
-  (leader-def org-mode-map
+  (evil-leader/set-key-for-mode 'org-mode-map
 	"mo" 'org-open-at-point
 	"mp" 'org-priority
 	"md" 'org-deadline
@@ -983,10 +864,10 @@
   :ensure t
   :config
   (org-tree-slide-simple-profile)
-  :general
-  (leader-def org-tree-slide-mode-map
-	"mp" 'org-tree-slide-move-previous-tree
-	"mn" 'org-tree-slide-move-next-tree))
+  (evil-leader/set-key-for-mode
+   'org-tree-slide-mode-map
+   "mp" 'org-tree-slide-move-previous-tree
+   "mn" 'org-tree-slide-move-next-tree))
 
 (use-package org-journal
   :ensure t
@@ -994,8 +875,7 @@
   (setq org-journal-dir "~/shared/journal/"
 		org-journal-file-type "=day="
 		org-journal-file-format "%Y-%m-%d.org")
-  :general
-  (leader-def
+  (evil-leader/set-key
 	"l" 'org-journal-new-entry))
 
 (use-package org-download
@@ -1067,12 +947,12 @@
 						  (when msg
 							(mu4e-message-contact-field-matches
 							 msg
-							 :to "patrick.winter@adfinis.com")))
-			:vars '((user-mail-address         . "patrick.winter@adfinis.com")
+							 :to "patrick.winter@adfinis.ch")))
+			:vars '((user-mail-address         . "patrick.winter@adfinis.ch")
 					(mu4e-sent-folder          . "/adfinis/Gesendete Objekte")
 					(mu4e-drafts-folder        . "/adfinis/Entw\&APw-rfe")
 					(mu4e-trash-folder         . "/adfinis/Gel&APY-schte Objekte")
-					(smtpmail-smtp-server      . "smtp.adfinis.com")
+					(smtpmail-smtp-server      . "smtp.adfinis.ch")
 					(smtpmail-stream-type      . starttls)
 					(smtpmail-smtp-service     . 587)
 					(mu4e-compose-signature    . (concat
@@ -1234,27 +1114,25 @@ PWD is not in a git repo (or the git command is not found)."
 	  (next-line)
 	  (move-end-of-line)))
 
-  :general
-  (general-define-key
-   "C-x s" 'eshell)
+  (evil-leader/set-key-for-mode
+   'eshell-mode-map
+   "C-l" 'eshell-clear-buffer))
 
-  (leader-def eshell-mode-map
-	"C-l" 'eshell-clear-buffer))
-
-(use-package vterm
-  :ensure t
-  :general
-  (leader-def
-	"s" 'vterm))
+;; (use-package vterm
+;;   :ensure t
+;;   :config
+;;   (evil-leader/set-key
+;; 	"s" 'vterm))
 
 (use-package smerge-mode
-  :general
-  (leader-def smerge-mode-map
-	"mn" 'smerge-next
-	"mp" 'smerge-prev
-	"ml" 'smerge-keep-lower
-	"mu" 'smerge-keep-upper
-	"me" 'smerge-ediff))
+  :config
+  (evil-leader/set-key-for-mode
+   'smerge-mode-map
+   "mn" 'smerge-next
+   "mp" 'smerge-prev
+   "ml" 'smerge-keep-lower
+   "mu" 'smerge-keep-upper
+   "me" 'smerge-ediff))
 
 (use-package direnv
   :ensure t
@@ -1318,9 +1196,10 @@ markdown reference."
 
   (setq markdown-command "pandoc -c file:///home/patrick/vcs/dotfiles/stylesheets/github-pandoc.css --from gfm -t html5 --mathjax --highlight-style pygments --standalone")
 
-  :general (leader-def markdown-mode-map
-			 "mi" 'markdown-toggle-inline-images
-			 "ms" 'markdown-insert-screenshot))
+  (evil-leader/set-key-for-mode
+   'markdown-mode-map
+   "mi" 'markdown-toggle-inline-images
+   "ms" 'markdown-insert-screenshot))
 
 (use-package git-timemachine
   :ensure t
@@ -1331,18 +1210,16 @@ markdown reference."
 	 ;; Force update evil keymaps after git-timemachine-mode loaded
 	 (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps)))
 
+;; Magit <3
 (use-package magit
   :ensure t
   :config
   (setq magit-diff-refine-hunk t
 		magit-repository-directories '(("~/vcs/" . 2)))
   (setenv "GIT_ASKPASS" "git-gui--askpass")
-  :bind (("C-x g" . magit-status))
-  :general
-  (leader-def
-	;; Magit <3
-	"e"  'magit-dispatch
-	"g"   'magit-status))
+  (evil-leader/set-key
+   "e"  'magit-dispatch
+   "g"   'magit-status))
 
 ;; (use-package libgit
 ;;   :ensure t)
@@ -1385,17 +1262,17 @@ markdown reference."
   :init (global-git-gutter-mode +1))
 
 ;; Turn emacs into a pdf viewer
-(use-package pdf-tools
-  :ensure t
-  :init
-  (if (not (eq system-type 'windows-nt))
-	  (pdf-tools-install t))
-  :general
-  (general-def 'emacs pdf-view-mode-map
-	"j"   'pdf-view-next-line-or-next-page
-	"k"   'pdf-view-previous-line-or-previous-page
-	"gg"  'pdf-view-first-page
-	"G"   'pdf-view-last-page))
+;; (use-package pdf-tools
+;;   :ensure t
+;;   :init
+;;   (if (not (eq system-type 'windows-nt))
+;; 	  (pdf-tools-install t))
+;;   :general
+;;   (general-def 'emacs pdf-view-mode-map
+;; 	"j"   'pdf-view-next-line-or-next-page
+;; 	"k"   'pdf-view-previous-line-or-previous-page
+;; 	"gg"  'pdf-view-first-page
+;; 	"G"   'pdf-view-last-page))
 
 (use-package racket-mode
   :ensure t
@@ -1434,16 +1311,17 @@ markdown reference."
   :config
   (pyvenv-mode t)
   (pyvenv-tracking-mode t)
-  :general
-  (leader-def python-mode-map
-	"ma" 'pvyenv-activate
-	"md" 'pvyenv-deactivate))
+  (evil-leader/set-key-for-mode
+   'python-mode-map
+   "ma" 'pvyenv-activate
+   "md" 'pvyenv-deactivate))
 
 (use-package python-pytest
   :ensure t
-  :general
-  (leader-def python-mode-map
-	"mt" 'python-pytest-popup))
+  :config
+  (evil-leader/set-key-for-mode
+   'python-mode-map
+   "mt" 'python-pytest-popup))
 
 (use-package python
   :config
@@ -1507,16 +1385,18 @@ markdown reference."
   :init
   (add-hook 'php-mode-hook 'php-enable-wordpress-coding-style)
   :mode (("\\.php\\'" . php-mode))
-  :general (leader-def php-mode-map
-			 "mdg" 'geben
-			 "mdq" 'geben-end
-			 "mds" 'geben-stop
-			 "mdi" 'geben-step-into
-			 "mdo" 'geben-step-over
-			 "mdr" 'geben-step-out
-			 "mdc" 'geben-run-to-cursor
-			 "mde" 'geben-eval-expression
-			 "mdd" 'geben-display-context))
+  :config
+  (evil-leader/set-key-for-mode
+   'php-mode-map
+   "mdg" 'geben
+   "mdq" 'geben-end
+   "mds" 'geben-stop
+   "mdi" 'geben-step-into
+   "mdo" 'geben-step-over
+   "mdr" 'geben-step-out
+   "mdc" 'geben-run-to-cursor
+   "mde" 'geben-eval-expression
+   "mdd" 'geben-display-context))
 
 (use-package haskell-mode
   :ensure t
@@ -1525,20 +1405,11 @@ markdown reference."
 
 (use-package helpful
   :ensure t
-  :general
-  (leader-def
-	"h"    '(:ignore t :which-keys "Helpful")
-	"hf"   'helpful-callable
-	"hv"   'helpful-variable
-	"hk"   'helpful-key)
-
-  (general-def
-	"C-h f"   'helpful-callable
-	"C-h v"   'helpful-variable
-	"C-h k"   'helpful-key)
-
-  (general-def 'normal helpful-mode-map
-	"q" 'quit-window))
+  :config
+  (evil-leader/set-key
+   "hf"   'helpful-callable
+   "hv"   'helpful-variable
+   "hk"   'helpful-key))
 
 (use-package guix
   :ensure t)
@@ -1580,10 +1451,12 @@ markdown reference."
 			  ("C-c r" . inferior-octave)
 			  ("C-c s" . octave-send-buffer)
 			  ("C-c k" . octave-kill-process))
-  :general (leader-def octave-mode-map
-			 "mr" 'inferior-octave
-			 "mk" 'octave-kill-process
-			 "me" 'octave-send-buffer))
+  :config
+  (evil-leader/set-key-for-mode
+   'octave-mode-map
+   "mr" 'inferior-octave
+   "mk" 'octave-kill-process
+   "me" 'octave-send-buffer))
 
 (use-package goto-line-preview
   :ensure t
@@ -1594,11 +1467,8 @@ markdown reference."
   :config
   ;; Let actions emacs also update the fasd database
   (global-fasd-mode 1)
-  :general
-  (general-define-key
-   "C-x j" 'fasd-find-file)
-  (leader-def
-	"j"   'fasd-find-file))
+  (evil-leader/set-key
+   "j"   'fasd-find-file))
 
 (use-package ivy
   :ensure t
@@ -1612,9 +1482,8 @@ markdown reference."
 				;; matching candidate
 				ivy-use-selectable-prompt t
 				ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
-  :commands (ivy-switch-buffer)
-  :general
-  (leader-def "bb"  'ivy-switch-buffer))
+  (evil-leader/set-key "bb"  'ivy-switch-buffer)
+  :commands (ivy-switch-buffer))
 
 (use-package ivy-rich
   :ensure t
@@ -1625,8 +1494,8 @@ markdown reference."
 (use-package ivy-pass
   :after ivy
   :ensure t
-  :general
-  (leader-def
+  :config
+  (evil-leader/set-key
 	"a p" 'ivy-pass))
 
 (use-package projectile
@@ -1639,9 +1508,7 @@ markdown reference."
   ;; Use `projectile-discover-projects-in-directory` to scan for projects
   (setq projectile-enable-caching t)
 
-  (setq projectile-switch-project-action #'magit-status)
-  :general
-  ("C-c p" '(:keymap projectile-command-map :package projectile)))
+  (setq projectile-switch-project-action #'magit-status))
 
 (use-package counsel
   :after (ivy)
@@ -1652,8 +1519,7 @@ markdown reference."
 		 "\\(?:\\`[#.]\\)"
 		 ;; File names ending with # or ~
 		 "\\|\\(?:\\`.+?[#~]\\'\\)"))
-  :general
-  (leader-def
+  (evil-leader/set-key
 	"SPC" 'counsel-M-x
 	"ff"  'counsel-find-file
 	"fr"  'counsel-recentf
@@ -1708,12 +1574,9 @@ markdown reference."
   :ensure t
   :config
   (add-hook 'makefile-mode-hook 'makefile-executor-mode)
-  :bind (("C-c m" . makefile-executor-execute-target))
-  :general
-  (leader-def
-	"p"   '(:ignore t :which-key "projectile")
-	"pm"  'makefile-executor-execute-project-target
-	"pl"  'makefile-executor-execute-last))
+  (evil-leader/set-key
+   "pm"  'makefile-executor-execute-project-target
+   "pl"  'makefile-executor-execute-last))
 
 (use-package dhall-mode
   :ensure t
