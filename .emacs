@@ -911,9 +911,9 @@
   (add-hook 'mu4e-compose-mode-hook
 			(defun my-do-compose-stuff ()
 			  "My settings for message composition."
-			  (set-fill-column 100)
+			  (set-fill-column 100)))
 			  ;; Sign message by default
-			  (mml-secure-message-sign)))
+			  ;; (mml-secure-message-sign)))
 
   (setq mu4e-maildir (expand-file-name "~/mail")
 		mu4e-headers-date-format "%Y/%m/%d"
@@ -947,12 +947,12 @@
 						  (when msg
 							(mu4e-message-contact-field-matches
 							 msg
-							 :to "patrick.winter@adfinis.ch")))
-			:vars '((user-mail-address         . "patrick.winter@adfinis.ch")
+							 :to "patrick.winter@adfinis.com")))
+			:vars '((user-mail-address         . "patrick.winter@adfinis.com")
 					(mu4e-sent-folder          . "/adfinis/Gesendete Objekte")
 					(mu4e-drafts-folder        . "/adfinis/Entw\&APw-rfe")
 					(mu4e-trash-folder         . "/adfinis/Gel&APY-schte Objekte")
-					(smtpmail-smtp-server      . "smtp.adfinis.ch")
+					(smtpmail-smtp-server      . "smtp.adfinis.com")
 					(smtpmail-stream-type      . starttls)
 					(smtpmail-smtp-service     . 587)
 					(mu4e-compose-signature    . (concat
