@@ -452,7 +452,6 @@
 
 (use-package deadgrep
   :ensure t
-  :bind (("C-c r" . deadgrep))
   :config
   (evil-leader/set-key
 	"r"   'deadgrep))
