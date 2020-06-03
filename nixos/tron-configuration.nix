@@ -72,7 +72,6 @@
     python37Packages.i3ipc
 
     # i3 Blocklets
-    playerctl
     perl
     acpi  # battery
     i3blocks

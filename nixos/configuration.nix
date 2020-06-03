@@ -209,6 +209,7 @@ in
     spotify
     mpv
     vlc
+    playerctl
     gimp
     gcolor3
     imagemagick
