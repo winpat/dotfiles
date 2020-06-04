@@ -184,6 +184,10 @@
 (setq custom-file (make-temp-file ""))
 (setq custom-safe-themes t)
 
+(use-package xclip
+  :ensure t
+  :init (xclip-mode 1))
+
 (use-package diminish
   :init
   (diminish 'eldoc-mode)
