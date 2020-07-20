@@ -188,6 +188,14 @@
   :ensure t
   :init (xclip-mode 1))
 
+(use-package helpful
+  :ensure t
+  :config
+  (evil-leader/set-key
+   "hf"   'helpful-callable
+   "hv"   'helpful-variable
+   "hk"   'helpful-key))
+
 (use-package diminish
   :init
   (diminish 'eldoc-mode)
@@ -1026,16 +1034,6 @@
 		   company-capf
 		   company-yasnippet))))
 
-(use-package go
-  :ensure t
-  :mode ("\\.go\\'" . go-mode)
-  :bind (
-		 :map go-mode-map
-		 ("M-." . godef-jump)
-		 ("M-*" . pop-tag-mark)
-		 ("C-c C-c" . compile)
-		 ("C-c C-d" . godoc-at-point)))
-
 (use-package shell-pop
   :ensure t
   :bind (("M-z" . shell-pop))
@@ -1120,12 +1118,6 @@ PWD is not in a git repo (or the git command is not found)."
   (evil-leader/set-key-for-mode
    'eshell-mode-map
    "C-l" 'eshell-clear-buffer))
-
-;; (use-package vterm
-;;   :ensure t
-;;   :config
-;;   (evil-leader/set-key
-;; 	"s" 'vterm))
 
 (use-package smerge-mode
   :config
@@ -1224,13 +1216,6 @@ markdown reference."
    "e"  'magit-dispatch
    "g"   'magit-status))
 
-;; (use-package libgit
-;;   :ensure t)
-
-;; (use-package magit-libgit
-;;   :ensure t
-;;   :after (magit libgit))
-
 (use-package hl-todo
   :ensure t
   :init (global-hl-todo-mode))
@@ -1263,19 +1248,6 @@ markdown reference."
   :ensure t
   :diminish git-gutter-mode
   :init (global-git-gutter-mode +1))
-
-;; Turn emacs into a pdf viewer
-;; (use-package pdf-tools
-;;   :ensure t
-;;   :init
-;;   (if (not (eq system-type 'windows-nt))
-;; 	  (pdf-tools-install t))
-;;   :general
-;;   (general-def 'emacs pdf-view-mode-map
-;; 	"j"   'pdf-view-next-line-or-next-page
-;; 	"k"   'pdf-view-previous-line-or-previous-page
-;; 	"gg"  'pdf-view-first-page
-;; 	"G"   'pdf-view-last-page))
 
 (use-package racket-mode
   :ensure t
@@ -1340,16 +1312,6 @@ markdown reference."
   :ensure t
   :hook ((php-mode) . prettier-js-mode))
 
-(use-package js-mode
-  :hook ((ember-mode)))
-
-(use-package vue-mode
-  :ensure t
-  :mode (("\\.vue\\'" . vue-mode))
-  :config
-  ;; Disable coloring of mmm blocks
-  (setq mmm-submode-decoration-level 0))
-
 (use-package web-mode
   :ensure t
   :hook (ember-mode)
@@ -1380,9 +1342,6 @@ markdown reference."
   :config
   (setenv "PASSWORD_STORE_DIR" "/home/patrick/vcs/passwords"))
 
-(use-package flycheck
-  :ensure t)
-
 (use-package php-mode
   :ensure t
   :init
@@ -1405,17 +1364,6 @@ markdown reference."
   :ensure t
   :init
   (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
-
-(use-package helpful
-  :ensure t
-  :config
-  (evil-leader/set-key
-   "hf"   'helpful-callable
-   "hv"   'helpful-variable
-   "hk"   'helpful-key))
-
-(use-package guix
-  :ensure t)
 
 (use-package nix-mode
   :ensure t
@@ -1441,25 +1389,6 @@ markdown reference."
 (use-package jinja2-mode
   :ensure t
   :mode (("\\.j2\\'" . jinja2-mode)))
-
-(use-package logstash-conf
-  :ensure t)
-
-(use-package sass-mode
-  :ensure t)
-
-(use-package octave-mode
-  :mode (("\\.m\\'" . octave-mode))
-  :bind (:map octave-mode-map
-			  ("C-c r" . inferior-octave)
-			  ("C-c s" . octave-send-buffer)
-			  ("C-c k" . octave-kill-process))
-  :config
-  (evil-leader/set-key-for-mode
-   'octave-mode-map
-   "mr" 'inferior-octave
-   "mk" 'octave-kill-process
-   "me" 'octave-send-buffer))
 
 (use-package goto-line-preview
   :ensure t
@@ -1494,13 +1423,6 @@ markdown reference."
   :init
   (ivy-rich-mode 1))
 
-(use-package ivy-pass
-  :after ivy
-  :ensure t
-  :config
-  (evil-leader/set-key
-	"a p" 'ivy-pass))
-
 (use-package projectile
   :ensure t
   :diminish projectile-mode
@@ -1532,12 +1454,6 @@ markdown reference."
   :ensure t
   :after (counsel))
 
-(use-package hy-mode
-  :ensure t)
-
-(use-package ein
-  :ensure t)
-
 ;; Python:
 ;;   pip install 'python-language-server[all]'
 ;; PHP:
@@ -1549,11 +1465,6 @@ markdown reference."
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode)
-
-(use-package lsp-java
-  :ensure t
-  :after lsp
-  :config (add-hook 'java-mode-hook 'lsp))
 
 (use-package company-lsp
   :ensure t
@@ -1570,9 +1481,6 @@ markdown reference."
 (use-package dap-mode
   :ensure t)
 
-(use-package mediawiki
-  :ensure t)
-
 (use-package makefile-executor
   :ensure t
   :config
@@ -1581,49 +1489,9 @@ markdown reference."
    "pm"  'makefile-executor-execute-project-target
    "pl"  'makefile-executor-execute-last))
 
-(use-package dhall-mode
-  :ensure t
-  :mode (("\\.dhall\\'" . dhall-mode)))
-
 (use-package unison-mode
   :ensure t
   :mode (("\\.prf\\'" . unison-mode)))
-
-(use-package taskpaper-mode
-  :ensure t
-  :mode (("\\.todo\\'" . taskpaper-mode))
-  :config
-  (setq taskpaper-tag-alist
-		'(("today"       . ?t)
-		  ("due(%%)"     . ?d)
-		  ("due(%%+7d)"  . ?s)
-		  ("priority(1)" . ?1)
-		  ("priority(2)" . ?2)
-		  ("priority(3)" . ?3)))
-
-  ;; Save date in @done tag
-  (setq taskpaper-complete-save-date t)
-
-  ;; Overlay pretty bullet icons
-  (setq taskpaper-pretty-task-marks t
-		taskpaper-bullet ?\u2610
-		taskpaper-bullet-done ?\u2714)
-
-  ;; Copy theme of VSCode's Todo+ plugin
-  (custom-set-faces
-   '(taskpaper-tag ((t (:foreground "#e6db74"))))
-   '(taskpaper-task ((t (:foreground "#bbbbbb"))))
-   '(taskpaper-note ((t (:foreground "#75715e"))))
-   '(taskpaper-link ((t (:foreground "#75715e"))))
-   '(taskpaper-done-item ((t (:foreground "#a6e22e"))))
-   '(taskpaper-project-name ((t (:foreground "#66d9ef")))))
-
-  :bind (:map taskpaper-mode-map
-			  ("M-d" . taskpaper-item-toggle-done)
-			  ("M-t" . taskpaper-item-set-tag-fast-select)))
-
-(use-package rust-mode
-  :ensure t)
 
 (use-package ispell
   :ensure t
@@ -1640,6 +1508,5 @@ markdown reference."
   :config
   (setq flyspell-default-dictionary "en_US"))
 
-(use-package csharp-mode
-  :ensure t
-  :mode (("\\.cs\\'" . csharp-mode)))
+(use-package flycheck
+  :ensure t)
