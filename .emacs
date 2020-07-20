@@ -331,6 +331,11 @@
 	(eyebrowse-mode t)
 	(setq eyebrowse-new-workspace t)))
 
+
+(use-package undo-tree
+  :ensure
+  :diminish undo-tree-mode)
+
 (use-package lispy
   :ensure t
   :diminish lispy-mode)
@@ -437,6 +442,7 @@
 ;; Effectively comment out stuff
 (use-package evil-commentary
   :ensure t
+  :diminish evil-commentary-mode
   :after evil
   :config (evil-commentary-mode 1))
 
