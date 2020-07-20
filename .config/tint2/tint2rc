@@ -160,26 +160,6 @@ clock_uwheel_command =
 clock_dwheel_command =
 
 #-------------------------------------
-# Battery
-battery_tooltip = 1
-battery_low_status = 20
-battery_low_cmd = notify-send 'Battery low!'
-battery_full_cmd =
-battery_font_color = #ffffff 100
-bat1_format = Bat %p
-bat2_format =
-battery_padding = 4 0
-battery_background_id = 0
-battery_hide = 101
-battery_lclick_command =
-battery_rclick_command =
-battery_mclick_command =
-battery_uwheel_command =
-battery_dwheel_command =
-ac_connected_cmd =
-ac_disconnected_cmd =
-
-#-------------------------------------
 # Tooltip
 tooltip_show_timeout = 0.5
 tooltip_hide_timeout = 0.1
