@@ -112,7 +112,6 @@ in
     # Desktop
     termite
     dmenu
-    rofi
     xcape
     xplanet
     xorg.xev

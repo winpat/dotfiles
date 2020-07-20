@@ -184,7 +184,7 @@ and back in -->
 	<keybind key="W-d">
 	  <action name="Execute">
 		<command>
-		  rofi -show drun -show-icons -theme "solarized" -line-padding 4 -columns 4 -width 100 -padding 50 -location 1 -font "Hack 15"
+		  dmenu_run
 		</command>
 	  </action>
 	</keybind>

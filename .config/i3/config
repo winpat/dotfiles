@@ -42,8 +42,7 @@ title_align center
 
 # Launch common applications
 bindsym $mod+Return exec termite -t termite
-# bindsym $mod+d exec i3-dmenu-desktop --dmenu="dmenu -b -l 12 -i"
-bindsym $mod+d exec rofi -show drun -show-icons -theme "solarized" -line-padding 4 -columns 4 -width 100 -padding 50 -location 1 -font "Hack 15"
+bindsym $mod+d exec dmenu_run
 bindsym $mod+p exec passmenu
 bindsym $mod+w exec raiseorlaunch -r -e "termite --class termite_scratchpad --name floating" -c termite_scratchpad
 bindsym $mod+Shift+f exec firefox
