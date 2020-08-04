@@ -1516,3 +1516,7 @@ markdown reference."
 
 (use-package flycheck
   :ensure t)
+
+(use-package persistent-scratch
+  :ensure t
+  :init (persistent-scratch-setup-default))
