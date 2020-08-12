@@ -184,6 +184,54 @@
 (setq custom-file (make-temp-file ""))
 (setq custom-safe-themes t)
 
+(use-package evil-leader
+  :ensure t
+  :init (global-evil-leader-mode)
+  :config
+  (evil-leader/set-leader "<SPC>")
+  (evil-leader/set-key
+	"ap" 'list-packages
+	"ac" 'calc
+	"am" 'mu4e
+	"aw" 'woman
+	"bk" 'kill-buffer
+	"bl" 'ibuffer
+	"bn" 'switch-to-next-buffer
+	"bp" 'switch-to-prev-buffer
+	"bR" 'rename-file-and-buffer
+	"br" 'revert-buffer-no-confirm
+	"b," 'text-scale-increase
+	"b." 'text-scale-decrease
+	"on" 'counsel-open-notes
+	"oo" 'counsel-open-org-files
+	"," 'xref-pop-marker-stack
+	"." 'xref-find-definitions
+	"ff" 'find-file
+	"wh" 'windmove-left
+	"wj" 'windmove-down
+	"wk" 'windmove-up
+	"wl" 'windmove-right
+	"wt" 'transpose-windows
+	"ws" 'toggle-window-split
+	"w1" 'delete-other-windows
+	"w2" (lambda () (interactive) (split-window-vertically) (other-window 1))
+	"w3" (lambda () (interactive) (split-window-horizontally) (other-window 1))
+	"wo" 'other-window
+	"wd" 'delete-window
+	"w=" 'balance-windows
+	"d." (lambda () (interactive) (dired "."))
+	"dh" (lambda () (interactive) (dired "~"))
+	"dd" (lambda () (interactive) (dired "~/downloads/"))
+	"dj" (lambda () (interactive) (dired "/ssh:jump:/"))
+	"dv" (lambda () (interactive) (dired "~/vcs/"))
+	"ds" (lambda () (interactive) (dired "~/shared/"))
+	"df" (lambda () (interactive) (dired "~/shared/fhnw"))
+	"fbh" (lambda () (interactive) (find-file "/etc/nixos/host-configuration.nix"))
+	"fbc" (lambda () (interactive) (find-file "/etc/nixos/configuration.nix"))
+	"fbi" (lambda () (interactive) (find-file "~/.config/i3/config"))
+	"fbe" (lambda () (interactive) (find-file "~/.emacs"))))
+
+
 (use-package xclip
   :ensure t
   :init (xclip-mode 1))
@@ -376,53 +424,6 @@
   "u" 'package-menu-mark-unmark
   "x" 'package-menu-execute
   "q" 'quit-window)
-
-(use-package evil-leader
-  :ensure t
-  :init (global-evil-leader-mode)
-  :config
-  (evil-leader/set-leader "<SPC>")
-  (evil-leader/set-key
-	"ap" 'list-packages
-	"ac" 'calc
-	"am" 'mu4e
-	"aw" 'woman
-	"bk" 'kill-buffer
-	"bl" 'ibuffer
-	"bn" 'switch-to-next-buffer
-	"bp" 'switch-to-prev-buffer
-	"bR" 'rename-file-and-buffer
-	"br" 'revert-buffer-no-confirm
-	"b," 'text-scale-increase
-	"b." 'text-scale-decrease
-	"on" 'counsel-open-notes
-	"oo" 'counsel-open-org-files
-	"," 'xref-pop-marker-stack
-	"." 'xref-find-definitions
-	"ff" 'find-file
-	"wh" 'windmove-left
-	"wj" 'windmove-down
-	"wk" 'windmove-up
-	"wl" 'windmove-right
-	"wt" 'transpose-windows
-	"ws" 'toggle-window-split
-	"w1" 'delete-other-windows
-	"w2" (lambda () (interactive) (split-window-vertically) (other-window 1))
-	"w3" (lambda () (interactive) (split-window-horizontally) (other-window 1))
-	"wo" 'other-window
-	"wd" 'delete-window
-	"w=" 'balance-windows
-	"d." (lambda () (interactive) (dired "."))
-	"dh" (lambda () (interactive) (dired "~"))
-	"dd" (lambda () (interactive) (dired "~/downloads/"))
-	"dj" (lambda () (interactive) (dired "/ssh:jump:/"))
-	"dv" (lambda () (interactive) (dired "~/vcs/"))
-	"ds" (lambda () (interactive) (dired "~/shared/"))
-	"df" (lambda () (interactive) (dired "~/shared/fhnw"))
-	"fbh" (lambda () (interactive) (find-file "/etc/nixos/host-configuration.nix"))
-	"fbc" (lambda () (interactive) (find-file "/etc/nixos/configuration.nix"))
-	"fbi" (lambda () (interactive) (find-file "~/.config/i3/config"))
-	"fbe" (lambda () (interactive) (find-file "~/.emacs"))))
 
 ;; Make a visual selection with v or V, and then hit * to search that
 ;; selection forward, or # to search that selection backward.
