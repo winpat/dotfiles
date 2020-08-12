@@ -7,6 +7,9 @@ case "${1%%:*}" in
 	*.pdf)
 		zathura "$1" &
 		;;
+	*.mkv|*.mp4)
+		mpv "$1" &
+		;;
 	*)
 		exec /run/current-system/sw/bin/xdg-open "$@" &
 		;;
