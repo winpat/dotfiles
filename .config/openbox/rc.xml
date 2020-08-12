@@ -178,7 +178,7 @@ and back in -->
 	<chainQuitKey>C-g</chainQuitKey>
 	<keybind key="W-p">
 	  <action name="Execute">
-		<command>dmenu_pass</command>
+		<command>passmenu</command>
 	  </action>
 	</keybind>
 	<keybind key="W-d">
