@@ -63,8 +63,14 @@
   services.autorandr.enable = true;
 
   # Power savings
-  powerManagement.powertop.enable = true;
+  powerManagement = {
+    enable = true;
+    powertop.enable = true;
+  };
   services.tlp.enable = true;
+
+  # Suspend to RAM by default
+  boot.kernelParams = [ "mem_sleep_default=deep" ];
 
   environment.systemPackages = with pkgs; [
     # i3

@@ -65,6 +65,8 @@ RESET=$(tput sgr0)
 
 PS1="\[${RESET}\]\[${BOLD}\]\w\[${RESET}\]\[${GREEN}\]\$(__git_ps1) \[${RESET}\]"
 
+export PROMPT_COMMAND="history -a; history -n"
+
 # Set terminal title initially to $PWD
 echo -en "\033]0;$(hostname):$(pwd) \a"
 
