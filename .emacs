@@ -184,6 +184,19 @@
 (setq custom-file (make-temp-file ""))
 (setq custom-safe-themes t)
 
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (evil-mode 1)
+  :config
+  (add-to-list 'evil-emacs-state-modes 'inferior-octave-mode)
+  (add-to-list 'evil-emacs-state-modes 'taskwarrior-mode)
+  (add-to-list 'evil-emacs-state-modes 'haskell-interactive-mode)
+  (add-to-list 'evil-emacs-state-modes 'inferior-python-mode)
+  (add-to-list 'evil-emacs-state-modes 'eshell-mode))
+
 (use-package evil-leader
   :ensure t
   :init (global-evil-leader-mode)
@@ -387,19 +400,6 @@
 (use-package lispy
   :ensure t
   :diminish lispy-mode)
-
-(use-package evil
-  :ensure t
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (evil-mode 1)
-  :config
-  (add-to-list 'evil-emacs-state-modes 'inferior-octave-mode)
-  (add-to-list 'evil-emacs-state-modes 'taskwarrior-mode)
-  (add-to-list 'evil-emacs-state-modes 'haskell-interactive-mode)
-  (add-to-list 'evil-emacs-state-modes 'inferior-python-mode)
-  (add-to-list 'evil-emacs-state-modes 'eshell-mode))
 
 ;; Allow to undo/redo window changes
 (winner-mode 1)
