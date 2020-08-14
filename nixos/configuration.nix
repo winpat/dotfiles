@@ -3,11 +3,6 @@
 { config, pkgs, ... }:
 
 
-let
-  # Allow to specify master/unstable packages declaritvely.
-  # https://stackoverflow.com/questions/48831392/how-to-add-nixos-unstable-channel-declaratively-in-configuration-nix
-  unstableTarball = fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
-in
 {
   imports = [
     /etc/nixos/work.nix  # Work sensitive settings which are not published
@@ -29,7 +24,13 @@ in
   # Let me install packages from the unstable channel
   nixpkgs.config = {
     packageOverrides = pkgs: {
-      unstable = import unstableTarball {
+
+      # Allow to specify master/unstable packages declaritvely.
+      # https://stackoverflow.com/questions/48831392/how-to-add-nixos-unstable-channel-declaratively-in-configuration-nix
+      unstable = import (fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz) {
+        config = config.nixpkgs.config;
+      };
+      master = import (fetchTarball https://github.com/NixOS/nixpkgs/archive/master.tar.gz) {
         config = config.nixpkgs.config;
       };
     };
@@ -108,8 +109,7 @@ in
     httpie
 
     # Emacs
-    emacs
-    #emacsGit  # Living on the edge
+    master.emacs  # Give me 27.1
     mu
     isync
     ripgrep
@@ -413,7 +413,8 @@ in
   # Start an emacs user service
   services.emacs = {
     enable = true;
-    package = pkgs.emacs;
+    package = pkgs.master.emacs;
+    defaultEditor = true;
   };
 
   virtualisation = {
