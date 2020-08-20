@@ -210,6 +210,11 @@ and back in -->
 		<command>bash -c "wmctrl -R Emacs || emacsclient -c"</command>
 	  </action>
 	</keybind>
+	<keybind key="W-m">
+	  <action name="Execute">
+		<command>bash -c "wmctrl -R mu4e || emacs -q -T mu4e -l ~/.mail.el"</command>
+	  </action>
+	</keybind>
 	<keybind key="W-f">
 	  <action name="Execute">
 		<command>wmctrl -R firefox</command>
@@ -255,7 +260,7 @@ and back in -->
 	<keybind key="W-l"> <action name="DirectionalTargetWindow"><direction>east</direction></action> </keybind>
 
 	# Switch between desktops
-	<keybind key="W-m"> <action name="GoToDesktop"> <to>next</to> <wrap>no</wrap> </action> </keybind>
+	<!-- <keybind key="W-m"> <action name="GoToDesktop"> <to>next</to> <wrap>no</wrap> </action> </keybind> -->
 	<keybind key="W-n"> <action name="GoToDesktop"> <to>previous</to> <wrap>no</wrap> </action> </keybind>
 
 	<keybind key="S-W-1">

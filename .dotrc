@@ -15,6 +15,7 @@ tron|clu:
  - .gtkrc-2.0
  - .ideavimrc
  - .mbsyncrc
+ - .mail.el
  - .config/dunst
  - .config/zathura
  - .config/termite
