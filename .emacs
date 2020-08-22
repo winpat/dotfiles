@@ -1128,6 +1128,10 @@ markdown reference."
   :diminish git-gutter-mode
   :init (global-git-gutter-mode +1))
 
+(use-package git-link
+  :ensure t
+  :bind (("C-x l" . git-link)))
+
 (use-package racket-mode
   :ensure t
   :mode (("\\.rkt\\'" . racket-mode)))
