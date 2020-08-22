@@ -1,16 +1,16 @@
 # Dotfiles
 
-My dotfiles which I reuse across all my systems.
+Here are my dotfiles which I reuse across all my systems.
 
 * I use [NixOS](https://nixos.org/) as my operating system.
-* I use [i3](https://i3wm.org/) and [openbox](http://openbox.org/wiki/Main_Page) as my window managers.
+* I use [i3](https://i3wm.org/) and [openbox](http://openbox.org/wiki/Main_Page) as my window manager.
 * I pretty much live in [Emacs](https://www.gnu.org/software/emacs/) and [tmux](https://github.com/tmux/tmux).
 
 
 ## Usage
 
-I use my own dotfile manager to symlink my files to the right places (see
-[dotm](https://github.com/winpat/dotm)). See `.dotrc` to get an idea if which
+I use my own dotfile manager to symlink config files to the right places (see
+[dotm](https://github.com/winpat/dotm)). See `.dotrc` to get an idea of what
 files get symlink where.
 
 ```
