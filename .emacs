@@ -688,22 +688,14 @@
   ;; Allow refiling to other files instead of only headings in the current
   (setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
 
-  ;; Custom CSS file for html exports
-  ;; (setq org-html-head (concat "<link rel=\"stylesheet\" type=\"text/css\" href=\""
-  ;; 			      (expand-file-name "~/.emacs.d/org-mode/default.css")
-  ;; 			      "\"/>"))
-
   ;;; Org Keywords
   ;; The "|"  separates the TODO from DONE keywords
-  (setq org-todo-keywords '((sequence "PROJECT(p)" "TODO(t)" "IN-PROGRESS(i)" "WAITING(w)" "REVIEW(r)"
-									  "|" "DONE(d)" "CANCELED(c)"))
-
+  (setq org-todo-keywords
+		'((sequence "TODO(t)" "WAITING(w)" "REVIEW(r)" "|" "DONE(d)" "CANCELED(c)"))
 		org-todo-keyword-faces '(("TODO" . (:foreground "#dc322f" :weight bold))
-								 ("IN-PROGRESS" . (:foreground "#cb4b16" :weight bold))
 								 ("REVIEW" . (:foreground "#b58900" :weight bold))
 								 ("WAITING" . (:foreground "#267bd2" :weight bold))
 								 ("CANCELED" . (:forground "#6c71c4" :weight bold))
-								 ("PROJECT" . (:forground "#657b83" :weight bold))
 								 ("DONE" . (:foreground "#859900" :weight bold))))
 
   ;; Forces you mark all child tasks as “DONE” before you can mark the parent as “DONE.”
@@ -727,20 +719,12 @@
   ;; Allow setting single tags without the menu
   (setq org-fast-tag-selection-single-key (quote expert))
 
-  ;; Show clock sums as hours and minutes, not "n days" etc.
-  (setq org-time-clocksum-format
-		'(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
-
   ;; I prefer lowercase block names
   (setcar (nthcdr 0 org-structure-template-alist) '("s" "#+begin_src ?\n#+end_src" ""))
   (setcar (nthcdr 1 org-structure-template-alist) '("e" "#+begin_example ?\n#+end_example" ""))
 
   (setq org-capture-templates
-		`(("p" "Protocol" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
-		   "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
-		  ("L" "Protocol Link" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
-		   "* %? [[%:link][%:description]] \nCaptured On: %U")
-		  ("l" "log" entry (file+datetree "~/shared/gtd/journal.org")
+		`(("l" "log" entry (file+datetree "~/shared/gtd/journal.org")
 		   "* %T %?\n" :unnarrowed 1)
 		  ("c" "capture" entry (file "~/shared/gtd/inbox.org")
 		   "* TODO %?")
@@ -764,18 +748,7 @@
 
   ;; Custom agenda views for each group of org files
   (setq org-agenda-custom-commands
-		'(("F" "FHNW Agenda" agenda ""
-		   ((org-agenda-files (list (concat org-directory "/school.org")))
-			;; Show if the deadline for tasks is less then 3 days away
-			(org-deadline-warning-days 3)
-			;; Don't show the "FHNW" tag in the view
-			(org-agenda-hide-tags-regexp "FHNW")
-			(org-scheduled-past-days 0)
-			(org-agenda-start-with-log-mode t)
-			(org-agenda-span 22)
-			;; Show last weeks tasks
-			(org-agenda-start-day "-7d")))
-		  ("A" "Adfinis SyGroup Agenda" agenda ""
+		'(("W" "Work Agenda" agenda ""
 		   ((org-agenda-files (list (concat org-directory "/work.org")))
 			;; Show if the deadline for tasks is less then 3 days away
 			(org-deadline-warning-days 3)
@@ -797,19 +770,11 @@
 			(org-agenda-span 22)
 			;; Show last weeks tasks
 			(org-agenda-start-day "-7d")))
-		  ("a" "Adfinis ToDo's" todo ""
+		  ("w" "Work ToDo's" todo ""
 		   ((org-agenda-files (list (concat org-directory "/work.org")))
 			(org-agenda-prefix-format '((todo . " %i")))
 			;; Don't show the "FHNW" tag in the view
 			(org-agenda-hide-tags-regexp "ADFINIS")
-			;; Hide the ugly header of org-todo-list
-			(org-agenda-block-seperator nil)
-			(org-agenda-overriding-header "ToDo's: ")))
-		  ("f" "FHNW ToDo's" todo ""
-		   ((org-agenda-files (list (concat org-directory "/school.org")))
-			(org-agenda-prefix-format '((todo . " %i")))
-			;; Don't show the "FHNW" tag in the view
-			(org-agenda-hide-tags-regexp "FHNW")
 			;; Hide the ugly header of org-todo-list
 			(org-agenda-block-seperator nil)
 			(org-agenda-overriding-header "ToDo's: ")))
