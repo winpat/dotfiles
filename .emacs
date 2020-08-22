@@ -244,6 +244,7 @@
 
 (use-package xclip
   :ensure t
+  :if (locate-file "xclip" exec-path)
   :init (xclip-mode 1))
 
 (use-package helpful
