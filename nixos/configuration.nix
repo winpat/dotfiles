@@ -142,7 +142,6 @@
 
     # Diagrams
     graphviz
-    pencil
     plantuml
 
     # Writing
@@ -249,79 +248,54 @@
     terraform
     vault
     packer
+    consul
     nixops
     doctl
 
-    # Emacs vterm
-    libtool
-    #libvterm  # Let emacs-libvterm clone the right version
-
     # C
     gdb
-    gcc  # Also required to build python C extensions and vterm
+    gcc
     cmake
 
     # Python 3
-    python37
+    python3
 
     # Binaries
-    python37Packages.pytest
-    python37Packages.pytest-mock
-    python37Packages.pytest-isort
-    python37Packages.pytest-flake8
-    python37Packages.pytest-black
+    python3Packages.pytest
+    python3Packages.pytest-mock
+    python3Packages.pytest-isort
+    python3Packages.pytest-flake8
+    python3Packages.pytest-black
 
-    python37Packages.ipython
-    python37Packages.black
-    python37Packages.isort
-    python37Packages.flake8
+    python3Packages.ipython
+    python3Packages.black
+    python3Packages.isort
+    python3Packages.flake8
 
-    python37Packages.python-language-server
-    python37Packages.pyls-black
-    python37Packages.pyls-isort
+    python3Packages.python-language-server
+    python3Packages.pyls-black
+    python3Packages.pyls-isort
 
-    python37Packages.ipython
-    python37Packages.virtualenv
-    python37Packages.virtualenvwrapper
+    python3Packages.ipython
+    python3Packages.virtualenv
+    python3Packages.virtualenvwrapper
 
     # JavaScript
     nodejs
 
-    # Development tooling
-    poedit
-    cookiecutter
-
-    # Communication
-    unstable.mattermost-desktop
-    slack
-    unstable.zoom-us
-    obs-studio
-    mumble
-
     # Development
     gitAndTools.pre-commit
-
-    # Collaboration
-    tigervnc
-    tmate
 
     # Nix awesomeness
     cachix
     nixfmt
 
     # Electronics
-    # esptool
-    # esptool-ck
-    # arduino
-    # adafruit-ampy
-    # picocom
-
-    # FHNW
-    unstable.teams
-    unstable.skype
-    unstable.dotnet-sdk_3
-    vscode
-    omnisharp-roslyn
+    esptool
+    esptool-ck
+    arduino
+    adafruit-ampy
+    picocom
   ];
 
   services.udev.packages = with pkgs; [
