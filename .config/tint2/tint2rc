@@ -11,8 +11,7 @@ task_maximum_size = 90 35
 #-------------------------------------
 # Backgrounds
 # Background 1: Panel
-rounded =
-0
+rounded = 0
 border_width = 0
 border_sides = TBLR
 background_color = #000000 60
