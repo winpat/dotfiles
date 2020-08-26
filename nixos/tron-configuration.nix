@@ -49,6 +49,8 @@
 
   services.xserver = {
     dpi = 140;
+
+    windowManager.openbox.enable = true;
     windowManager.i3.enable = true;
     libinput = {
       enable = true;
@@ -81,5 +83,11 @@
     perl
     acpi  # battery
     i3blocks
+
+    # openbox
+    tint2
+    obconf
+    tint2
+    gsimplecal
   ];
 }

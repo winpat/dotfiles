@@ -24,6 +24,8 @@ tron|clu:
 tron:
  - .config/i3
  - .config/i3blocks
+ - .config/openbox
+ - .config/tint2
  - nixos/tron-configuration.nix -> /etc/nixos/host-configuration.nix
 
 clu:
