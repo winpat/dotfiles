@@ -7,3 +7,4 @@ udiskie &
 #xplanet -latitude 47.519141 -longitude 8.017082 -wait 60 -fork &
 feh --bg-scale /home/patrick/.wallpapers/GreenMountainLake.jpg
 tint2 &
+cbatticon

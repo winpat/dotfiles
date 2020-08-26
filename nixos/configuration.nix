@@ -139,6 +139,7 @@
     udiskie
     gparted
     acpi
+    cbatticon
 
     # Diagrams
     graphviz
