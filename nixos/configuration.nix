@@ -321,7 +321,7 @@
     isNormalUser = true;
     home = "/home/patrick";
     description = "Patrick Winter";
-    extraGroups = ["wheel" "networkmanager" "docker" "libvirtd" "systemd-journal"];
+    extraGroups = ["wheel" "networkmanager" "docker" "libvirtd" "systemd-journal" "dialout"];
   };
 
   # Use a dedicated user for pair programming
