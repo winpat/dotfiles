@@ -265,37 +265,44 @@
 ;;   - gruber-darker-theme
 ;;   - arc-dark-theme
 ;;   - color-theme-sanityinc-tomorrow
-(use-package solarized-theme
+;; (use-package solarized-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'solarized-dark t)
+;;   :init
+;;   ;; Make the fringe stand out from the background
+;;   (setq solarized-distinct-fringe-background t)
+;;   ;; Don't change the font for some headings and titles
+;;   (setq solarized-use-variable-pitch nil)
+;;   ;; Make the modeline high contrast
+;;   (setq solarized-high-contrast-mode-line t)
+;;   ;; Use less bolding
+;;   (setq solarized-use-less-bold t)
+;;   ;; Use more italics
+;;   (setq solarized-use-more-italic t)
+;;   ;; Use less colors for indicators such as git:gutter, flycheck and similar
+;;   (setq solarized-emphasize-indicators nil)
+;;   ;; Don't change size of org-mode headlines (but keep other size-changes)
+;;   (setq solarized-scale-org-headlines nil)
+;;   ;; Avoid all font-size changes
+;;   (setq solarized-height-minus-1 1.0
+;; 		solarized-height-plus-1  1.0
+;; 		solarized-height-plus-2  1.0
+;; 		solarized-height-plus-3  1.0
+;; 		solarized-height-plus-4  1.0)
+;;   (custom-set-faces
+;;    '(magit-diff-hunk-heading ((t (:background "#073642" :foreground "#93a1a1"))))
+;;    ;; Normally hunk headings are dark blue... which is barely readable
+;;    '(ein:cell-input-area ((t (:background "#073642"))))
+;;    ;; Who had the idea that the path of the directory should have a bright blue background?
+;;    '(dired-header ((t (:background "#002b36" :foreground "#268bd2"))))))
+
+
+(use-package modus-operandi-theme
   :ensure t
   :config
-  (load-theme 'solarized-dark t)
-  :init
-  ;; Make the fringe stand out from the background
-  (setq solarized-distinct-fringe-background t)
-  ;; Don't change the font for some headings and titles
-  (setq solarized-use-variable-pitch nil)
-  ;; Make the modeline high contrast
-  (setq solarized-high-contrast-mode-line t)
-  ;; Use less bolding
-  (setq solarized-use-less-bold t)
-  ;; Use more italics
-  (setq solarized-use-more-italic t)
-  ;; Use less colors for indicators such as git:gutter, flycheck and similar
-  (setq solarized-emphasize-indicators nil)
-  ;; Don't change size of org-mode headlines (but keep other size-changes)
-  (setq solarized-scale-org-headlines nil)
-  ;; Avoid all font-size changes
-  (setq solarized-height-minus-1 1.0
-		solarized-height-plus-1  1.0
-		solarized-height-plus-2  1.0
-		solarized-height-plus-3  1.0
-		solarized-height-plus-4  1.0)
-  (custom-set-faces
-   '(magit-diff-hunk-heading ((t (:background "#073642" :foreground "#93a1a1"))))
-   ;; Normally hunk headings are dark blue... which is barely readable
-   '(ein:cell-input-area ((t (:background "#073642"))))
-   ;; Who had the idea that the path of the directory should have a bright blue background?
-   '(dired-header ((t (:background "#002b36" :foreground "#268bd2"))))))
+  (load-theme 'modus-operandi t))
+
 
 (use-package key-chord
   :ensure t
