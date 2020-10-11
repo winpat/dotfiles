@@ -29,6 +29,9 @@ insteadOf = gh:
 [url "git@git.winpat.ch:"]
 insteadOf = g:
 
+[url "git@gitlab.com:"]
+insteadOf = gl:
+
 [diff]
 tool = vimdiff
 
