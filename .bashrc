@@ -131,3 +131,17 @@ eval "$(direnv hook bash)"
 alias j='fasd_cd -d'
 eval "$(fasd --init auto)"
 
+# Typing a directory name just by itself will automatically change
+# into that directory.
+shopt -s autocd
+
+# Automatically fix directory name typos when changing directory.
+shopt -s cdspell
+
+# Automatically expand directory globs and fix directory name typos whilst
+# completing. Note, this works in conjuction with the cdspell option listed
+# above.
+shopt -s direxpand dirspell
+
+# Enable the ** globstar recursive pattern in file and directory expansions.
+shopt -s globstar
