@@ -80,11 +80,13 @@ alias grep='grep --color=auto'
 
 # Aliases
 alias e='emacsclient -nw'
+alias da='direnv allow'
 alias mg="emacsclient -nw -e '(progn (magit-status) (delete-other-windows))'"
 alias ediff='emacsclient -c -a emacs -q --eval "(ediff-files \"$1\" \"$2\")";'
 alias er='systemctl --user restart emacs'
 alias g='git'
 alias t='tmux'
+alias m='make'
 alias dc="docker-compose"
 alias o='xdg-open'
 alias b="firefox"
