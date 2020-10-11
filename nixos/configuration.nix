@@ -56,7 +56,7 @@
   # List of font packages that are exposed to applications
   fonts = {
     enableDefaultFonts = true;
-	    fonts = with pkgs; [ hack-font font-awesome ];
+    fonts = with pkgs; [ hack-font font-awesome ];
   };
 
   # Required so libreoffice finds the hunspell dicts
@@ -69,10 +69,10 @@
   environment.systemPackages = with pkgs; [
 
     # Base
-    tmux
-    file
-    git
     vim
+    tmux
+    git
+    file
     gnumake
     manpages
     jq
@@ -128,7 +128,6 @@
     udiskie
     gparted
     acpi
-    cbatticon
 
     # i3
     i3-layout-manager
@@ -145,8 +144,9 @@
     plantuml
 
     # Writing
-    texlive.combined.scheme-full
+    #texlive.combined.scheme-full
     libreoffice
+    visidata
     pandoc
     haskellPackages.pandoc-citeproc
     pdftk
@@ -158,7 +158,6 @@
 
     # For when I am traveling
     mosh
-    rdesktop
 
     # Misc Desktop Applications
     dmidecode
@@ -183,7 +182,7 @@
 
     # Chat
     weechat
-    discord
+    unstable.discord
 
     # Databases
     pgcli
@@ -199,7 +198,6 @@
     # Network
     networkmanager
     networkmanager-openvpn
-    networkmanager-openconnect
     openvpn
     wireguard
 
@@ -284,7 +282,9 @@
     nodejs
 
     # Development
-    gitAndTools.pre-commit
+    pre-commit
+    cookiecutter
+    mr
 
     # Nix awesomeness
     cachix
@@ -296,6 +296,16 @@
     arduino
     adafruit-ampy
     picocom
+
+    # Comm
+    slack
+    bitwarden
+    unstable.zoom-us
+
+    # GCP
+    google-cloud-sdk
+    kubectx
+    kubectl
   ];
 
   services.udev.packages = with pkgs; [
