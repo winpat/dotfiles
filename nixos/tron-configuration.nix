@@ -49,9 +49,6 @@
 
   services.xserver = {
     dpi = 140;
-
-    windowManager.openbox.enable = true;
-    windowManager.i3.enable = true;
     libinput = {
       enable = true;
       naturalScrolling = false;
@@ -73,21 +70,4 @@
 
   # Suspend to RAM by default
   boot.kernelParams = [ "mem_sleep_default=deep" ];
-
-  environment.systemPackages = with pkgs; [
-    # i3
-    i3-layout-manager
-    python37Packages.i3ipc
-
-    # i3 Blocklets
-    perl
-    acpi  # battery
-    i3blocks
-
-    # openbox
-    tint2
-    obconf
-    tint2
-    gsimplecal
-  ];
 }

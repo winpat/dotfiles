@@ -141,6 +141,16 @@
     acpi
     cbatticon
 
+    # i3
+    i3-layout-manager
+    python37Packages.i3ipc
+    perl
+    i3blocks
+
+    # openbox
+    tint2
+    obconf
+
     # Diagrams
     graphviz
     plantuml
@@ -404,6 +414,9 @@
     enable = true;
     layout = "ch";
     displayManager.lightdm.enable = true;
+    windowManager.i3.enable = true;
+    windowManager.openbox.enable = true;
+    windowManager.cwm.enable = true;
 
     # Lock the screen after 60 seconds of inactivity
     xautolock = {

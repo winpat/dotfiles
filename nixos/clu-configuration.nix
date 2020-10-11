@@ -20,8 +20,8 @@
 
   services.xserver = {
     dpi = 110;
-    windowManager.openbox.enable = true;
   };
+
   # Use proprietary graphic card driver for CUDA
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia.optimus_prime.nvidiaBusId = "PCI:11:0:0";
@@ -35,11 +35,5 @@
   environment.systemPackages = with pkgs; [
     # Machine Learning
     cudatoolkit
-
-    # openbox
-    tint2
-    obconf
-    tint2
-    gsimplecal
   ];
 }
