@@ -29,11 +29,11 @@
 ;; Allow to resize emacs to exactly 50% on openbox
 (setq frame-resize-pixelwise t)
 
-;; TODO One of the following settings messes with prettified taskaper-mode symbols.
+;; NOTE One of the following settings messes with prettified taskaper-mode symbols.
 ;; Use unicode
-;; (set-language-environment "UTF-8")
-;; (set-default-coding-systems 'utf-8)
-;; (define-coding-system-alias 'UTF-8 'utf-8)
+(set-language-environment "UTF-8")
+(set-default-coding-systems 'utf-8)
+(define-coding-system-alias 'UTF-8 'utf-8)
 
 (setq user-full-name "Patrick Winter"
 	  user-mail-address "patrickwinter@posteo.ch")
@@ -107,11 +107,11 @@
 (cond ((eq system-type 'darwin)
 	   ;; On macOS use the browser specified in the system settings
 	   (setq browse-url-browser-function 'browse-url-default-macosx-browser
-			 browse-url-generic-program 'chrome))
+			 browse-url-generic-program 'firefox))
 	  ((eq system-type 'windows-nt)
 	   ;; On Windows use the browser specified in the system settings
 	   (setq browse-url-browser-function 'browse-url-default-windows-browser
-			 browse-url-generic-program 'chrome))
+			 browse-url-generic-program 'firefox))
 	  ;; On other platforms (BSD, Linux, ...) use firefox...
 	  ((setq browse-url-browser-function 'browse-url-firefox
 			 browse-url-generic-program 'firefox)))
@@ -212,8 +212,7 @@
 	"br" 'revert-buffer-no-confirm
 	"b," 'text-scale-increase
 	"b." 'text-scale-decrease
-	"on" 'counsel-open-notes
-	"oo" 'counsel-open-org-files
+	"o" 'counsel-open-notes
 	"," 'xref-pop-marker-stack
 	"." 'xref-find-definitions
 	"ff" 'find-file
@@ -261,47 +260,43 @@
   (diminish 'git-gutter-mode)
   :ensure t)
 
+
 ;; There are may cool themes out there:
 ;;   - gruber-darker-theme
 ;;   - arc-dark-theme
 ;;   - color-theme-sanityinc-tomorrow
-;; (use-package solarized-theme
-;;   :ensure t
-;;   :config
-;;   (load-theme 'solarized-dark t)
-;;   :init
-;;   ;; Make the fringe stand out from the background
-;;   (setq solarized-distinct-fringe-background t)
-;;   ;; Don't change the font for some headings and titles
-;;   (setq solarized-use-variable-pitch nil)
-;;   ;; Make the modeline high contrast
-;;   (setq solarized-high-contrast-mode-line t)
-;;   ;; Use less bolding
-;;   (setq solarized-use-less-bold t)
-;;   ;; Use more italics
-;;   (setq solarized-use-more-italic t)
-;;   ;; Use less colors for indicators such as git:gutter, flycheck and similar
-;;   (setq solarized-emphasize-indicators nil)
-;;   ;; Don't change size of org-mode headlines (but keep other size-changes)
-;;   (setq solarized-scale-org-headlines nil)
-;;   ;; Avoid all font-size changes
-;;   (setq solarized-height-minus-1 1.0
-;; 		solarized-height-plus-1  1.0
-;; 		solarized-height-plus-2  1.0
-;; 		solarized-height-plus-3  1.0
-;; 		solarized-height-plus-4  1.0)
-;;   (custom-set-faces
-;;    '(magit-diff-hunk-heading ((t (:background "#073642" :foreground "#93a1a1"))))
-;;    ;; Normally hunk headings are dark blue... which is barely readable
-;;    '(ein:cell-input-area ((t (:background "#073642"))))
-;;    ;; Who had the idea that the path of the directory should have a bright blue background?
-;;    '(dired-header ((t (:background "#002b36" :foreground "#268bd2"))))))
-
-
-(use-package modus-operandi-theme
+;;   - modus-operandi-theme
+(use-package solarized-theme
   :ensure t
   :config
-  (load-theme 'modus-operandi t))
+  (load-theme 'solarized-dark t)
+  :init
+  ;; Make the fringe stand out from the background
+  (setq solarized-distinct-fringe-background t)
+  ;; Don't change the font for some headings and titles
+  (setq solarized-use-variable-pitch nil)
+  ;; Make the modeline high contrast
+  (setq solarized-high-contrast-mode-line t)
+  ;; Use less bolding
+  (setq solarized-use-less-bold t)
+  ;; Use more italics
+  (setq solarized-use-more-italic t)
+  ;; Use less colors for indicators such as git:gutter, flycheck and similar
+  (setq solarized-emphasize-indicators nil)
+  ;; Don't change size of org-mode headlines (but keep other size-changes)
+  (setq solarized-scale-org-headlines nil)
+  ;; Avoid all font-size changes
+  (setq solarized-height-minus-1 1.0
+		solarized-height-plus-1  1.0
+		solarized-height-plus-2  1.0
+		solarized-height-plus-3  1.0
+		solarized-height-plus-4  1.0)
+  (custom-set-faces
+   '(magit-diff-hunk-heading ((t (:background "#073642" :foreground "#93a1a1"))))
+   ;; Normally hunk headings are dark blue... which is barely readable
+   '(ein:cell-input-area ((t (:background "#073642"))))
+   ;; Who had the idea that the path of the directory should have a bright blue background?
+   '(dired-header ((t (:background "#002b36" :foreground "#268bd2"))))))
 
 
 (use-package key-chord
@@ -316,10 +311,6 @@
 (defun counsel-open-notes ()
   (interactive)
   (counsel-find-file notes-directory))
-
-(defun counsel-open-org-files ()
-  (interactive)
-  (counsel-find-file org-directory))
 
 ;; Taken from http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
 (defun rename-file-and-buffer ()
@@ -382,21 +373,6 @@
 	(interactive)
 	(kill-new (buffer-file-name)))
 
-(use-package eyebrowse
-  :ensure t
-  :after (evil)
-  :diminish eyebrowse-mode
-  :init
-  (eyebrowse-setup-evil-keys)
-  :config
-  (progn
-	(define-key eyebrowse-mode-map (kbd "M-1") 'eyebrowse-switch-to-window-config-1)
-	(define-key eyebrowse-mode-map (kbd "M-2") 'eyebrowse-switch-to-window-config-2)
-	(define-key eyebrowse-mode-map (kbd "M-3") 'eyebrowse-switch-to-window-config-3)
-	(define-key eyebrowse-mode-map (kbd "M-4") 'eyebrowse-switch-to-window-config-4)
-	(eyebrowse-mode t)
-	(setq eyebrowse-new-workspace t)))
-
 
 (use-package undo-tree
   :ensure
@@ -414,7 +390,7 @@
 
 ;; Add evil bindings for emacs-lisp-mode
 (evil-leader/set-key-for-mode
-  'emacs-lisp-mode-map
+  'emacs-lisp-mode
   "mt" 'ert
   "mr" 'eval-region
   "mb" 'eval-buffer
@@ -544,9 +520,6 @@
 (use-package flycheck-package
   :ensure t)
 
-(use-package font-lock-studio
-  :ensure t)
-
 (use-package esup
   :ensure t
   :commands esup)
@@ -668,6 +641,8 @@
   (defface org-level-6 '((t (:inherit default :foreground "#000000"))) "")
   (defface org-level-7 '((t (:inherit default :foreground "#000000"))) "")
   (defface org-level-8 '((t (:inherit default :foreground "#000000"))) "")
+
+  (setq org-log-done 'note)
 
   ;; Make org-block look nice (inspired by markdown-mode)
   (defface org-block-begin-line
@@ -826,7 +801,7 @@
    "oa"  'org-agenda
    "oc"  'org-capture)
 
-  (evil-leader/set-key-for-mode 'org-mode-map
+  (evil-leader/set-key-for-mode 'org-mode
 	"mo" 'org-open-at-point
 	"mp" 'org-priority
 	"md" 'org-deadline
@@ -844,8 +819,8 @@
 		org-ref-default-bibliography '("~/references.bib")
 		org-ref-pdf-directory "~/bibtex-pdfs/")
 
-  ;; Make sure that org-latex-pdf-process is set to process the bibliography (using bibtex or
-  ;; biblatex)
+  ;; Make sure that org-latex-pdf-process is set to process the bibliography
+  ;; (using bibtex or biblatex)
   (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f")))
 
 (use-package org-tree-slide
@@ -853,7 +828,7 @@
   :config
   (org-tree-slide-simple-profile)
   (evil-leader/set-key-for-mode
-   'org-tree-slide-mode-map
+   'org-tree-slide-mode
    "mp" 'org-tree-slide-move-previous-tree
    "mn" 'org-tree-slide-move-next-tree))
 
@@ -968,13 +943,13 @@ PWD is not in a git repo (or the git command is not found)."
 	  (move-end-of-line)))
 
   (evil-leader/set-key-for-mode
-   'eshell-mode-map
+   'eshell-mode
    "C-l" 'eshell-clear-buffer))
 
 (use-package smerge-mode
   :config
   (evil-leader/set-key-for-mode
-   'smerge-mode-map
+   'smerge-mode
    "mn" 'smerge-next
    "mp" 'smerge-prev
    "ml" 'smerge-keep-lower
@@ -1044,7 +1019,7 @@ markdown reference."
   (setq markdown-command "pandoc -c file:///home/patrick/vcs/dotfiles/stylesheets/github-pandoc.css --from gfm -t html5 --mathjax --highlight-style pygments --standalone")
 
   (evil-leader/set-key-for-mode
-   'markdown-mode-map
+   'markdown-mode
    "mi" 'markdown-toggle-inline-images
    "ms" 'markdown-insert-screenshot))
 
@@ -1064,6 +1039,10 @@ markdown reference."
   (setq magit-diff-refine-hunk t
 		magit-repository-directories '(("~/vcs/" . 2)))
   (setenv "GIT_ASKPASS" "git-gui--askpass")
+
+  (magit-define-popup-switch 'magit-push-popup
+	?t "Follow tags" "--follow-tags")
+
   (evil-leader/set-key
    "e"  'magit-dispatch
    "g"   'magit-status))
@@ -1137,21 +1116,11 @@ markdown reference."
   (add-hook 'cider-repl-mode-hook #'eldoc-mode)
   (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode))
 
-(use-package pyvenv
-  :ensure t
-  :config
-  (pyvenv-mode t)
-  (pyvenv-tracking-mode t)
-  (evil-leader/set-key-for-mode
-   'python-mode-map
-   "ma" 'pvyenv-activate
-   "md" 'pvyenv-deactivate))
-
 (use-package python-pytest
   :ensure t
   :config
   (evil-leader/set-key-for-mode
-   'python-mode-map
+   'python-mode
    "mt" 'python-pytest-popup))
 
 (use-package python
@@ -1186,35 +1155,11 @@ markdown reference."
 		web-mode-enable-auto-indentation nil
 		web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))))
 
-(use-package geben
-  :ensure t
-  :config
-  (setq geben-path-mappings
-		'(("/var/www/camac" "/home/patrick/vcs/camac-ng/php"))))
-
 (use-package auth-source-pass
   :ensure t
   :init (auth-source-pass-enable)
   :config
   (setenv "PASSWORD_STORE_DIR" "/home/patrick/vcs/passwords"))
-
-(use-package php-mode
-  :ensure t
-  :init
-  (add-hook 'php-mode-hook 'php-enable-wordpress-coding-style)
-  :mode (("\\.php\\'" . php-mode))
-  :config
-  (evil-leader/set-key-for-mode
-   'php-mode-map
-   "mdg" 'geben
-   "mdq" 'geben-end
-   "mds" 'geben-stop
-   "mdi" 'geben-step-into
-   "mdo" 'geben-step-over
-   "mdr" 'geben-step-out
-   "mdc" 'geben-run-to-cursor
-   "mde" 'geben-eval-expression
-   "mdd" 'geben-display-context))
 
 (use-package haskell-mode
   :ensure t
@@ -1370,3 +1315,7 @@ markdown reference."
 (use-package persistent-scratch
   :ensure t
   :init (persistent-scratch-setup-default))
+
+
+(use-package restclient
+  :ensure t)
