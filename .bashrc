@@ -131,6 +131,3 @@ eval "$(direnv hook bash)"
 alias j='fasd_cd -d'
 eval "$(fasd --init auto)"
 
-# export DOTNET_ROOT=/home/patrick/.nix-profile
-# export MSBuildSDKsPath=$DOTNET_ROOT/sdk/$(${DOTNET_ROOT}/dotnet --version)/Sdks
-# export PATH=${PATH}:${DOTNET_ROOT}
