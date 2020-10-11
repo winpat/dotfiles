@@ -12,3 +12,20 @@ set output-meta on
 "\C-w": kill-region
 "\M-w": copy-region-as-kill
 "\M-/" dabbrev-expand
+
+# Use cycleable menu for completion
+set menu-complete-display-prefix on
+set show-all-if-ambiguous on
+set colored-stats on
+set colored-completion-prefix on
+set completion-ignore-case on
+TAB: menu-complete
+"\e[Z": menu-complete-backward
+
+# Filter history entries by what has already been entered.
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# Disable beeps and do not display control characters.
+set bell-style none
+set echo-control-characters off
