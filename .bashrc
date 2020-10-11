@@ -23,16 +23,19 @@ export TERM="xterm-24bit"
 alias ssh="TERM=xterm-256color ssh"
 
 # Ignore commands that start with a whitespace.
-export HISTCONTROL='ignorespace'
+export HISTCONTROL='ignorespace:erasedups'
 
 # Store timestamps of commands .bash_history
 export HISTTIMEFORMAT='%Y-%m-%d %T '
 
-# Ignore certain commands
-export HISTIGNORE='bg:fg:ls:history'
+# Ignore with less then 3 characters
+export HISTIGNORE='?:??:history'
 
 # Append to .bash_history instead of overwritting it
 shopt -s histappend
+
+# Don't autoexecute history expansion (e.g. !!), show them for review.
+shopt -s histverify
 
 # Combine multiline commands into one in history
 shopt -s cmdhist
