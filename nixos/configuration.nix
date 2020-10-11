@@ -375,14 +375,6 @@
     in ["${automount_opts},username=guest,password"];
   };
 
-  fileSystems."/net/fhnw" = {
-    device = "//fsemu18.edu.ds.fhnw.ch/e_18_data11$";
-    fsType = "cifs";
-    options = let
-      automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
-    in ["${automount_opts},credentials=/home/patrick/.smb/fhnw.txt,vers=2.0"];
-  };
-
   # Enable smart card reader
   services.pcscd.enable = true;
 
