@@ -445,13 +445,12 @@
       pkgs.hplip
       pkgs.hplipWithPlugin
     ];
-
   };
 
   # Required to run steam:
   # https://github.com/NixOS/nixpkgs/issues/47932
-  hardware.opengl.driSupport32Bit = true;
-  hardware.pulseaudio.support32Bit = true;
+  #hardware.opengl.driSupport32Bit = true;
+  #hardware.pulseaudio.support32Bit = true;
 
   # NixOS allows either a lightweight build (default) or full that includes
   # bluetooth support.
