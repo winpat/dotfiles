@@ -10,17 +10,6 @@
     /etc/nixos/hardware-configuration.nix
   ];
 
-  # tmp
-  networking.hosts = {
-    "127.0.0.1" = [
-        "ebau-t.so.ch"
-        "camac-ng.local" "camac-ng-portal.local" "camac-ng-keycloak.local" "camac-ng-iweb-mock.local"
-        "camac-be.local" "camac-be-keycloak.local"
-        "caluma-portal.local"
-        "e-learning.local" "chat.e-learning.local" "cloud.e-learning.local"
-    ];
-  };
-
   # Let me install packages from the unstable channel
   nixpkgs.config = {
     packageOverrides = pkgs: {
