@@ -473,7 +473,8 @@
   (evil-leader/set-key
 	"pp"  'counsel-projectile-switch-project
 	"pd"  'counsel-projectile-dired-find-dir
-	"pg"  'counsel-projectile-grep
+	"pg"  'counsel-projectile-rg
+	"pG"  'counsel-projectile-grep
 	"po"  'counsel-projectile-find-other-file
 	"pf"  'counsel-projectile-find-file
 	"fp"  'counsel-projectile-find-file
@@ -1040,9 +1041,6 @@ markdown reference."
 		magit-repository-directories '(("~/vcs/" . 2)))
   (setenv "GIT_ASKPASS" "git-gui--askpass")
 
-  (magit-define-popup-switch 'magit-push-popup
-	?t "Follow tags" "--follow-tags")
-
   (evil-leader/set-key
    "e"  'magit-dispatch
    "g"   'magit-status))
@@ -1234,7 +1232,11 @@ markdown reference."
   ;; Use `projectile-discover-projects-in-directory` to scan for projects
   (setq projectile-enable-caching t)
 
-  (setq projectile-switch-project-action #'magit-status))
+  (setq projectile-switch-project-action #'magit-status)
+  (evil-leader/set-key
+	"pk"  'projectile-kill-buffers
+	"pr"  'projectile-replace
+	"pR"  'projectile-replace-regexp))
 
 (use-package counsel
   :after (ivy)
@@ -1247,6 +1249,7 @@ markdown reference."
 		 "\\|\\(?:\\`.+?[#~]\\'\\)"))
   (evil-leader/set-key
 	"SPC" 'counsel-M-x
+	"y"   'counsel-yank-pop
 	"ff"  'counsel-find-file
 	"fr"  'counsel-recentf
 	"fL"  'counsel-locate))
