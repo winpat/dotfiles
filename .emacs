@@ -620,233 +620,233 @@
   (evil-define-key 'normal dired-mode-map "o" 'dired-start-process))
 
 
-(use-package org
-  :config
-  (defun org-remove-link ()
-	"Replace an org link by its description or if empty its address"
-	(interactive)
-	(if (org-in-regexp org-bracket-link-regexp 1)
-		(let ((remove (list (match-beginning 0) (match-end 0)))
-			  (description (if (match-end 3)
-							   (org-match-string-no-properties 3)
-							 (org-match-string-no-properties 1))))
-		  (apply 'delete-region remove)
-		  (insert description))))
+;; (use-package org
+;;   :config
+;;   (defun org-remove-link ()
+;; 	"Replace an org link by its description or if empty its address"
+;; 	(interactive)
+;; 	(if (org-in-regexp org-bracket-link-regexp 1)
+;; 		(let ((remove (list (match-beginning 0) (match-end 0)))
+;; 			  (description (if (match-end 3)
+;; 							   (org-match-string-no-properties 3)
+;; 							 (org-match-string-no-properties 1))))
+;; 		  (apply 'delete-region remove)
+;; 		  (insert description))))
 
-  ;; Inspired by VSCode's Todo+ plugin
-  (defface org-level-1 '((t (:inherit default :foreground "#66d9ef"))) "")
-  (defface org-level-2 '((t (:inherit default :foreground "#dddddd"))) "")
-  (defface org-level-3 '((t (:inherit default :foreground "#000000"))) "")
-  (defface org-level-4 '((t (:inherit default :foreground "#000000"))) "")
-  (defface org-level-5 '((t (:inherit default :foreground "#000000"))) "")
-  (defface org-level-6 '((t (:inherit default :foreground "#000000"))) "")
-  (defface org-level-7 '((t (:inherit default :foreground "#000000"))) "")
-  (defface org-level-8 '((t (:inherit default :foreground "#000000"))) "")
+;;   ;; Inspired by VSCode's Todo+ plugin
+;;   (defface org-level-1 '((t (:inherit default :foreground "#66d9ef"))) "")
+;;   (defface org-level-2 '((t (:inherit default :foreground "#dddddd"))) "")
+;;   (defface org-level-3 '((t (:inherit default :foreground "#000000"))) "")
+;;   (defface org-level-4 '((t (:inherit default :foreground "#000000"))) "")
+;;   (defface org-level-5 '((t (:inherit default :foreground "#000000"))) "")
+;;   (defface org-level-6 '((t (:inherit default :foreground "#000000"))) "")
+;;   (defface org-level-7 '((t (:inherit default :foreground "#000000"))) "")
+;;   (defface org-level-8 '((t (:inherit default :foreground "#000000"))) "")
 
-  (setq org-log-done 'note)
+;;   (setq org-log-done 'note)
 
-  ;; Make org-block look nice (inspired by markdown-mode)
-  (defface org-block-begin-line
-	'((t (:background "#EEE8D5")))
-	"Face used for the line delimiting the begin of source blocks.")
-  (defface org-block
-	'((t (:background "#EEE8D5")))
-	"Face used for the source block background.")
-  (defface org-block-background
-	'((t (:background "#EEE8D5")))
-	"Face used for the source block background.")
-  (defface org-block-end-line
-	'((t (:background "#EEE8D5")))
-	"Face used for the line delimiting the end of source blocks.")
+;;   ;; Make org-block look nice (inspired by markdown-mode)
+;;   (defface org-block-begin-line
+;; 	'((t (:background "#EEE8D5")))
+;; 	"Face used for the line delimiting the begin of source blocks.")
+;;   (defface org-block
+;; 	'((t (:background "#EEE8D5")))
+;; 	"Face used for the source block background.")
+;;   (defface org-block-background
+;; 	'((t (:background "#EEE8D5")))
+;; 	"Face used for the source block background.")
+;;   (defface org-block-end-line
+;; 	'((t (:background "#EEE8D5")))
+;; 	"Face used for the line delimiting the end of source blocks.")
 
-  ;; Highlight syntax in code blocks
-  (setq org-src-fontify-natively t)
+;;   ;; Highlight syntax in code blocks
+;;   (setq org-src-fontify-natively t)
 
-  ;; Also open `.org_archive` files using org-mode
-  (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
+;;   ;; Also open `.org_archive` files using org-mode
+;;   (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
 
-  ;; Allow to adjust inline image size
-  (setq org-image-actual-width nil)
+;;   ;; Allow to adjust inline image size
+;;   (setq org-image-actual-width nil)
 
-  ;; Allow refiling to other files instead of only headings in the current
-  (setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
+;;   ;; Allow refiling to other files instead of only headings in the current
+;;   (setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
 
-  ;;; Org Keywords
-  ;; The "|"  separates the TODO from DONE keywords
-  (setq org-todo-keywords
-		'((sequence "TODO(t)" "WAITING(w)" "REVIEW(r)" "|" "DONE(d)" "CANCELED(c)"))
-		org-todo-keyword-faces '(("TODO" . (:foreground "#dc322f" :weight bold))
-								 ("REVIEW" . (:foreground "#b58900" :weight bold))
-								 ("WAITING" . (:foreground "#267bd2" :weight bold))
-								 ("CANCELED" . (:forground "#6c71c4" :weight bold))
-								 ("DONE" . (:foreground "#859900" :weight bold))))
+;;   ;;; Org Keywords
+;;   ;; The "|"  separates the TODO from DONE keywords
+;;   (setq org-todo-keywords
+;; 		'((sequence "TODO(t)" "WAITING(w)" "REVIEW(r)" "|" "DONE(d)" "CANCELED(c)"))
+;; 		org-todo-keyword-faces '(("TODO" . (:foreground "#dc322f" :weight bold))
+;; 								 ("REVIEW" . (:foreground "#b58900" :weight bold))
+;; 								 ("WAITING" . (:foreground "#267bd2" :weight bold))
+;; 								 ("CANCELED" . (:forground "#6c71c4" :weight bold))
+;; 								 ("DONE" . (:foreground "#859900" :weight bold))))
 
-  ;; Forces you mark all child tasks as “DONE” before you can mark the parent as “DONE.”
-  (setq org-enforce-todo-dependencies t)
+;;   ;; Forces you mark all child tasks as “DONE” before you can mark the parent as “DONE.”
+;;   (setq org-enforce-todo-dependencies t)
 
-  ;; Set maximum indentation for description lists
-  (setq org-list-description-max-indent 5)
+;;   ;; Set maximum indentation for description lists
+;;   (setq org-list-description-max-indent 5)
 
-  ;; Turn "***" into "  *"
-  (setq org-startup-indented t)
+;;   ;; Turn "***" into "  *"
+;;   (setq org-startup-indented t)
 
-  ;; Prevent that demoting a heading also shifts text inside the section
-  (setq org-adapt-indentation nil)
+;;   ;; Prevent that demoting a heading also shifts text inside the section
+;;   (setq org-adapt-indentation nil)
 
-  ;; Use a selection of keywords to choose from states, instead of spamming C-c C-t
-  (setq org-use-fast-todo-selection t)
+;;   ;; Use a selection of keywords to choose from states, instead of spamming C-c C-t
+;;   (setq org-use-fast-todo-selection t)
 
-  ;; Only the first empty line belongs to the last headline
-  (setq org-cycle-separator-lines 2)
+;;   ;; Only the first empty line belongs to the last headline
+;;   (setq org-cycle-separator-lines 2)
 
-  ;; Allow setting single tags without the menu
-  (setq org-fast-tag-selection-single-key (quote expert))
+;;   ;; Allow setting single tags without the menu
+;;   (setq org-fast-tag-selection-single-key (quote expert))
 
-  ;; I prefer lowercase block names
-  (setcar (nthcdr 0 org-structure-template-alist) '("s" "#+begin_src ?\n#+end_src" ""))
-  (setcar (nthcdr 1 org-structure-template-alist) '("e" "#+begin_example ?\n#+end_example" ""))
+;;   ;; I prefer lowercase block names
+;;   (setcar (nthcdr 0 org-structure-template-alist) '("s" "#+begin_src ?\n#+end_src" ""))
+;;   (setcar (nthcdr 1 org-structure-template-alist) '("e" "#+begin_example ?\n#+end_example" ""))
 
-  (setq org-capture-templates
-		`(("l" "log" entry (file+datetree "~/shared/gtd/journal.org")
-		   "* %T %?\n" :unnarrowed 1)
-		  ("c" "capture" entry (file "~/shared/gtd/inbox.org")
-		   "* TODO %?")
-		  ("a" "capture with annotation" entry (file "~/shared/gtd/inbox.org")
-		   "* TODO %A\n%?")))
+;;   (setq org-capture-templates
+;; 		`(("l" "log" entry (file+datetree "~/shared/gtd/journal.org")
+;; 		   "* %T %?\n" :unnarrowed 1)
+;; 		  ("c" "capture" entry (file "~/shared/gtd/inbox.org")
+;; 		   "* TODO %?")
+;; 		  ("a" "capture with annotation" entry (file "~/shared/gtd/inbox.org")
+;; 		   "* TODO %A\n%?")))
 
-  ;; Find all org files in a directory and set them as org-agenda-files
-  (setq org-agenda-files
-		(find-lisp-find-files org-directory "\.org$"))
+;;   ;; Find all org files in a directory and set them as org-agenda-files
+;;   (setq org-agenda-files
+;; 		(find-lisp-find-files org-directory "\.org$"))
 
-  ;; Don't show scheduled tasks if they're marked as done
-  (setq org-agenda-skip-scheduled-if-done t)
+;;   ;; Don't show scheduled tasks if they're marked as done
+;;   (setq org-agenda-skip-scheduled-if-done t)
 
-  ;; https://emacs.stackexchange.com/questions/12517/how-do-i-make-the-timespan-shown-by-org-agenda-start-yesterday
-  (setq org-agenda-start-day "-1d"
-		org-agenda-span 10
-		org-agenda-start-on-weekday nil)
+;;   ;; https://emacs.stackexchange.com/questions/12517/how-do-i-make-the-timespan-shown-by-org-agenda-start-yesterday
+;;   (setq org-agenda-start-day "-1d"
+;; 		org-agenda-span 10
+;; 		org-agenda-start-on-weekday nil)
 
-  ;; Keep archived org files in a subdirectory
-  (setq org-archive-location "archive/%s_archive::")
+;;   ;; Keep archived org files in a subdirectory
+;;   (setq org-archive-location "archive/%s_archive::")
 
-  ;; Custom agenda views for each group of org files
-  (setq org-agenda-custom-commands
-		'(("W" "Work Agenda" agenda ""
-		   ((org-agenda-files (list (concat org-directory "/work.org")))
-			;; Show if the deadline for tasks is less then 3 days away
-			(org-deadline-warning-days 3)
-			;; Don't show the "FHNW" tag in the view
-			(org-agenda-hide-tags-regexp "WORK")
-			(org-scheduled-past-days 0)
-			(org-agenda-start-with-log-mode t)
-			(org-agenda-span 22)
-			;; Show last weeks tasks
-			(org-agenda-start-day "-7d")))
-		  ("P" "Personal Agenda" agenda ""
-		   ((org-agenda-files (list (concat org-directory "/personal.org")))
-			;; Show if the deadline for tasks is less then 3 days away
-			(org-deadline-warning-days 3)
-			;; Don't show the "FHNW" tag in the view
-			(org-agenda-hide-tags-regexp "PERSONAL")
-			(org-scheduled-past-days 0)
-			(org-agenda-start-with-log-mode t)
-			(org-agenda-span 22)
-			;; Show last weeks tasks
-			(org-agenda-start-day "-7d")))
-		  ("w" "Work ToDo's" todo ""
-		   ((org-agenda-files (list (concat org-directory "/work.org")))
-			(org-agenda-prefix-format '((todo . " %i")))
-			;; Don't show the "FHNW" tag in the view
-			(org-agenda-hide-tags-regexp "ADFINIS")
-			;; Hide the ugly header of org-todo-list
-			(org-agenda-block-seperator nil)
-			(org-agenda-overriding-header "ToDo's: ")))
-		  ("p" "Personal ToDo's" todo ""
-		   ((org-agenda-files (list (concat org-directory "/personal.org")))
-			(org-agenda-prefix-format '((todo . " %i")))
-			;; Don't show the "FHNW" tag in the view
-			(org-agenda-hide-tags-regexp "PERSONAL")
-			;; Hide the ugly header of org-todo-list
-			(org-agenda-block-seperator nil)
-			(org-agenda-overriding-header "ToDo's: ")))))
+;;   ;; Custom agenda views for each group of org files
+;;   (setq org-agenda-custom-commands
+;; 		'(("W" "Work Agenda" agenda ""
+;; 		   ((org-agenda-files (list (concat org-directory "/work.org")))
+;; 			;; Show if the deadline for tasks is less then 3 days away
+;; 			(org-deadline-warning-days 3)
+;; 			;; Don't show the "FHNW" tag in the view
+;; 			(org-agenda-hide-tags-regexp "WORK")
+;; 			(org-scheduled-past-days 0)
+;; 			(org-agenda-start-with-log-mode t)
+;; 			(org-agenda-span 22)
+;; 			;; Show last weeks tasks
+;; 			(org-agenda-start-day "-7d")))
+;; 		  ("P" "Personal Agenda" agenda ""
+;; 		   ((org-agenda-files (list (concat org-directory "/personal.org")))
+;; 			;; Show if the deadline for tasks is less then 3 days away
+;; 			(org-deadline-warning-days 3)
+;; 			;; Don't show the "FHNW" tag in the view
+;; 			(org-agenda-hide-tags-regexp "PERSONAL")
+;; 			(org-scheduled-past-days 0)
+;; 			(org-agenda-start-with-log-mode t)
+;; 			(org-agenda-span 22)
+;; 			;; Show last weeks tasks
+;; 			(org-agenda-start-day "-7d")))
+;; 		  ("w" "Work ToDo's" todo ""
+;; 		   ((org-agenda-files (list (concat org-directory "/work.org")))
+;; 			(org-agenda-prefix-format '((todo . " %i")))
+;; 			;; Don't show the "FHNW" tag in the view
+;; 			(org-agenda-hide-tags-regexp "ADFINIS")
+;; 			;; Hide the ugly header of org-todo-list
+;; 			(org-agenda-block-seperator nil)
+;; 			(org-agenda-overriding-header "ToDo's: ")))
+;; 		  ("p" "Personal ToDo's" todo ""
+;; 		   ((org-agenda-files (list (concat org-directory "/personal.org")))
+;; 			(org-agenda-prefix-format '((todo . " %i")))
+;; 			;; Don't show the "FHNW" tag in the view
+;; 			(org-agenda-hide-tags-regexp "PERSONAL")
+;; 			;; Hide the ugly header of org-todo-list
+;; 			(org-agenda-block-seperator nil)
+;; 			(org-agenda-overriding-header "ToDo's: ")))))
 
-  (defun org-sort-buffer-by-priority ()
-	"Sorts an org-mode buffer by it's priority"
-	(interactive)
-	(push-mark)
-	(goto-char (point-min))
-	(call-interactively 'org-sort)
-	(org-sort 'o)
-	(pop-mark))
+;;   (defun org-sort-buffer-by-priority ()
+;; 	"Sorts an org-mode buffer by it's priority"
+;; 	(interactive)
+;; 	(push-mark)
+;; 	(goto-char (point-min))
+;; 	(call-interactively 'org-sort)
+;; 	(org-sort 'o)
+;; 	(pop-mark))
 
-  (defun winpat/org-agenda-show (key &optional args)
-	"Show an org agenda in a vertical window that takes 1/3 of
- the current window"
-	(let* ((buf (get-buffer-create "*Org Agenda*"))
-		   (win (get-buffer-window buf 't)))
-	  (if (equal win nil)
-		  (let* ((height (nth 3 (window-edges)))
-				 (nheight (- height (/ height 3)))
-				 (win (split-window (selected-window) nheight)))
-			(select-window win)
-			(switch-to-buffer buf)))
-	  (set-buffer-modified-p nil)
-	  (org-agenda args key)))
+;;   (defun winpat/org-agenda-show (key &optional args)
+;; 	"Show an org agenda in a vertical window that takes 1/3 of
+;;  the current window"
+;; 	(let* ((buf (get-buffer-create "*Org Agenda*"))
+;; 		   (win (get-buffer-window buf 't)))
+;; 	  (if (equal win nil)
+;; 		  (let* ((height (nth 3 (window-edges)))
+;; 				 (nheight (- height (/ height 3)))
+;; 				 (win (split-window (selected-window) nheight)))
+;; 			(select-window win)
+;; 			(switch-to-buffer buf)))
+;; 	  (set-buffer-modified-p nil)
+;; 	  (org-agenda args key)))
 
-  (setq org-priority-faces '((?A . (:foreground "red" :weight 'bold))
-							 (?B . (:foreground "orange"))
-							 (?C . (:foreground "yellow"))))
+;;   (setq org-priority-faces '((?A . (:foreground "red" :weight 'bold))
+;; 							 (?B . (:foreground "orange"))
+;; 							 (?C . (:foreground "yellow"))))
 
-  (evil-leader/set-key
-   "ol"  'org-store-link
-   "oa"  'org-agenda
-   "oc"  'org-capture)
+;;   (evil-leader/set-key
+;;    "ol"  'org-store-link
+;;    "oa"  'org-agenda
+;;    "oc"  'org-capture)
 
-  (evil-leader/set-key-for-mode 'org-mode
-	"mo" 'org-open-at-point
-	"mp" 'org-priority
-	"md" 'org-deadline
-	"ms" 'org-schedule
-	"mr" 'org-refile
-	"mi" 'org-insert-heading-after-current
-	"mt" 'org-todo))
+;;   (evil-leader/set-key-for-mode 'org-mode
+;; 	"mo" 'org-open-at-point
+;; 	"mp" 'org-priority
+;; 	"md" 'org-deadline
+;; 	"ms" 'org-schedule
+;; 	"mr" 'org-refile
+;; 	"mi" 'org-insert-heading-after-current
+;; 	"mt" 'org-todo))
 
-(use-package org-ref
-  :ensure t
-  :config
-  (setq reftex-default-bibliography '("~/references.bib"))
+;; (use-package org-ref
+;;   :ensure t
+;;   :config
+;;   (setq reftex-default-bibliography '("~/references.bib"))
 
-  (setq org-ref-bibliography-notes "~/notes.org"
-		org-ref-default-bibliography '("~/references.bib")
-		org-ref-pdf-directory "~/bibtex-pdfs/")
+;;   (setq org-ref-bibliography-notes "~/notes.org"
+;; 		org-ref-default-bibliography '("~/references.bib")
+;; 		org-ref-pdf-directory "~/bibtex-pdfs/")
 
-  ;; Make sure that org-latex-pdf-process is set to process the bibliography
-  ;; (using bibtex or biblatex)
-  (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f")))
+;;   ;; Make sure that org-latex-pdf-process is set to process the bibliography
+;;   ;; (using bibtex or biblatex)
+;;   (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f")))
 
-(use-package org-tree-slide
-  :ensure t
-  :config
-  (org-tree-slide-simple-profile)
-  (evil-leader/set-key-for-mode
-   'org-tree-slide-mode
-   "mp" 'org-tree-slide-move-previous-tree
-   "mn" 'org-tree-slide-move-next-tree))
+;; (use-package org-tree-slide
+;;   :ensure t
+;;   :config
+;;   (org-tree-slide-simple-profile)
+;;   (evil-leader/set-key-for-mode
+;;    'org-tree-slide-mode
+;;    "mp" 'org-tree-slide-move-previous-tree
+;;    "mn" 'org-tree-slide-move-next-tree))
 
-(use-package org-journal
-  :ensure t
-  :config
-  (setq org-journal-dir "~/shared/journal/"
-		org-journal-file-type "=day="
-		org-journal-file-format "%Y-%m-%d.org")
-  (evil-leader/set-key
-	"l" 'org-journal-new-entry))
+;; (use-package org-journal
+;;   :ensure t
+;;   :config
+;;   (setq org-journal-dir "~/shared/journal/"
+;; 		org-journal-file-type "=day="
+;; 		org-journal-file-format "%Y-%m-%d.org")
+;;   (evil-leader/set-key
+;; 	"l" 'org-journal-new-entry))
 
-(use-package org-download
-  :ensure t
-  :after (org)
-  ;; Drag-and-drop to dired
-  (add-hook 'dired-mode-hook 'org-download-enable))
+;; (use-package org-download
+;;   :ensure t
+;;   :after (org)
+;;   ;; Drag-and-drop to dired
+;;   (add-hook 'dired-mode-hook 'org-download-enable))
 
 (use-package company
   :ensure t
