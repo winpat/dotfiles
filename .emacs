@@ -1171,6 +1171,7 @@ markdown reference."
 
   (setq projectile-switch-project-action #'magit-status)
   (evil-leader/set-key
+	"p!"  'projectile-run-shell-command-in-root
 	"pk"  'projectile-kill-buffers
 	"pr"  'projectile-replace
 	"pR"  'projectile-replace-regexp))
