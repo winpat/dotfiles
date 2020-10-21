@@ -270,7 +270,7 @@
     python3Packages.isort
     python3Packages.flake8
 
-    python3Packages.python-language-server
+    unstable.python3Packages.python-language-server
     python3Packages.pyls-black
     python3Packages.pyls-isort
 
