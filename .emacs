@@ -205,6 +205,7 @@
 	"am" 'mu4e
 	"aw" 'woman
 	"bk" 'kill-buffer
+	"d" 'kill-buffer
 	"bl" 'ibuffer
 	"bn" 'switch-to-next-buffer
 	"bp" 'switch-to-prev-buffer
@@ -1150,7 +1151,9 @@ markdown reference."
 				;; matching candidate
 				ivy-use-selectable-prompt t
 				ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
-  (evil-leader/set-key "bb"  'ivy-switch-buffer)
+  (evil-leader/set-key
+	"s"  'ivy-switch-buffer
+	"bb"  'ivy-switch-buffer)
   :commands (ivy-switch-buffer))
 
 (use-package ivy-rich
