@@ -1,9 +1,12 @@
 # tint2
 
+
+# ultra wide
+scale_relative_to_dpi = 100
 # 4k screen
 #scale_relative_to_dpi = 110
 # internal screen
-scale_relative_to_dpi = 150
+#scale_relative_to_dpi = 150
 
 # Background 1: Panel
 rounded = 0
