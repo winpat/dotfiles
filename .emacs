@@ -1251,7 +1251,8 @@ markdown reference."
   :after (ispell)
   :hook ((markdown-mode org-mode) . flyspell-mode)
   :config
-  (setq flyspell-default-dictionary "en_US"))
+  (setq flyspell-default-dictionary "en_US"
+		markdown-fontify-code-blocks-natively t))
 
 (use-package flycheck
   :ensure t)
