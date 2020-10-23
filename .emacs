@@ -205,7 +205,6 @@
 	"am" 'mu4e
 	"aw" 'woman
 	"bk" 'kill-buffer
-	"d" 'kill-buffer
 	"bl" 'ibuffer
 	"bn" 'switch-to-next-buffer
 	"bp" 'switch-to-prev-buffer
