@@ -200,6 +200,7 @@
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
+	"t" 'python-transient
 	"ap" 'list-packages
 	"ac" 'calc
 	"am" 'mu4e
@@ -1262,3 +1263,54 @@ markdown reference."
 
 (use-package restclient
   :ensure t)
+
+(defun get-vc-dir ()
+  (alist-get 'vc (list (project-current))))
+
+(defun run-command-in-vc-dir (command)
+  (let* ((working-directory (get-vc-dir))
+		 (buffer-name (format "*%s %s*" command working-directory))
+		 (buffer (get-buffer-create buffer-name))
+		 ;; Run command in vc directory
+		 (default-directory working-directory)
+		 ;; Never print short output in mini buffer. Apparantly this does not
+		 ;; work for command the output a single line.
+		 (max-mini-window-height 1))
+	(shell-command command buffer)
+	(with-current-buffer buffer
+	  (compilation-mode))))
+
+(defun run-black ()
+  (interactive)
+  (run-command-in-vc-dir "black ."))
+
+(defun run-mypy ()
+  (interactive)
+  ;; TODO Why does this work on the shell but not here?
+  (run-command-in-vc-dir "mypy ."))
+
+(defun run-flake8 ()
+  (interactive)
+  (run-command-in-vc-dir "flake8"))
+
+(defun run-isort ()
+  (interactive)
+  (run-command-in-vc-dir "isort"))
+
+(defun run-pytest ()
+  (interactive)
+  (run-command-in-vc-dir "pytest"))
+
+(defun run-make-test ()
+  (interactive)
+  (run-command-in-vc-dir "make test"))
+
+(define-transient-command python-transient ()
+  "Run python related tooling"
+  ["Actions"
+   ("a" "make test" run-make-test)
+   ("b" "black" run-black)
+   ("i" "isort" run-isort)
+   ("f" "flake8" run-flake8)
+   ("m" "mypy" run-mypy)
+   ("t" "pytest" run-pytest)])
