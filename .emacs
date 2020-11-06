@@ -1305,12 +1305,42 @@ markdown reference."
   (interactive)
   (run-command-in-vc-dir "make test"))
 
+(defun touch-init-py ()
+  (interactive)
+  (shell-command "touch __init__.py"))
+
+(defun run-poetry-lock ()
+  (interactive)
+  (run-command-in-vc-dir "poetry lock"))
+
+(defun run-poetry-install ()
+  (interactive)
+  (run-command-in-vc-dir "poetry install"))
+
 (define-transient-command python-transient ()
   "Run python related tooling"
   ["Actions"
    ("a" "make test" run-make-test)
    ("b" "black" run-black)
-   ("i" "isort" run-isort)
+   ("s" "isort" run-isort)
+   ("i" "__init__.py" touch-init-py)
    ("f" "flake8" run-flake8)
    ("m" "mypy" run-mypy)
+   ("l" "poetry lock" run-poetry-lock)
+   ("u" "poetry install" run-poetry-install)
    ("t" "pytest" run-pytest)])
+
+;; Read already used imports from cache file.
+(defun add-python-import (package-name)
+  (interactive "sPackage name: ")
+  (let ((symbol (thing-at-point 'word)))
+	(save-excursion
+	  (goto-line 1)
+	  (insert (format "from %s import %s\n" package-name symbol))
+	  (save-buffer)
+	  (shell-command (format "isort %s" buffer-file-name))
+	  (revert-buffer t t t))))
+
+
+(use-package python-mode
+  :bind (("M-i" . add-python-import)))
