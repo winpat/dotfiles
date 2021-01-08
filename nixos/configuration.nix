@@ -264,17 +264,25 @@
     python3Packages.pytest-isort
     python3Packages.pytest-flake8
     python3Packages.pytest-black
+    python3Packages.pytest-mypy
+    python3Packages.pytestcov
 
     python3Packages.ipython
+    python3Packages.bpython
+
+    python3Packages.ipdb
+
     python3Packages.black
     python3Packages.isort
     python3Packages.flake8
+    python3Packages.mypy
+    python3Packages.coverage
 
     unstable.python3Packages.python-language-server
     python3Packages.pyls-black
     python3Packages.pyls-isort
+    python3Packages.pyls-mypy
 
-    python3Packages.ipython
     python3Packages.virtualenv
     python3Packages.virtualenvwrapper
 
