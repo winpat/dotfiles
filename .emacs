@@ -434,9 +434,6 @@
   :config
   (global-evil-surround-mode 1))
 
-(use-package evil-magit
-  :ensure t)
-
 (use-package evil-collection
   :ensure t
   :config (evil-collection-init))
