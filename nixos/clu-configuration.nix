@@ -24,16 +24,16 @@
 
   # Use proprietary graphic card driver for CUDA
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia.optimus_prime.nvidiaBusId = "PCI:11:0:0";
-  hardware.opengl.driSupport32Bit = true;
-  virtualisation.docker.enableNvidia = true;
-  systemd.services.nvidia-control-devices = {
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig.ExecStart = "${pkgs.linuxPackages.nvidia_x11.bin}/bin/nvidia-smi";
-  };
+  # hardware.nvidia.optimus_prime.nvidiaBusId = "PCI:11:0:0";
+  # hardware.opengl.driSupport32Bit = true;
+  # virtualisation.docker.enableNvidia = true;
+  # systemd.services.nvidia-control-devices = {
+  #   wantedBy = [ "multi-user.target" ];
+  #   serviceConfig.ExecStart = "${pkgs.linuxPackages.nvidia_x11.bin}/bin/nvidia-smi";
+  # };
 
-  environment.systemPackages = with pkgs; [
-    # Machine Learning
-    cudatoolkit
-  ];
+  # environment.systemPackages = with pkgs; [
+  #   # Machine Learning
+  #   cudatoolkit
+  # ];
 }
