@@ -947,6 +947,10 @@
 		 ("\\.md\\'" . markdown-mode)
 		 ("\\.markdown\\'" . markdown-mode))
   :config
+  (setq markdown-enable-math t)
+  (setq markdown-enable-html t)
+  (setq markdown-enable-wiki-links t)
+
   (defun markdown-insert-screenshot ()
 	"Call external screenshot program and insert the link to the image as
 markdown reference."
