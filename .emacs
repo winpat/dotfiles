@@ -217,6 +217,7 @@
 	"," 'xref-pop-marker-stack
 	"." 'xref-find-definitions
 	"ff" 'find-file
+	"fo" 'find-file-other-window
 	"wh" 'windmove-left
 	"wj" 'windmove-down
 	"wk" 'windmove-up
