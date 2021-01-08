@@ -93,6 +93,7 @@ alias m='make'
 alias dc="docker-compose"
 alias o='xdg-open'
 alias b="firefox"
+alias k="kubectl"
 
 # Python virtualenv
 alias ae='deactivate &> /dev/null; source ./env/bin/activate'
