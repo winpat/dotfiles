@@ -227,7 +227,7 @@
 	"b0" '(lambda () (interactive) (global-text-scale-adjust (- text-scale-mode-amount)) (global-text-scale-mode -1))
 	"b," '(lambda () (interactive) (global-text-scale-adjust 1))
 	"b." '(lambda () (interactive) (global-text-scale-adjust -1))
-	"o" 'counsel-open-notes
+	"n" 'counsel-open-notes
 	"," 'xref-pop-marker-stack
 	"." 'xref-find-definitions
 	"ff" 'find-file
@@ -1170,7 +1170,7 @@ markdown reference."
 				ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
   (evil-leader/set-key
 	"s"  'ivy-switch-buffer
-	"bb"  'ivy-switch-buffer)
+	"o"  'ivy-switch-buffer)
   :commands (ivy-switch-buffer))
 
 (use-package ivy-rich
