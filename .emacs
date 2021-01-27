@@ -214,10 +214,10 @@
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
 	"t" 'python-transient
-	"ap" 'list-packages
-	"ac" 'calc
-	"am" 'mu4e
-	"aw" 'woman
+	;; "ap" 'list-packages
+	;; "ac" 'calc
+	;; "am" 'mu4e
+	;; "aw" 'woman
 	"bk" 'kill-buffer
 	"bl" 'ibuffer
 	"bn" 'switch-to-next-buffer
@@ -230,6 +230,7 @@
 	"n" 'counsel-open-notes
 	"," 'xref-pop-marker-stack
 	"." 'xref-find-definitions
+	"a" 'lsp-find-references
 	"ff" 'find-file
 	"fo" 'find-file-other-window
 	"wh" 'windmove-left
