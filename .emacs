@@ -181,6 +181,19 @@
 (setq custom-file (make-temp-file ""))
 (setq custom-safe-themes t)
 
+
+;; https://www.emacswiki.org/emacs/GlobalTextScaleMode
+(define-globalized-minor-mode
+  global-text-scale-mode
+  text-scale-mode
+  (lambda () (text-scale-mode 1)))
+
+(defun global-text-scale-adjust (inc) (interactive)
+	   (text-scale-set 1)
+	   (kill-local-variable 'text-scale-mode-amount)
+	   (setq-default text-scale-mode-amount (+ text-scale-mode-amount inc))
+	   (global-text-scale-mode 1))
+
 (use-package evil
   :ensure t
   :init
@@ -211,8 +224,9 @@
 	"bp" 'switch-to-prev-buffer
 	"bR" 'rename-file-and-buffer
 	"br" 'revert-buffer-no-confirm
-	"b," 'text-scale-increase
-	"b." 'text-scale-decrease
+	"b0" '(lambda () (interactive) (global-text-scale-adjust (- text-scale-mode-amount)) (global-text-scale-mode -1))
+	"b," '(lambda () (interactive) (global-text-scale-adjust 1))
+	"b." '(lambda () (interactive) (global-text-scale-adjust -1))
 	"o" 'counsel-open-notes
 	"," 'xref-pop-marker-stack
 	"." 'xref-find-definitions
