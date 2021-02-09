@@ -214,6 +214,7 @@
 
     # Media
     pcmanfm
+    pcmanfm-qt
     spotify
     mpv
     vlc

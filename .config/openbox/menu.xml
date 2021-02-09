@@ -172,7 +172,7 @@
   </item>
   <item label="File Manager">
     <action name="Execute">
-      <command>pcmanfm</command>
+      <command>pcmanfm-qt</command>
       <startupnotify>
         <enabled>yes</enabled>
       </startupnotify>

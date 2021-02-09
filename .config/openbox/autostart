@@ -1,9 +1,10 @@
 xrdb -merge $HOME/.Xresources $HOME/.Xdefaults &
 xmodmap $HOME/.Xmodmap &
 xcape -e 'Shift_L=Shift_L|parenleft;Shift_R=Shift_R|parenright' &
-feh --bg-scale /home/patrick/shared/media/images/Wallpaper/3440x1440/wallpaper.jpg
+#feh --bg-scale /home/patrick/shared/media/images/Wallpaper/3440x1440/wallpaper.jpg
 tint2 &
 copyq &
 nm-applet &
 udiskie &
+pcmanfm-qt --desktop
 #xplanet -latitude 47.519141 -longitude 8.017082 -wait 60 -fork &
