@@ -46,7 +46,6 @@
   };
 
   console = {
-    font = "Hack";
     keyMap = "de_CH-latin1";
   };
 
