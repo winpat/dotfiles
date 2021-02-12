@@ -12,7 +12,7 @@ set -o emacs
 export EDITOR="emacsclient -nw"
 
 # Password store
-export PASSWORD_STORE_DIR="$HOME/vcs/passwords/"
+#export PASSWORD_STORE_DIR="$HOME/vcs/passwords/"
 
 export PATH="$HOME/bin:$PATH"
 
