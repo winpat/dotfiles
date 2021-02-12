@@ -307,6 +307,7 @@
 
     # Comm
     slack
+    signal-desktop
     bitwarden
     unstable.zoom-us
 
