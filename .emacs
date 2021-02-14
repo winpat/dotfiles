@@ -961,6 +961,8 @@
 		 ("\\.md\\'" . markdown-mode)
 		 ("\\.markdown\\'" . markdown-mode))
   :config
+
+  (setq markdown-command "pandoc --standalone --mathjax -f markdown -t html")
   (setq markdown-enable-math t)
   (setq markdown-enable-html t)
   (setq markdown-enable-wiki-links t)
@@ -980,7 +982,6 @@ markdown reference."
 						out-path
 						(read-from-minibuffer "Description: "))))))
 
-  (setq markdown-command "pandoc -c file:///home/patrick/vcs/dotfiles/stylesheets/github-pandoc.css --from gfm -t html5 --mathjax --highlight-style pygments --standalone")
 
   (evil-leader/set-key-for-mode
    'markdown-mode
