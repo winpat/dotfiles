@@ -964,6 +964,7 @@
   (setq markdown-enable-math t)
   (setq markdown-enable-html t)
   (setq markdown-enable-wiki-links t)
+  (setq markdown-link-space-sub-char " ")
 
   (defun markdown-insert-screenshot ()
 	"Call external screenshot program and insert the link to the image as
