@@ -223,6 +223,7 @@
     imagemagick
     ffmpeg
     zathura
+    xarchiver
 
     # Security
     gnupg
