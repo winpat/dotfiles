@@ -20,6 +20,8 @@ tron|clu:
  - .config/zathura
  - .config/termite
  - nixos/configuration.nix -> /etc/nixos/configuration.nix
+ - nixos/cachix.nix -> /etc/nixos/cachix.nix
+ - nixos/cachix -> /etc/nixos/cachix
 
 tron:
  - .config/i3
