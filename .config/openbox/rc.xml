@@ -140,6 +140,11 @@
         <command>termite</command>
       </action>
     </keybind>
+    <keybind key="W-w">
+      <action name="Execute">
+        <command>pcmanfm-qt</command>
+      </action>
+    </keybind>
     <keybind key="W-e">
       <action name="Execute">
         <command>bash -c "wmctrl -R Emacs || emacsclient -c"</command>
