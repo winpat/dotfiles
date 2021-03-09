@@ -500,10 +500,11 @@
   :ensure t
   :bind (("C-c q" . unfill-region)))
 
-(use-package suggest
-  :ensure t
-  :config
-  (evil-leader/set-key "as" 'suggest))
+;; TODO Fix keybind collision
+;; (use-package suggest
+;;   :ensure t
+;;   :config
+;;   (evil-leader/set-key "as" 'suggest))
 
 (use-package dimmer
   :ensure t
