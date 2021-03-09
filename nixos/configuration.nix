@@ -8,6 +8,11 @@
     /etc/nixos/work.nix  # Work sensitive settings which are not published
     /etc/nixos/host-configuration.nix
     /etc/nixos/hardware-configuration.nix
+    /etc/nixos/cachix.nix
+  ];
+
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball {url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;}))
   ];
 
   # Let me install packages from the unstable channel
@@ -97,7 +102,7 @@
     httpie
 
     # Emacs
-    master.emacs  # Give me 27.1
+    emacsGcc
     mu
     isync
     ripgrep
@@ -390,7 +395,7 @@
   # Start an emacs user service
   services.emacs = {
     enable = true;
-    package = pkgs.master.emacs;
+    package = pkgs.emacsGcc;
     defaultEditor = true;
   };
 
