@@ -473,11 +473,12 @@
   :ensure t
   :init (counsel-projectile-mode)
   :config
-  (counsel-projectile-modify-action
-   'counsel-projectile-switch-project-action
-   '((move counsel-projectile-switch-project-action-vc 1)
-	 (setkey counsel-projectile-switch-project-action-vc "o")
-	 (setkey counsel-projectile-switch-project-action " ")))
+  ;; Open magit in other buffer
+  ;; (counsel-projectile-modify-action
+  ;;  'counsel-projectile-switch-project-action
+  ;;  '((move counsel-projectile-switch-project-action-vc 1)
+  ;; 	 (setkey counsel-projectile-switch-project-action-vc "o")
+  ;; 	 (setkey counsel-projectile-switch-project-action " ")))
 
   (evil-leader/set-key
 	"pp"  'counsel-projectile-switch-project
