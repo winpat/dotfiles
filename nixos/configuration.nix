@@ -321,6 +321,9 @@
     google-cloud-sdk
     kubectx
     kubectl
+
+    # Misc
+    asciiquarium
   ];
 
   services.udev.packages = with pkgs; [
