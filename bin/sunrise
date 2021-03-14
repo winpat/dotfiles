@@ -1,0 +1,14 @@
+#!/usr/bin/env nix-shell
+#!nix-shell -i python3 -p python3Packages.astral
+
+from astral import LocationInfo
+from astral.sun import sun
+from datetime import datetime
+
+city = LocationInfo("Basel", "Switzerland", "Europe/Zurich")
+now = datetime.now()
+sun_data = sun(city.observer, date=now)
+print(sun_data)
+# TODO Why does this differ from common online services?
+sunrise = sun_data["sunrise"].strftime("%H:%M")
+print(f"☀️  {sunrise}")
