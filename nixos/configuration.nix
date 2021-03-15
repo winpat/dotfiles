@@ -87,6 +87,7 @@
     direnv
     fzf
     bat
+    ripgrep
     fd
     tree
     plan9port
@@ -105,7 +106,6 @@
     emacsGcc
     mu
     isync
-    ripgrep
     sqlite  # Forge
 
     # Spell checking
@@ -146,11 +146,11 @@
     # Diagrams
     graphviz
     plantuml
+    xmind
 
     # Writing
-    #texlive.combined.scheme-full
+    texlive.combined.scheme-full
     libreoffice
-    visidata
     pandoc
     haskellPackages.pandoc-citeproc
     pdftk
@@ -184,9 +184,16 @@
     unzip
     unrar
 
-    # Chat
+    # Communication
     weechat
     unstable.discord
+    quasselClient
+    signal-desktop
+    tdesktop
+    slack
+    unstable.zoom-us
+    teams
+
 
     # Databases
     pgcli
@@ -233,6 +240,7 @@
     # Security
     gnupg
     pass
+    bitwarden
     pwgen
     yubikey-personalization
     pinentry_gnome
@@ -292,13 +300,17 @@
     python3Packages.virtualenv
     python3Packages.virtualenvwrapper
 
+    # Data Science
+    visidata
+    python3Packages.numpy
+    python3Packages.pandas
+
     # JavaScript
     nodejs
 
     # Development
     pre-commit
     cookiecutter
-    mr
 
     # Nix awesomeness
     cachix
@@ -311,12 +323,6 @@
     adafruit-ampy
     picocom
 
-    # Comm
-    slack
-    signal-desktop
-    bitwarden
-    unstable.zoom-us
-
     # GCP
     google-cloud-sdk
     kubectx
@@ -324,6 +330,7 @@
 
     # Misc
     asciiquarium
+    unstable.cbonsai
   ];
 
   services.udev.packages = with pkgs; [
