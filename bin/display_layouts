@@ -1,39 +1,56 @@
 #!/bin/sh
 
+restart_pcmanfm() {
+	pkill pcmanfm-qt
+	pcmanfm-qt --desktop &
+}
+
+patch_tint2_scale() {
+	sed -i "s/scale_relative_to_dpi .*/scale_relative_to_dpi ${1}/"  ~/.config/tint2/tint2rc
+}
+
+restart_tint2() {
+	pkill tint2
+	tint2 &
+}
+
+home() {
+	local DPI=100
+	xrandr --dpi ${DPI}
+	openbox --restart
+	restart_pcmanfm
+	patch_tint2_scale ${DPI}
+	restart_tint2
+	xrandr \
+		--output eDP-1 --off \
+		--output DP-1 --off \
+		--output HDMI-1 --mode 2560x1440 --pos 0x0 --rotate normal \
+		--output DP-2 --off \
+		--output HDMI-2 --off
+}
+
+internal() {
+	local DPI=140
+	xrandr --dpi ${DPI}
+	openbox --restart
+	restart_pcmanfm
+	patch_tint2_scale ${DPI}
+	restart_tint2
+	xrandr \
+		--output eDP-1 --primary --mode 2560x1440 --pos 0x0 --rotate normal \
+		--output DP-1 --off \
+		--output HDMI-1 --off \
+		--output DP-2 --off \
+		--output HDMI-2 --off
+}
+
 case "$1" in
     home)
-        xrandr \
-          --output eDP-1   --mode 2560x1440 --pos 0x0 --rotate normal --dpi 140
-          --output DP-1-1  --mode 1920x1080 --pos 0x0 --rotate normal
-          --output DP-1-2  --off \
-          --output DP-1-3  --off \
-          --output HDMI-2  --off \
-          --output HDMI-1  --off \
-          --output DP-1  --off \
-          --output DP-2  --off \
-	;;
-    home)
-        xrandr \
-          --output eDP-1  --off \
-          --output DP-1-2  --off \
-          --output HDMI-2  --off \
-          --output HDMI-1  --off \
-          --output DP-1  --off \
-          --output DP-1-3  --off \
-          --output DP-2  --off \
-          --output DP-1-1  --mode 2560x1440  --pos 0x0  --rotate normal --dpi 110
-	;;
-    internal|*)
-	xrandr \
-          --output DP-1-1  --off \
-          --output DP-1-2  --off \
-          --output HDMI-2  --off \
-          --output HDMI-1  --off \
-          --output DP-1  --off \
-          --output DP-1-3  --off \
-          --output DP-2  --off \
-          --output eDP-1 --mode 2560x1440  --pos 0x0  --rotate normal --dpi 140
-	;;
+		home
+		;;
+    *)
+		internal
+		;;
 esac
 
-i3-msg restart
+echo "Test"
