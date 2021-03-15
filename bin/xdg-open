@@ -10,6 +10,9 @@ case "${1%%:*}" in
 	*.mkv|*.mp4)
 		mpv "$1" &
 		;;
+	*.jpg|*.jpeg|*.png|*.tiff)
+		feh "$1" &
+		;;
 	*)
 		exec /run/current-system/sw/bin/xdg-open "$@" &
 		;;
