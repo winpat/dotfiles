@@ -6,7 +6,7 @@ restart_pcmanfm() {
 }
 
 patch_tint2_scale() {
-	sed -i "s/scale_relative_to_dpi .*/scale_relative_to_dpi ${1}/"  ~/.config/tint2/tint2rc
+	sed -i "s/scale_relative_to_dpi .*/scale_relative_to_dpi = ${1}/"  ~/.config/tint2/tint2rc
 }
 
 restart_tint2() {
