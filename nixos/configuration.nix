@@ -13,6 +13,12 @@
 
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;}))
+    (self: super: {
+      # https://github.com/emilypeto/openbox-window-snap
+      openbox = super.openbox.overrideAttrs  (oldAttrs: rec {
+        patches = [ ./openbox-aerosnap.patch ];
+      });
+    })
   ];
 
   # Let me install packages from the unstable channel
