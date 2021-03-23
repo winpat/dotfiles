@@ -86,6 +86,7 @@
     gnumake
     manpages
     jq
+    yq
     htop
     strace
     bind
