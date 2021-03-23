@@ -423,6 +423,7 @@
 
   # Use composite manager for extra fanciness
   services.compton.enable = true;
+  services.unclutter.enable = true;
 
   services.xserver = {
     enable = true;
