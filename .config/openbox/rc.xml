@@ -197,6 +197,17 @@
         <command>amixer -D default set Master toggle</command>
       </action>
     </keybind>
+
+    <!-- center / reading mode -->
+    <keybind key="W-c">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo">
+        <x>30%</x>
+        <y>0</y>
+        <height>100%</height>
+        <width>40%</width>
+      </action>
+    </keybind>
     <!-- 33% left -->
     <keybind key="W-i">
       <action name="UnmaximizeFull"/>
