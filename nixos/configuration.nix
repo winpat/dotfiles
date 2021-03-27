@@ -239,6 +239,7 @@
     playerctl
     gimp
     gcolor3
+    noisetorch
     imagemagick
     ffmpeg
     zathura
