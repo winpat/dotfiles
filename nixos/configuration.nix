@@ -341,7 +341,7 @@
 
     # Misc
     asciiquarium
-    unstable.cbonsai
+    # unstable.cbonsai
   ];
 
   services.udev.packages = with pkgs; [
@@ -433,9 +433,11 @@
     enable = true;
     layout = "ch";
     displayManager.lightdm.enable = true;
-    windowManager.i3.enable = true;
+    windowManager.i3 = {
+      enable = true;
+      package = pkgs.i3-gaps;
+    };
     windowManager.openbox.enable = true;
-    windowManager.cwm.enable = true;
 
     # Lock the screen after 60 seconds of inactivity
     xautolock = {

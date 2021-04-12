@@ -3,6 +3,7 @@
 # Start certain applications at launch of i3
 exec --no-startup-id udiskie
 exec --no-startup-id copyq
+exec --no-startup-id dunst
 exec --no-startup-id nm-applet
 exec --no-startup-id xrdb -merge $HOME/.Xresources $HOME/.Xdefaults
 exec --no-startup-id xmodmap $HOME/.Xmodmap
@@ -31,8 +32,8 @@ set $down  j
 set $left  l
 
 # Allow to alt+tab between workspaces
-bindsym $mod+Tab workspace next
-bindsym $mod+Shift+Tab workspace prev
+bindsym Mod1+Tab workspace next
+bindsym Mod1+Shift+Tab workspace prev
 
 # Use super key as main modifier
 set $mod Mod4
@@ -43,45 +44,32 @@ title_align center
 # Launch common applications
 bindsym $mod+Return exec termite -t termite
 bindsym $mod+d exec dmenu_run
-bindsym $mod+p exec passmenu
-bindsym $mod+w exec raiseorlaunch -r -e "termite --class termite_scratchpad --name floating" -c termite_scratchpad
+bindsym $mod+Shift+d exec passmenu
 bindsym $mod+Shift+f exec firefox
 bindsym $mod+Shift+p exec firefox --private-window
-bindsym $mod+Shift+e exec emacsclient -c
-bindsym $mod+m exec emacsclient -c -e '(mu4e)'
+bindsym --release $mod+s exec "flameshot gui"
+
+# Raise or launch
+bindsym $mod+r exec wmctrl -R terminal || termite --title terminal
+bindsym $mod+f exec wmctrl -R Firefox || firefox
+bindsym $mod+e exec wmctrl -R Emacs || emacsclient -c
+bindsym $mod+w exec raiseorlaunch -r -e "termite --class termite_scratchpad --name floating" -c termite_scratchpad
 
 # Launch floating pavucontrol
 for_window [class="Pavucontrol"] floating enable
 bindsym $mod+Shift+a exec raiseorlaunch -r -e pavucontrol -c Pavucontrol
 
-# Launch floating pcmanfm
-for_window [class="Pcmanfm"] floating enable
-bindsym $mod+z exec raiseorlaunch -r -e pcmanfm -c Pcmanfm
-
-# Launch layout manager and my custom layouts
-bindsym $mod+Control+l exec layout_manager
-bindsym $mod+Control+1 exec layout_manager 1_TERM_2_EDITOR
-bindsym $mod+Control+2 exec layout_manager 4_TERM
-
-# Launch urxvt in floating mode
+# Launch terminal in floating mode
 for_window [class="Termite" instance="floating"] floating enable
 bindsym Shift+$mod+Return exec termite --title termite --name floating
 
-# Change tiling strategy for current windows
-# bindsym $mod+w layout stacking
-bindsym $mod+Shift+t layout tabbed
-# bindsym $mod+v layout toggle split
-bindsym $mod+e split toggle
-
-# Make floating window sticky on every window
-bindsym $mod+Shift+s sticky toggle
-
-# Screenshots
-bindsym --release $mod+s exec "flameshot gui"
+# Launch layout manager and my custom layouts
+bindsym $mod+Control+l exec layout_manager
+bindsym $mod+Control+o exec layout_manager default
 
 # Switch display layout
-bindsym $mod+F1 exec autorandr --load internal
-bindsym $mod+F2 exec autorandr --load home
+bindsym $mod+F1 exec display_layouts internal
+bindsym $mod+F2 exec display_layouts home
 
 # Display backlight
 bindsym XF86MonBrightnessUp exec sudo backlight incr
@@ -96,25 +84,30 @@ bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86AudioRaiseVolume exec "amixer -D default sset Master '5%+'"
 bindsym XF86AudioLowerVolume exec "amixer -D default sset Master '5%-'"
 bindsym XF86AudioMute exec "amixer -D default set Master toggle"
-#bindsym XF86AudioRaiseVolume exec amixer -q set Master 2dB+ unmute
-#bindsym XF86AudioLowerVolume exec amixer -q set Master 2dB- unmute
-#bindsym XF86AudioMute exec amixer -q set Master toggle
 
 # Modifier to drag floating windows across the screen
-floating_modifier $mod
+floating_modifier Mod1
 
 # Binding to kill the currently focused window
 bindsym $mod+q kill
 
 # Change focus to the child/parent container
 bindsym $mod+c focus child
-bindsym $mod+a focus parent
+bindsym $mod+p focus parent
+
+# Change tiling strategy
+bindsym $mod+b layout stacking
+bindsym $mod+n layout tabbed
+bindsym $mod+m split toggle
+
+# Make floating window sticky on every window
+bindsym $mod+Shift+s sticky toggle
 
 # Change focs to the urgent container (e.g. chat notifcation)
 bindsym $mod+u [urgent=latest] focus
 
 # Open currently focused  window in fullscreen mode
-bindsym $mod+f fullscreen
+bindsym $mod+a fullscreen
 
 # Toggle floating mode for currenty focused window
 bindsym $mod+g floating toggle
@@ -211,13 +204,14 @@ mode "resize" {
 }
 
 # Resize focused window
-bindsym $mod+r mode "resize"
+bindsym $mod+i mode "resize"
+
 
 bar {
   status_command          i3blocks -c $HOME/.config/i3blocks/config
   position                top
   workspace_buttons       yes
-  font                    pango: Hack 9
+  font                    pango: Hack 10
   strip_workspace_numbers yes
   separator_symbol        |
   colors {
