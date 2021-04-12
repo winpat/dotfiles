@@ -49,6 +49,9 @@
   networking = {
     networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 22 ];
+    hosts = {
+      "192.168.1.2" = ["znc.winpat.ch"];
+    };
   };
 
   # Select internationalisation properties.
