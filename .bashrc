@@ -94,6 +94,11 @@ alias dc="docker-compose"
 alias o='xdg-open'
 alias b="firefox"
 alias k="kubectl"
+alias ns="kubectl config view --minify --output 'jsonpath={..namespace}'; echo"
+alias ctx="kubectl config view --minify --output 'jsonpath={..context.cluster}'; echo"
+alias kctx="kubectx"
+alias kns="kubens"
+
 
 # Python virtualenv
 alias ae='deactivate &> /dev/null; source ./env/bin/activate'
