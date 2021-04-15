@@ -246,6 +246,7 @@
     imagemagick
     ffmpeg
     zathura
+    xournalpp
     xarchiver
 
     # Security
