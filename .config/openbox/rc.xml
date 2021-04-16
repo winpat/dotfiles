@@ -147,22 +147,22 @@
     </keybind>
     <keybind key="W-e">
       <action name="Execute">
-        <command>bash -c "wmctrl -R Emacs || emacsclient -c"</command>
+        <command>bash -c "wmctrl -a Emacs || emacsclient -c"</command>
       </action>
     </keybind>
     <keybind key="W-m">
       <action name="Execute">
-        <command>bash -c "wmctrl -R mu4e || emacs -q -T mu4e -l ~/.mail.el"</command>
+        <command>bash -c "wmctrl -a mu4e || emacs -q -T mu4e -l ~/.mail.el"</command>
       </action>
     </keybind>
     <keybind key="W-f">
       <action name="Execute">
-        <command>bash -c "wmctrl -R firefox || firefox"</command>
+        <command>bash -c "wmctrl -a firefox || firefox"</command>
       </action>
     </keybind>
     <keybind key="W-r">
       <action name="Execute">
-        <command>bash -c "wmctrl -R terminal || termite --title terminal"</command>
+        <command>bash -c "wmctrl -a terminal || termite --title terminal"</command>
       </action>
     </keybind>
     <!-- Multimedia keys -->
