@@ -1,12 +1,12 @@
 ;; Patrick Winter's Emacs Configuration
 
 (require 'package)
-;; Also load emacs packages installed in the NixOS system profile
-(add-to-list 'package-directory-list "/run/current-system/sw/share/emacs/site-lisp/elpa")
-;; Also load emacs packages installed with nix-env
-(add-to-list 'package-directory-list "~/.nix-profile/share/emacs/site-lisp/elpa")
-(package-initialize)
 
+;; Load emacs packages installed in the NixOS system and user profile
+(add-to-list 'package-directory-list "/run/current-system/sw/share/emacs/site-lisp/elpa")
+(add-to-list 'package-directory-list "~/.nix-profile/share/emacs/site-lisp/elpa")
+
+(package-initialize)
 (setq package-archives
 	  '(("gnu"   . "https://elpa.gnu.org/packages/")
 		("melpa" . "https://melpa.org/packages/")))
@@ -18,9 +18,6 @@
 
 (eval-when-compile
   (require 'use-package))
-
-;; Include required libraries
-(load-library "find-lisp")
 
 ;; Font type and size
 (set-face-attribute 'default nil :height 110)
@@ -40,7 +37,6 @@
 
 ;; Common paths that change depending on the operating system
 (setq sync-directory  "~/shared"
-	  org-directory   (format "%s/gtd"   sync-directory)
 	  notes-directory (format "%s/notes" sync-directory)
 	  vcs-directory   (format "%s/vcs"   sync-directory))
 
@@ -201,9 +197,6 @@
   (setq evil-want-keybinding nil)
   (evil-mode 1)
   :config
-  (add-to-list 'evil-emacs-state-modes 'inferior-octave-mode)
-  (add-to-list 'evil-emacs-state-modes 'taskwarrior-mode)
-  (add-to-list 'evil-emacs-state-modes 'haskell-interactive-mode)
   (add-to-list 'evil-emacs-state-modes 'inferior-python-mode)
   (add-to-list 'evil-emacs-state-modes 'eshell-mode))
 
@@ -227,6 +220,8 @@
 	"b0" '(lambda () (interactive) (global-text-scale-adjust (- text-scale-mode-amount)) (global-text-scale-mode -1))
 	"b," '(lambda () (interactive) (global-text-scale-adjust 1))
 	"b." '(lambda () (interactive) (global-text-scale-adjust -1))
+	"o"  'switch-to-buffer
+	"<SPC>" 'execute-extended-command
 	"n" 'counsel-open-notes
 	"," 'xref-pop-marker-stack
 	"." 'xref-find-definitions
@@ -268,11 +263,14 @@
   :config
   (evil-leader/set-key
    "hf"   'helpful-callable
+   "hF"   'helpful-function
+   "hi"   'helpful-at-point
    "hv"   'helpful-variable
    "hk"   'helpful-key))
 
 (use-package diminish
   :init
+  (diminish 'python-black-on-save-mode)
   (diminish 'eldoc-mode)
   (diminish 'git-gutter-mode)
   :ensure t)
@@ -283,37 +281,41 @@
 ;;   - arc-dark-theme
 ;;   - color-theme-sanityinc-tomorrow
 ;;   - modus-operandi-theme
-(use-package solarized-theme
+;; (use-package solarized-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'solarized-dark t)
+;;   :init
+;;   ;; Make the fringe stand out from the background
+;;   (setq solarized-distinct-fringe-background t)
+;;   ;; Don't change the font for some headings and titles
+;;   (setq solarized-use-variable-pitch nil)
+;;   ;; Make the modeline high contrast
+;;   (setq solarized-high-contrast-mode-line t)
+;;   ;; Use less bolding
+;;   (setq solarized-use-less-bold t)
+;;   ;; Use more italics
+;;   (setq solarized-use-more-italic t)
+;;   ;; Use less colors for indicators such as git:gutter, flycheck and similar
+;;   (setq solarized-emphasize-indicators nil)
+;;   ;; Don't change size of org-mode headlines (but keep other size-changes)
+;;   (setq solarized-scale-org-headlines nil)
+;;   ;; Avoid all font-size changes
+;;   (setq solarized-height-minus-1 1.0
+;; 		solarized-height-plus-1  1.0
+;; 		solarized-height-plus-2  1.0
+;; 		solarized-height-plus-3  1.0
+;; 		solarized-height-plus-4  1.0)
+;;   (custom-set-faces
+;;    '(magit-diff-hunk-heading ((t (:background "#073642" :foreground "#93a1a1"))))
+;;    ;; Normally hunk headings are dark blue... which is barely readable
+;;    '(ein:cell-input-area ((t (:background "#073642"))))
+;;    ;; Who had the idea that the path of the directory should have a bright blue background?
+;;    '(dired-header ((t (:background "#002b36" :foreground "#268bd2"))))))
+
+(use-package naysayer-theme
   :ensure t
-  :config
-  (load-theme 'solarized-dark t)
-  :init
-  ;; Make the fringe stand out from the background
-  (setq solarized-distinct-fringe-background t)
-  ;; Don't change the font for some headings and titles
-  (setq solarized-use-variable-pitch nil)
-  ;; Make the modeline high contrast
-  (setq solarized-high-contrast-mode-line t)
-  ;; Use less bolding
-  (setq solarized-use-less-bold t)
-  ;; Use more italics
-  (setq solarized-use-more-italic t)
-  ;; Use less colors for indicators such as git:gutter, flycheck and similar
-  (setq solarized-emphasize-indicators nil)
-  ;; Don't change size of org-mode headlines (but keep other size-changes)
-  (setq solarized-scale-org-headlines nil)
-  ;; Avoid all font-size changes
-  (setq solarized-height-minus-1 1.0
-		solarized-height-plus-1  1.0
-		solarized-height-plus-2  1.0
-		solarized-height-plus-3  1.0
-		solarized-height-plus-4  1.0)
-  (custom-set-faces
-   '(magit-diff-hunk-heading ((t (:background "#073642" :foreground "#93a1a1"))))
-   ;; Normally hunk headings are dark blue... which is barely readable
-   '(ein:cell-input-area ((t (:background "#073642"))))
-   ;; Who had the idea that the path of the directory should have a bright blue background?
-   '(dired-header ((t (:background "#002b36" :foreground "#268bd2"))))))
+  :init (load-theme 'naysayer t))
 
 
 (use-package key-chord
@@ -468,44 +470,9 @@
 (use-package projectile-ripgrep
   :ensure t)
 
-(use-package counsel-projectile
-  :after (projectile)
-  :ensure t
-  :init (counsel-projectile-mode)
-  :config
-  ;; Open magit in other buffer
-  ;; (counsel-projectile-modify-action
-  ;;  'counsel-projectile-switch-project-action
-  ;;  '((move counsel-projectile-switch-project-action-vc 1)
-  ;; 	 (setkey counsel-projectile-switch-project-action-vc "o")
-  ;; 	 (setkey counsel-projectile-switch-project-action " ")))
-
-  (evil-leader/set-key
-	"pp"  'counsel-projectile-switch-project
-	"pd"  'counsel-projectile-dired-find-dir
-	"pg"  'counsel-projectile-rg
-	"pG"  'counsel-projectile-grep
-	"po"  'counsel-projectile-find-other-file
-	"pf"  'counsel-projectile-find-file
-	"fp"  'counsel-projectile-find-file
-	"pb"  'counsel-projectile-switch-to-buffer
-	"bp"  'counsel-projectile-switch-to-buffer))
-
-(use-package swiper
-  :ensure t
-  :config
-  (define-key evil-normal-state-map "/" 'swiper)
-  (define-key evil-normal-state-map "?" 'swiper))
-
 (use-package unfill
   :ensure t
   :bind (("C-c q" . unfill-region)))
-
-;; TODO Fix keybind collision
-;; (use-package suggest
-;;   :ensure t
-;;   :config
-;;   (evil-leader/set-key "as" 'suggest))
 
 (use-package dimmer
   :ensure t
@@ -527,33 +494,6 @@
 (use-package display-line-numbers-mode
   :hook prog-mode)
 
-(use-package package-lint
-  :ensure t)
-
-(use-package flycheck-package
-  :ensure t)
-
-(use-package vscode-icon
-  :ensure t
-  :commands (vscode-icon-for-file))
-
-(use-package dired-sidebar
-  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
-  :ensure t
-  :commands (dired-sidebar-toggle-sidebar)
-  :init
-  (add-hook 'dired-sidebar-mode-hook
-			(lambda ()
-			  (unless (file-remote-p default-directory)
-				(auto-revert-mode))))
-  :config
-  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-
-  (setq dired-sidebar-subtree-line-prefix "__")
-  (setq dired-sidebar-theme 'vscode)
-  (setq dired-sidebar-use-term-integration t)
-  (setq dired-sidebar-use-custom-font t))
 
 (use-package dired
   :config
@@ -603,258 +543,8 @@
 		(rx (seq bol "." (not (any ".")))))
 
   (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
-
-  (defun winpat/dired-ediff-files ()
-	(interactive)
-	(let ((files (dired-get-marked-files))
-		  (wnd (current-window-configuration)))
-	  (if (<= (length files) 2)
-		  (let ((file1 (car files))
-				(file2 (if (cdr files)
-						   (cadr files)
-						 (read-file-name
-						  "file: "
-						  (dired-dwim-target-directory)))))
-			(if (file-newer-than-file-p file1 file2)
-				(ediff-files file2 file1)
-			  (ediff-files file1 file2))
-			(add-hook 'ediff-after-quit-hook-internal
-					  (lambda ()
-						(setq ediff-after-quit-hook-internal nil)
-						(set-window-configuration wnd))))
-		(error "no more than 2 files should be marked"))))
-
-  (evil-define-key 'normal dired-mode-map "e" 'winpat/dired-ediff-files)
   (evil-define-key 'normal dired-mode-map "o" 'dired-start-process))
 
-
-;; (use-package org
-;;   :config
-;;   (defun org-remove-link ()
-;; 	"Replace an org link by its description or if empty its address"
-;; 	(interactive)
-;; 	(if (org-in-regexp org-bracket-link-regexp 1)
-;; 		(let ((remove (list (match-beginning 0) (match-end 0)))
-;; 			  (description (if (match-end 3)
-;; 							   (org-match-string-no-properties 3)
-;; 							 (org-match-string-no-properties 1))))
-;; 		  (apply 'delete-region remove)
-;; 		  (insert description))))
-
-;;   ;; Inspired by VSCode's Todo+ plugin
-;;   (defface org-level-1 '((t (:inherit default :foreground "#66d9ef"))) "")
-;;   (defface org-level-2 '((t (:inherit default :foreground "#dddddd"))) "")
-;;   (defface org-level-3 '((t (:inherit default :foreground "#000000"))) "")
-;;   (defface org-level-4 '((t (:inherit default :foreground "#000000"))) "")
-;;   (defface org-level-5 '((t (:inherit default :foreground "#000000"))) "")
-;;   (defface org-level-6 '((t (:inherit default :foreground "#000000"))) "")
-;;   (defface org-level-7 '((t (:inherit default :foreground "#000000"))) "")
-;;   (defface org-level-8 '((t (:inherit default :foreground "#000000"))) "")
-
-;;   (setq org-log-done 'note)
-
-;;   ;; Make org-block look nice (inspired by markdown-mode)
-;;   (defface org-block-begin-line
-;; 	'((t (:background "#EEE8D5")))
-;; 	"Face used for the line delimiting the begin of source blocks.")
-;;   (defface org-block
-;; 	'((t (:background "#EEE8D5")))
-;; 	"Face used for the source block background.")
-;;   (defface org-block-background
-;; 	'((t (:background "#EEE8D5")))
-;; 	"Face used for the source block background.")
-;;   (defface org-block-end-line
-;; 	'((t (:background "#EEE8D5")))
-;; 	"Face used for the line delimiting the end of source blocks.")
-
-;;   ;; Highlight syntax in code blocks
-;;   (setq org-src-fontify-natively t)
-
-;;   ;; Also open `.org_archive` files using org-mode
-;;   (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
-
-;;   ;; Allow to adjust inline image size
-;;   (setq org-image-actual-width nil)
-
-;;   ;; Allow refiling to other files instead of only headings in the current
-;;   (setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
-
-;;   ;;; Org Keywords
-;;   ;; The "|"  separates the TODO from DONE keywords
-;;   (setq org-todo-keywords
-;; 		'((sequence "TODO(t)" "WAITING(w)" "REVIEW(r)" "|" "DONE(d)" "CANCELED(c)"))
-;; 		org-todo-keyword-faces '(("TODO" . (:foreground "#dc322f" :weight bold))
-;; 								 ("REVIEW" . (:foreground "#b58900" :weight bold))
-;; 								 ("WAITING" . (:foreground "#267bd2" :weight bold))
-;; 								 ("CANCELED" . (:forground "#6c71c4" :weight bold))
-;; 								 ("DONE" . (:foreground "#859900" :weight bold))))
-
-;;   ;; Forces you mark all child tasks as “DONE” before you can mark the parent as “DONE.”
-;;   (setq org-enforce-todo-dependencies t)
-
-;;   ;; Set maximum indentation for description lists
-;;   (setq org-list-description-max-indent 5)
-
-;;   ;; Turn "***" into "  *"
-;;   (setq org-startup-indented t)
-
-;;   ;; Prevent that demoting a heading also shifts text inside the section
-;;   (setq org-adapt-indentation nil)
-
-;;   ;; Use a selection of keywords to choose from states, instead of spamming C-c C-t
-;;   (setq org-use-fast-todo-selection t)
-
-;;   ;; Only the first empty line belongs to the last headline
-;;   (setq org-cycle-separator-lines 2)
-
-;;   ;; Allow setting single tags without the menu
-;;   (setq org-fast-tag-selection-single-key (quote expert))
-
-;;   ;; I prefer lowercase block names
-;;   (setcar (nthcdr 0 org-structure-template-alist) '("s" "#+begin_src ?\n#+end_src" ""))
-;;   (setcar (nthcdr 1 org-structure-template-alist) '("e" "#+begin_example ?\n#+end_example" ""))
-
-;;   (setq org-capture-templates
-;; 		`(("l" "log" entry (file+datetree "~/shared/gtd/journal.org")
-;; 		   "* %T %?\n" :unnarrowed 1)
-;; 		  ("c" "capture" entry (file "~/shared/gtd/inbox.org")
-;; 		   "* TODO %?")
-;; 		  ("a" "capture with annotation" entry (file "~/shared/gtd/inbox.org")
-;; 		   "* TODO %A\n%?")))
-
-;;   ;; Find all org files in a directory and set them as org-agenda-files
-;;   (setq org-agenda-files
-;; 		(find-lisp-find-files org-directory "\.org$"))
-
-;;   ;; Don't show scheduled tasks if they're marked as done
-;;   (setq org-agenda-skip-scheduled-if-done t)
-
-;;   ;; https://emacs.stackexchange.com/questions/12517/how-do-i-make-the-timespan-shown-by-org-agenda-start-yesterday
-;;   (setq org-agenda-start-day "-1d"
-;; 		org-agenda-span 10
-;; 		org-agenda-start-on-weekday nil)
-
-;;   ;; Keep archived org files in a subdirectory
-;;   (setq org-archive-location "archive/%s_archive::")
-
-;;   ;; Custom agenda views for each group of org files
-;;   (setq org-agenda-custom-commands
-;; 		'(("W" "Work Agenda" agenda ""
-;; 		   ((org-agenda-files (list (concat org-directory "/work.org")))
-;; 			;; Show if the deadline for tasks is less then 3 days away
-;; 			(org-deadline-warning-days 3)
-;; 			;; Don't show the "FHNW" tag in the view
-;; 			(org-agenda-hide-tags-regexp "WORK")
-;; 			(org-scheduled-past-days 0)
-;; 			(org-agenda-start-with-log-mode t)
-;; 			(org-agenda-span 22)
-;; 			;; Show last weeks tasks
-;; 			(org-agenda-start-day "-7d")))
-;; 		  ("P" "Personal Agenda" agenda ""
-;; 		   ((org-agenda-files (list (concat org-directory "/personal.org")))
-;; 			;; Show if the deadline for tasks is less then 3 days away
-;; 			(org-deadline-warning-days 3)
-;; 			;; Don't show the "FHNW" tag in the view
-;; 			(org-agenda-hide-tags-regexp "PERSONAL")
-;; 			(org-scheduled-past-days 0)
-;; 			(org-agenda-start-with-log-mode t)
-;; 			(org-agenda-span 22)
-;; 			;; Show last weeks tasks
-;; 			(org-agenda-start-day "-7d")))
-;; 		  ("w" "Work ToDo's" todo ""
-;; 		   ((org-agenda-files (list (concat org-directory "/work.org")))
-;; 			(org-agenda-prefix-format '((todo . " %i")))
-;; 			;; Don't show the "FHNW" tag in the view
-;; 			(org-agenda-hide-tags-regexp "ADFINIS")
-;; 			;; Hide the ugly header of org-todo-list
-;; 			(org-agenda-block-seperator nil)
-;; 			(org-agenda-overriding-header "ToDo's: ")))
-;; 		  ("p" "Personal ToDo's" todo ""
-;; 		   ((org-agenda-files (list (concat org-directory "/personal.org")))
-;; 			(org-agenda-prefix-format '((todo . " %i")))
-;; 			;; Don't show the "FHNW" tag in the view
-;; 			(org-agenda-hide-tags-regexp "PERSONAL")
-;; 			;; Hide the ugly header of org-todo-list
-;; 			(org-agenda-block-seperator nil)
-;; 			(org-agenda-overriding-header "ToDo's: ")))))
-
-;;   (defun org-sort-buffer-by-priority ()
-;; 	"Sorts an org-mode buffer by it's priority"
-;; 	(interactive)
-;; 	(push-mark)
-;; 	(goto-char (point-min))
-;; 	(call-interactively 'org-sort)
-;; 	(org-sort 'o)
-;; 	(pop-mark))
-
-;;   (defun winpat/org-agenda-show (key &optional args)
-;; 	"Show an org agenda in a vertical window that takes 1/3 of
-;;  the current window"
-;; 	(let* ((buf (get-buffer-create "*Org Agenda*"))
-;; 		   (win (get-buffer-window buf 't)))
-;; 	  (if (equal win nil)
-;; 		  (let* ((height (nth 3 (window-edges)))
-;; 				 (nheight (- height (/ height 3)))
-;; 				 (win (split-window (selected-window) nheight)))
-;; 			(select-window win)
-;; 			(switch-to-buffer buf)))
-;; 	  (set-buffer-modified-p nil)
-;; 	  (org-agenda args key)))
-
-;;   (setq org-priority-faces '((?A . (:foreground "red" :weight 'bold))
-;; 							 (?B . (:foreground "orange"))
-;; 							 (?C . (:foreground "yellow"))))
-
-;;   (evil-leader/set-key
-;;    "ol"  'org-store-link
-;;    "oa"  'org-agenda
-;;    "oc"  'org-capture)
-
-;;   (evil-leader/set-key-for-mode 'org-mode
-;; 	"mo" 'org-open-at-point
-;; 	"mp" 'org-priority
-;; 	"md" 'org-deadline
-;; 	"ms" 'org-schedule
-;; 	"mr" 'org-refile
-;; 	"mi" 'org-insert-heading-after-current
-;; 	"mt" 'org-todo))
-
-;; (use-package org-ref
-;;   :ensure t
-;;   :config
-;;   (setq reftex-default-bibliography '("~/references.bib"))
-
-;;   (setq org-ref-bibliography-notes "~/notes.org"
-;; 		org-ref-default-bibliography '("~/references.bib")
-;; 		org-ref-pdf-directory "~/bibtex-pdfs/")
-
-;;   ;; Make sure that org-latex-pdf-process is set to process the bibliography
-;;   ;; (using bibtex or biblatex)
-;;   (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f")))
-
-;; (use-package org-tree-slide
-;;   :ensure t
-;;   :config
-;;   (org-tree-slide-simple-profile)
-;;   (evil-leader/set-key-for-mode
-;;    'org-tree-slide-mode
-;;    "mp" 'org-tree-slide-move-previous-tree
-;;    "mn" 'org-tree-slide-move-next-tree))
-
-;; (use-package org-journal
-;;   :ensure t
-;;   :config
-;;   (setq org-journal-dir "~/shared/journal/"
-;; 		org-journal-file-type "=day="
-;; 		org-journal-file-format "%Y-%m-%d.org")
-;;   (evil-leader/set-key
-;; 	"l" 'org-journal-new-entry))
-
-;; (use-package org-download
-;;   :ensure t
-;;   :after (org)
-;;   ;; Drag-and-drop to dired
-;;   (add-hook 'dired-mode-hook 'org-download-enable))
 
 (use-package company
   :ensure t
@@ -917,6 +607,12 @@
    "mu" 'smerge-keep-upper
    "me" 'smerge-ediff))
 
+(use-package ediff
+  :config
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  ;; Put windows side by side
+  (setq ediff-split-window-function (quote split-window-horizontally)))
+
 (use-package direnv
   :ensure t
   :config
@@ -949,12 +645,6 @@
 (use-package vagrant-tramp
   :ensure t
   :after (tramp))
-
-(use-package ediff
-  :config
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-  ;; Put windows side by side
-  (setq ediff-split-window-function (quote split-window-horizontally)))
 
 (use-package markdown-mode
   :ensure t
@@ -1046,37 +736,9 @@ markdown reference."
   :ensure t
   :bind (("C-x l" . git-link)))
 
-(use-package racket-mode
-  :ensure t
-  :mode (("\\.rkt\\'" . racket-mode)))
-
-(use-package scribble-mode
-  :ensure t)
-
 (use-package rainbow-delimiters
   :ensure
   :hook (prog-mode . rainbow-delimiters-mode))
-
-(use-package paredit
-  :ensure t
-  :init
-  (enable-paredit-mode))
-
-(use-package clojure-mode
-  :ensure t
-  :mode (("\\.clj\\'" . clojure-mode))
-  :config
-  (add-hook 'clojure-mode-hook #'paredit-mode)
-  (add-hook 'clojure-mode-hook #'subword-mode)
-  (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
-
-(use-package cider
-  :ensure t
-  :commands (cider cider-connect cider-jack-in)
-  :config
-  (add-hook 'cider-mode-hook #'eldoc-mode)
-  (add-hook 'cider-repl-mode-hook #'eldoc-mode)
-  (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode))
 
 (use-package python-pytest
   :ensure t
@@ -1119,11 +781,6 @@ markdown reference."
   :config
   (setenv "PASSWORD_STORE_DIR" "/home/patrick/vcs/passwords"))
 
-(use-package haskell-mode
-  :ensure t
-  :init
-  (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
-
 (use-package nix-mode
   :ensure t
   :mode (("\\.nix\\'" . nix-mode)))
@@ -1161,28 +818,24 @@ markdown reference."
   (evil-leader/set-key
    "j"   'fasd-find-file))
 
-(use-package ivy
+(use-package selectrum
   :ensure t
-  :diminish ivy-mode
-  :hook (after-init . ivy-mode)
-  :config (setq ivy-use-virtual-buffers t
-				ivy-count-format "(%d/%d) "
-				ivy-initial-inputs-alist nil
-				;; Make the prompt line selectable as candidate (C-p) instead of
-				;; using C-M-j to use the prompt line instead of the best
-				;; matching candidate
-				ivy-use-selectable-prompt t
-				ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
-  (evil-leader/set-key
-	"s"  'ivy-switch-buffer
-	"o"  'ivy-switch-buffer)
-  :commands (ivy-switch-buffer))
+  :config
+  (selectrum-mode +1))
 
-(use-package ivy-rich
+(use-package selectrum-prescient
   :ensure t
-  :after ivy
-  :init
-  (ivy-rich-mode 1))
+  :config
+  (selectrum-prescient-mode +1)
+  (prescient-persist-mode +1))
+
+(use-package consult
+  :ensure t
+  :config
+  (evil-leader/set-key
+ 	"/"  'consult-isearch-forward
+ 	"?"  'consult-isearch-backward))
+
 
 (use-package projectile
   :ensure t
@@ -1193,33 +846,21 @@ markdown reference."
   :config
   ;; Use `projectile-discover-projects-in-directory` to scan for projects
   (setq projectile-enable-caching t)
-
   (setq projectile-switch-project-action #'magit-status)
   (evil-leader/set-key
+ 	"pp"  'projectile-switch-project
+ 	"pd"  'projectile-dired-find-dir
+ 	"pg"  'projectile-rg
+ 	"pG"  'projectile-grep
+ 	"po"  'projectile-find-other-file
+ 	"pf"  'projectile-find-file
+ 	"fp"  'projectile-find-file
+ 	"pb"  'projectile-switch-to-buffer
+ 	"bp"  'projectile-switch-to-buffer
 	"p!"  'projectile-run-shell-command-in-root
 	"pk"  'projectile-kill-buffers
 	"pr"  'projectile-replace
 	"pR"  'projectile-replace-regexp))
-
-(use-package counsel
-  :after (ivy)
-  :config
-  (setq counsel-find-file-ignore-regexp
-		(concat
-		 ;; File names beginning with # or .
-		 "\\(?:\\`[#.]\\)"
-		 ;; File names ending with # or ~
-		 "\\|\\(?:\\`.+?[#~]\\'\\)"))
-  (evil-leader/set-key
-	"SPC" 'counsel-M-x
-	"y"   'counsel-yank-pop
-	"ff"  'counsel-find-file
-	"fr"  'counsel-recentf
-	"fL"  'counsel-locate))
-
-(use-package smex
-  :ensure t
-  :after (counsel))
 
 ;; Python:
 ;;   pip install 'python-language-server[all]'
@@ -1256,10 +897,6 @@ markdown reference."
    "pm"  'makefile-executor-execute-project-target
    "pl"  'makefile-executor-execute-last))
 
-(use-package unison-mode
-  :ensure t
-  :mode (("\\.prf\\'" . unison-mode)))
-
 (use-package ispell
   :ensure t
   :config
@@ -1282,9 +919,6 @@ markdown reference."
 (use-package persistent-scratch
   :ensure t
   :init (persistent-scratch-setup-default))
-
-(use-package restclient
-  :ensure t)
 
 (defun get-vc-dir ()
   (alist-get 'vc (list (project-current))))
@@ -1362,7 +996,6 @@ markdown reference."
 	  (save-buffer)
 	  (shell-command (format "isort %s" buffer-file-name))
 	  (revert-buffer t t t))))
-
 
 (use-package python-mode
   :bind (("M-i" . add-python-import)))
