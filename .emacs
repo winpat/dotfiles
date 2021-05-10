@@ -839,11 +839,19 @@ markdown reference."
 
 (use-package projectile
   :ensure t
+  :after (magit)
   :diminish projectile-mode
   :init
   (projectile-global-mode)
   (projectile-mode +1)
   :config
+  (defun run-projectile-invalidate-cache (&rest _args)
+	;; We ignore the args to `magit-checkout'.
+	(projectile-invalidate-cache nil))
+
+  (advice-add 'magit-checkout :after #'run-projectile-invalidate-cache)
+  (advice-add 'magit-branch-and-checkout :after #'run-projectile-invalidate-cache)
+
   ;; Use `projectile-discover-projects-in-directory` to scan for projects
   (setq projectile-enable-caching t)
   (setq projectile-switch-project-action #'magit-status)
