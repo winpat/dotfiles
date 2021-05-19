@@ -50,9 +50,9 @@ bindsym $mod+Shift+p exec firefox --private-window
 bindsym --release $mod+s exec "flameshot gui"
 
 # Raise or launch
-bindsym $mod+r exec wmctrl -R terminal || termite --title terminal
-bindsym $mod+f exec wmctrl -R Firefox || firefox
-bindsym $mod+e exec wmctrl -R Emacs || emacsclient -c
+bindsym $mod+r exec wmctrl -a terminal || termite --title terminal
+bindsym $mod+f exec wmctrl -a Firefox || firefox
+bindsym $mod+e exec wmctrl -a Emacs || emacsclient -c
 bindsym $mod+w exec raiseorlaunch -r -e "termite --class termite_scratchpad --name floating" -c termite_scratchpad
 
 # Launch floating pavucontrol
