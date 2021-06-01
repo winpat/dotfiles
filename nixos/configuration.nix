@@ -113,7 +113,7 @@
     httpie
 
     # Emacs
-    emacsGcc
+    emacs
     mu
     isync
     sqlite  # Forge
@@ -417,7 +417,7 @@
   # Start an emacs user service
   services.emacs = {
     enable = true;
-    package = pkgs.emacsGcc;
+    package = pkgs.emacs;
     defaultEditor = true;
   };
 
