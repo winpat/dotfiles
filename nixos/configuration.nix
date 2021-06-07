@@ -164,6 +164,7 @@
     pandoc
     haskellPackages.pandoc-citeproc
     pdftk
+    poppler_utils
     pdfgrep
 
     # Remote file systems
