@@ -329,8 +329,9 @@
     nixfmt
 
     # Electronics
-    esptool
-    esptool-ck
+    # TODO These appear broken
+    # esptool
+    # esptool-ck
     arduino
     adafruit-ampy
     picocom
