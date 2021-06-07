@@ -23,7 +23,7 @@
   };
 
   # Use proprietary graphic card driver for CUDA
-  services.xserver.videoDrivers = [ "nvidia" ];
+  #services.xserver.videoDrivers = [ "nvidia" ];
   # hardware.nvidia.optimus_prime.nvidiaBusId = "PCI:11:0:0";
   # hardware.opengl.driSupport32Bit = true;
   # virtualisation.docker.enableNvidia = true;
