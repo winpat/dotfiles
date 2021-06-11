@@ -545,7 +545,6 @@
   (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
   (evil-define-key 'normal dired-mode-map "o" 'dired-start-process))
 
-
 (use-package company
   :ensure t
   :diminish company-mode
@@ -740,13 +739,6 @@ markdown reference."
   :ensure
   :hook (prog-mode . rainbow-delimiters-mode))
 
-(use-package python-pytest
-  :ensure t
-  :config
-  (evil-leader/set-key-for-mode
-   'python-mode
-   "mt" 'python-pytest-popup))
-
 (use-package python
   :config
   (setq python-shell-interpreter "ipython"
@@ -774,12 +766,6 @@ markdown reference."
 		;; Don't auto-indent entire buffer when yanking... thx
 		web-mode-enable-auto-indentation nil
 		web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))))
-
-(use-package auth-source-pass
-  :ensure t
-  :init (auth-source-pass-enable)
-  :config
-  (setenv "PASSWORD_STORE_DIR" "/home/patrick/vcs/passwords"))
 
 (use-package nix-mode
   :ensure t
@@ -810,6 +796,7 @@ markdown reference."
   :ensure t
   :bind (("M-g" . goto-line-preview)))
 
+;; TODO This package is broken
 (use-package fasd
   :ensure t
   :config
@@ -835,7 +822,6 @@ markdown reference."
   (evil-leader/set-key
  	"/"  'consult-isearch-forward
  	"?"  'consult-isearch-backward))
-
 
 (use-package projectile
   :ensure t
@@ -878,25 +864,6 @@ markdown reference."
   :ensure t
   :hook ((csharp-mode haskell-mode php-mode python-mode) . lsp))
 
-(use-package lsp-ui
-  :ensure t
-  :commands lsp-ui-mode)
-
-(use-package company-lsp
-  :ensure t
-  :commands company-lsp)
-
-(use-package helm-lsp
-  :ensure t
-  :commands helm-lsp-workspace-symbol)
-
-(use-package lsp-treemacs
-  :ensure t
-  :commands lsp-treemacs-errors-list)
-
-(use-package dap-mode
-  :ensure t)
-
 (use-package makefile-executor
   :ensure t
   :config
@@ -923,87 +890,3 @@ markdown reference."
 
 (use-package flycheck
   :ensure t)
-
-(use-package persistent-scratch
-  :ensure t
-  :init (persistent-scratch-setup-default))
-
-(defun get-vc-dir ()
-  (alist-get 'vc (list (project-current))))
-
-(defun run-command-in-vc-dir (command)
-  (let* ((working-directory (get-vc-dir))
-		 (buffer-name (format "*%s %s*" command working-directory))
-		 (buffer (get-buffer-create buffer-name))
-		 ;; Run command in vc directory
-		 (default-directory working-directory)
-		 ;; Never print short output in mini buffer. Apparantly this does not
-		 ;; work for command the output a single line.
-		 (max-mini-window-height 1))
-	(shell-command command buffer)
-	(with-current-buffer buffer
-	  (compilation-mode))))
-
-(defun run-black ()
-  (interactive)
-  (run-command-in-vc-dir "black ."))
-
-(defun run-mypy ()
-  (interactive)
-  ;; TODO Why does this work on the shell but not here?
-  (run-command-in-vc-dir "mypy ."))
-
-(defun run-flake8 ()
-  (interactive)
-  (run-command-in-vc-dir "flake8"))
-
-(defun run-isort ()
-  (interactive)
-  (run-command-in-vc-dir "isort"))
-
-(defun run-pytest ()
-  (interactive)
-  (run-command-in-vc-dir "pytest"))
-
-(defun run-make-test ()
-  (interactive)
-  (run-command-in-vc-dir "make test"))
-
-(defun touch-init-py ()
-  (interactive)
-  (shell-command "touch __init__.py"))
-
-(defun run-poetry-lock ()
-  (interactive)
-  (run-command-in-vc-dir "poetry lock"))
-
-(defun run-poetry-install ()
-  (interactive)
-  (run-command-in-vc-dir "poetry install"))
-
-(define-transient-command python-transient ()
-  "Run python related tooling"
-  ["Actions"
-   ("a" "make test" run-make-test)
-   ("b" "black" run-black)
-   ("s" "isort" run-isort)
-   ("i" "__init__.py" touch-init-py)
-   ("f" "flake8" run-flake8)
-   ("m" "mypy" run-mypy)
-   ("l" "poetry lock" run-poetry-lock)
-   ("u" "poetry install" run-poetry-install)
-   ("t" "pytest" run-pytest)])
-
-;; Read already used imports from cache file.
-(defun add-python-import (package-name)
-  (interactive "sPackage name: ")
-  (let ((symbol (thing-at-point 'word)))
-	(save-excursion
-	  (goto-line 1)
-	  (insert (format "from %s import %s\n" package-name symbol))
-	  (save-buffer)
-	  (shell-command (format "isort %s" buffer-file-name))
-	  (revert-buffer t t t))))
-
-(use-package python-mode
-  :bind (("M-i" . add-python-import)))
