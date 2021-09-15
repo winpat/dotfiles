@@ -137,7 +137,7 @@
     </keybind>
     <keybind key="W-Return">
       <action name="Execute">
-        <command>termite</command>
+        <command>alacritty</command>
       </action>
     </keybind>
     <keybind key="W-w">
@@ -162,12 +162,12 @@
     </keybind>
     <keybind key="W-r">
       <action name="Execute">
-        <command>bash -c "wmctrl -a terminal || termite --title terminal"</command>
+        <command>bash -c "wmctrl -a terminal || alacritty --title terminal"</command>
       </action>
     </keybind>
     <keybind key="W-t">
       <action name="Execute">
-        <command>bash -c "wmctrl -a terminal || termite --title terminal --exec 'tmux attach'"</command>
+        <command>bash -c "wmctrl -a terminal || alacritty --title terminal --exec 'tmux attach'"</command>
       </action>
     </keybind>
     <!-- Multimedia keys -->

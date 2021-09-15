@@ -42,7 +42,7 @@ set $mod Mod4
 title_align center
 
 # Launch common applications
-bindsym $mod+Return exec termite -t termite
+bindsym $mod+Return exec alacritty -t alacritty
 bindsym $mod+d exec dmenu_run
 bindsym $mod+Shift+d exec passmenu
 bindsym $mod+Shift+f exec firefox
@@ -50,18 +50,18 @@ bindsym $mod+Shift+p exec firefox --private-window
 bindsym --release $mod+s exec "flameshot gui"
 
 # Raise or launch
-bindsym $mod+r exec wmctrl -a terminal || termite --title terminal
+bindsym $mod+r exec wmctrl -a terminal || alacritty --title terminal
 bindsym $mod+f exec wmctrl -a Firefox || firefox
 bindsym $mod+e exec wmctrl -a Emacs || emacsclient -c
-bindsym $mod+w exec raiseorlaunch -r -e "termite --class termite_scratchpad --name floating" -c termite_scratchpad
+bindsym $mod+w exec raiseorlaunch -r -e "alacritty --class alacritty_scratchpad --name floating" -c alacritty_scratchpad
 
 # Launch floating pavucontrol
 for_window [class="Pavucontrol"] floating enable
 bindsym $mod+Shift+a exec raiseorlaunch -r -e pavucontrol -c Pavucontrol
 
 # Launch terminal in floating mode
-for_window [class="Termite" instance="floating"] floating enable
-bindsym Shift+$mod+Return exec termite --title termite --name floating
+for_window [class="Alacritty" instance="floating"] floating enable
+bindsym Shift+$mod+Return exec alacritty --title alacritty --name floating
 
 # Launch layout manager and my custom layouts
 bindsym $mod+Control+l exec layout_manager
@@ -186,6 +186,9 @@ bindsym $mod+Shift+o exec "i3-nagbar -t warning -m 'Do you really want to exit i
 
 # Lock the screen
 bindsym $mod+o exec i3lock-color -k  -c 000000 --timecolor ffffffff --datecolor ffffffff --datestr='%d/%m/%Y'
+
+# Don't follow the mouse
+focus_follows_mouse no
 
 mode "resize" {
     # These bindings trigger as soon as you enter the resize mode

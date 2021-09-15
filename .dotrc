@@ -16,7 +16,7 @@ gem|tron|clu:
  - .ideavimrc
  - .config/dunst
  - .config/zathura
- - .config/termite
+ - .config/alacritty
  - nixos/configuration.nix -> /etc/nixos/configuration.nix
  - nixos/cachix.nix -> /etc/nixos/cachix.nix
  - nixos/cachix -> /etc/nixos/cachix
