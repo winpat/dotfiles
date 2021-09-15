@@ -8,18 +8,18 @@
     /etc/nixos/work.nix  # Work sensitive settings which are not published
     /etc/nixos/host-configuration.nix
     /etc/nixos/hardware-configuration.nix
-    /etc/nixos/cachix.nix
+    #/etc/nixos/cachix.nix
   ];
 
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;}))
-    (self: super: {
-      # https://github.com/emilypeto/openbox-window-snap
-      openbox = super.openbox.overrideAttrs  (oldAttrs: rec {
-        patches = [ ./openbox-aerosnap.patch ];
-      });
-    })
-  ];
+  #nixpkgs.overlays = [
+  #  (import (builtins.fetchTarball {url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;}))
+  #  (self: super: {
+  #    # https://github.com/emilypeto/openbox-window-snap
+  #    openbox = super.openbox.overrideAttrs  (oldAttrs: rec {
+  #      patches = [ ./openbox-aerosnap.patch ];
+  #    });
+  #  })
+  #];
 
   # Let me install packages from the unstable channel
   nixpkgs.config = {
@@ -41,7 +41,7 @@
 
   # Give me the newest features!
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_latest;
     plymouth.enable = true;
     supportedFilesystems = [ "ntfs" ];
   };
@@ -124,7 +124,7 @@
     hunspellDicts.en-us-large
 
     # Desktop
-    termite
+    alacritty
     dmenu
     xcape
     xplanet
@@ -144,8 +144,8 @@
     acpi
 
     # i3
-    i3-layout-manager
-    python37Packages.i3ipc
+    #i3-layout-manager
+    #python37Packages.i3ipc
     perl
     i3blocks
 
@@ -162,7 +162,7 @@
     texlive.combined.scheme-full
     libreoffice
     pandoc
-    haskellPackages.pandoc-citeproc
+    #haskellPackages.pandoc-citeproc
     pdftk
     poppler_utils
     pdfgrep

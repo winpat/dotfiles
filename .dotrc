@@ -10,12 +10,10 @@ all:
  - .config/nixpkgs
  - .config/git
 
-tron|clu:
+gem|tron|clu:
  - .Xmodmap
  - .gtkrc-2.0
  - .ideavimrc
- - .mbsyncrc
- - .mail.el
  - .config/dunst
  - .config/zathura
  - .config/termite
@@ -34,3 +32,14 @@ clu:
  - .config/openbox
  - .config/tint2
  - nixos/clu-configuration.nix -> /etc/nixos/host-configuration.nix
+
+mcp:
+ - .mbsyncrc
+ - .mail.el
+
+gem:
+ - .config/i3
+ - .config/i3blocks
+ - .config/openbox
+ - .config/tint2
+ - nixos/gem-configuration.nix -> /etc/nixos/host-configuration.nix
