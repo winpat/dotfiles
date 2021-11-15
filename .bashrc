@@ -66,7 +66,7 @@ GREEN=$(tput setaf 64)
 BOLD=$(tput bold)
 RESET=$(tput sgr0)
 
-PS1="\[${RESET}\]\[${BOLD}\]\w\[${RESET}\]\[${GREEN}\]\$(__git_ps1) \[${RESET}\]"
+PS1="\[${RESET}\]\[${BOLD}\]\w\[${RESET}\] "
 
 export PROMPT_COMMAND="history -a; history -n"
 
