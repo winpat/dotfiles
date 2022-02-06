@@ -890,3 +890,6 @@ markdown reference."
 
 (use-package flycheck
   :ensure t)
+
+(use-package rust-mode
+  :ensure t)
