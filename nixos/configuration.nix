@@ -445,7 +445,7 @@
     # Lock the screen after 60 seconds of inactivity
     xautolock = {
       enable = true;
-      locker = "${pkgs.i3lock-color}/bin/i3lock-color -k  -c 000000 --timecolor ffffffff --datecolor ffffffff --datestr='%d/%m/%Y'";
+      locker = "${pkgs.i3lock-color}/bin/i3lock-color -c 000000 -k --date-color ffffff --time-color ffffff --date-str='%d/%m/%Y'";
       time = 3;
     };
   };
