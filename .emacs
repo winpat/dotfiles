@@ -492,6 +492,8 @@
 
 ;; Emacs has this builtin now, it's fast
 (use-package display-line-numbers-mode
+  :init
+  (setq display-line-numbers-type 'relative)
   :hook prog-mode)
 
 
