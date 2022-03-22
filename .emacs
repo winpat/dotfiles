@@ -895,3 +895,14 @@ markdown reference."
 
 (use-package rust-mode
   :ensure t)
+
+(use-package plantuml-mode
+  :ensure t
+
+  :mode (("\\.plantuml\\'" . plantuml-mode))
+  :config
+  (setq plantuml-default-exec-mode 'executable
+		plantuml-output-type "png"))
+
+(use-package counsel
+  :ensure t)
