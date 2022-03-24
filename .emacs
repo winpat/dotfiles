@@ -906,3 +906,10 @@ markdown reference."
 
 (use-package counsel
   :ensure t)
+
+(use-package sqlformat
+  :ensure t
+  :hook (sql-mode-hook . sqlformat-on-save-mode)
+  :config
+  (setq sqlformat-command 'pgformatter
+		sqlformat-args '("-f1")))
