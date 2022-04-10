@@ -23,23 +23,33 @@
     };
   };
 
-  networking.wireguard.interfaces = {
-    wg0 = {
-      ips = ["192.168.10.20/24"];
-      privateKeyFile = "/home/patrick/.wireguard/private";
-      peers = [
-        {
-          publicKey = "WFsK1upCYpWmnJPqT+yFtgbSEJf6eh6sMVuYqfoFRDw=";
-          allowedIPs = [
-            "192.168.10.0/24"
-            "192.168.1.0/24"
-          ];
-          endpoint = "vpn.winpat.ch:51820";
-          persistentKeepalive = 25;
-        }
-      ];
-    };
+  systemd.services.tailscale-autoconnect = {
+    description = "Automatic connection to Tailscale";
+
+    # make sure tailscale is running before trying to connect to tailscale
+    after = [ "network-pre.target" "tailscale.service" ];
+    wants = [ "network-pre.target" "tailscale.service" ];
+    wantedBy = [ "multi-user.target" ];
+
+    # set this service as a oneshot job
+    serviceConfig.Type = "oneshot";
+
+    # have the job run this shell script
+    script = with pkgs; ''
+      # wait for tailscaled to settle
+      sleep 2
+
+      # check if we are already authenticated to tailscale
+      status="$(${tailscale}/bin/tailscale status -json | ${jq}/bin/jq -r .BackendState)"
+      if [ $status = "Running" ]; then # if so, then do nothing
+        exit 0
+      fi
+
+      # otherwise authenticate with tailscale
+      ${tailscale}/bin/tailscale up -authkey tskey-kNX5s55CNTRL-NVcpsjyZs8XzAB8CAV8rW7
+    '';
   };
+
 
   hardware.trackpoint = {
     device = "TPPS/2 Elan TrackPoint";

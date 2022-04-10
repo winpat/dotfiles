@@ -50,9 +50,11 @@
     networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 22 ];
     hosts = {
-      "192.168.1.2" = ["znc.winpat.ch"];
+      "100.118.247.61" = [ "mcp" ];
     };
   };
+
+  services.tailscale.enable = true;
 
   # Select internationalisation properties.
   i18n = {
@@ -221,7 +223,7 @@
     networkmanager
     networkmanager-openvpn
     openvpn
-    wireguard
+    tailscale
 
     # Fix missing icon for networkmanageapplet
     # https://github.com/NixOS/nixpkgs/issues/32730
