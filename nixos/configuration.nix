@@ -115,7 +115,7 @@
     httpie
 
     # Emacs
-    emacs
+    unstable.emacs
     mu
     isync
     sqlite  # Forge
