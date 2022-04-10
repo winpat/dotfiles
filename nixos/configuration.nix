@@ -408,7 +408,7 @@
   programs.mosh.enable = true;
 
   fileSystems."/net/media" = {
-    device = "//192.168.1.2/media";
+    device = "//192.168.0.200/media";
     fsType = "cifs";
     options = let
       automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
