@@ -353,11 +353,12 @@
     enable = true;
     user = "patrick";
     dataDir = "/home/patrick";
+    overrideFolders = false;
     overrideDevices = true;
     devices = {
       "mcp" = {
         addresses = [ "tcp://100.118.247.61:22000" ];
-        id = "5LWC762-BW43VTT-I7NG5LH-2YJP6YD-RXCOHTN-7AVKR6S-W3YMA2Q-LFU5AQN";
+        id = "5XOROW7-FWKKSXP-YNUDYZK-XVZ4LMK-2VY474C-DGG33XP-4BSXPPT-VYOT2A2";
       };
     };
   };
