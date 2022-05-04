@@ -898,11 +898,14 @@ markdown reference."
 
 (use-package plantuml-mode
   :ensure t
-
   :mode (("\\.plantuml\\'" . plantuml-mode))
   :config
   (setq plantuml-default-exec-mode 'executable
 		plantuml-output-type "png"))
+
+(use-package graphviz-dot-mode
+  :ensure t
+  :mode (("\\.dot\\'" . graphviz-dot-mode)))
 
 (use-package counsel
   :ensure t)
