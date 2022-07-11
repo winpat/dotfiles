@@ -6,6 +6,6 @@ copyq &
 nm-applet &
 udiskie &
 dunst &
-pcmanfm-qt --desktop
+feh --bg-scale /home/patrick/shared/media/images/Wallpaper/3440x1440/wooden_floor.jpg
+#pcmanfm-qt --desktop
 #xplanet -latitude 47.519141 -longitude 8.017082 -wait 60 -fork &
-#feh --bg-scale /home/patrick/shared/media/images/Wallpaper/3440x1440/wallpaper.jpg
