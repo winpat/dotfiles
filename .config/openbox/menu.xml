@@ -144,9 +144,9 @@
 </menu>
 
 <menu id="root-menu" label="Openbox 3">
-  <item label="Termite">
+  <item label="Terminal">
     <action name="Execute">
-      <command>termite</command>
+      <command>alacritty</command>
       <startupnotify>
         <enabled>yes</enabled>
         <wmclass>Emacs</wmclass>
