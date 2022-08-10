@@ -11,15 +11,15 @@
     #/etc/nixos/cachix.nix
   ];
 
-  #nixpkgs.overlays = [
-  #  (import (builtins.fetchTarball {url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;}))
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball {url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;}))
   #  (self: super: {
   #    # https://github.com/emilypeto/openbox-window-snap
   #    openbox = super.openbox.overrideAttrs  (oldAttrs: rec {
   #      patches = [ ./openbox-aerosnap.patch ];
   #    });
   #  })
-  #];
+  ];
 
   # Let me install packages from the unstable channel
   nixpkgs.config = {
@@ -121,7 +121,7 @@
     httpie
 
     # Emacs
-    unstable.emacs
+    emacsUnstable
     mu
     isync
     sqlite  # Forge
@@ -165,14 +165,11 @@
     # Diagrams
     graphviz
     plantuml
-    # TODO broken on 22.05
-    #xmind
 
     # Writing
     texlive.combined.scheme-full
     libreoffice
     pandoc
-    #haskellPackages.pandoc-citeproc
     pdftk
     poppler_utils
     pdfgrep
@@ -208,9 +205,6 @@
     # Communication
     weechat
     unstable.discord
-    quasselClient
-    signal-desktop
-    tdesktop
     slack
     unstable.zoom-us
     teams
@@ -218,6 +212,7 @@
 
     # Databases
     pgcli
+    postgresql
 
     # Browser
     firefox
@@ -264,6 +259,7 @@
     gnupg
     pass
     bitwarden
+    bitwarden-cli
     pwgen
     yubikey-personalization
     pinentry_gnome
@@ -279,13 +275,15 @@
     wally-cli
 
     # Automation
-    # ansible
-    # terraform
-    # vault
-    # packer
-    # consul
-    # nixops
-    # doctl
+    terraform
+    waypoint
+    nomad
+    vault
+    packer
+    consul
+    #ansible
+    #nixops
+    #doctl
 
     # C
     gdb
@@ -340,11 +338,6 @@
     nixfmt
 
     # Electronics
-    # TODO These appear broken
-    # esptool
-    # esptool-ck
-    arduino
-    adafruit-ampy
     picocom
 
     # GCP
@@ -354,7 +347,7 @@
 
     # Misc
     asciiquarium
-    # unstable.cbonsai
+    cbonsai
   ];
 
   services.syncthing = {
@@ -443,7 +436,7 @@
   # Start an emacs user service
   services.emacs = {
     enable = true;
-    package = pkgs.emacs;
+    package = pkgs.emacsUnstable;
     defaultEditor = true;
   };
 
