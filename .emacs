@@ -915,3 +915,13 @@ markdown reference."
   :config
   (setq sqlformat-command 'pgformatter
 		sqlformat-args '("-f1")))
+
+(use-package clojure-mode
+  :ensure t
+  :mode (("\\.clj\\'" . clojure-mode)
+         ("\\.edn\\'" . clojure-mode)))
+
+(use-package cider
+  :ensure t
+  :mode (("\\.clj\\'" . clojure-mode)
+         ("\\.edn\\'" . clojure-mode)))
