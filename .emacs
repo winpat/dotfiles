@@ -487,8 +487,7 @@
   :config
   (setq save-abbrevs 'silently)
   (define-abbrev-table 'global-abbrev-table
-	'(("pd" "__import__('ipdb').set_trace()  # FIXME")
-	  ("bp" "breakpoint()  # FIXME"))))
+	'(("bp" "breakpoint()  # FIXME"))))
 
 ;; Emacs has this builtin now, it's fast
 (use-package display-line-numbers-mode
