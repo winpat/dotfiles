@@ -16,12 +16,6 @@ export EDITOR="emacsclient -nw"
 
 export PATH="$HOME/bin:$PATH"
 
-# The emacs solarized theme requires true color
-export TERM="xterm-24bit"
-
-# My pseudo true color setup breaks in SSH sessions
-alias ssh="TERM=xterm-256color ssh"
-
 # Ignore commands that start with a whitespace.
 export HISTCONTROL='ignorespace:erasedups'
 
