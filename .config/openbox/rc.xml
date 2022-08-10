@@ -167,12 +167,7 @@
     </keybind>
     <keybind key="W-r">
       <action name="Execute">
-        <command>bash -c "wmctrl -a terminal || alacritty --title terminal"</command>
-      </action>
-    </keybind>
-    <keybind key="W-t">
-      <action name="Execute">
-        <command>bash -c "wmctrl -a terminal || alacritty --title terminal --exec 'tmux attach'"</command>
+        <command>bash -c "wmctrl -a terminal || alacritty --title terminal --command tmux new-session -A -s main"</command>
       </action>
     </keybind>
     <!-- Notifications -->
