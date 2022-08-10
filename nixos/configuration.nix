@@ -24,6 +24,7 @@
   # Let me install packages from the unstable channel
   nixpkgs.config = {
     packageOverrides = pkgs: {
+      easystroke = pkgs.callPackage /etc/nixos/pkgs/easystroke/default.nix { };
 
       # Allow to specify master/unstable packages declaritvely.
       # https://stackoverflow.com/questions/48831392/how-to-add-nixos-unstable-channel-declaratively-in-configuration-nix
@@ -41,14 +42,18 @@
 
   # Give me the newest features!
   boot = {
-    #kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernelModules = [ "kvm-amd" "kvm-intel" ];
     plymouth.enable = true;
     supportedFilesystems = [ "ntfs" ];
   };
 
   networking = {
     networkmanager.enable = true;
-    firewall.allowedTCPPorts = [ 22 ];
+    firewall = {
+      allowedTCPPorts = [ 22 ];
+      checkReversePath = "loose";
+    };
     hosts = {
       "100.118.247.61" = [ "mcp" ];
     };
@@ -89,7 +94,7 @@
     git
     file
     gnumake
-    manpages
+    man-pages
     jq
     yq
     htop
@@ -103,10 +108,11 @@
     fd
     tree
     plan9port
+    difftastic
 
     # Networking
     nmap
-    telnet
+    inetutils # telnet
     netcat
 
     # HTTP
@@ -131,11 +137,12 @@
     xcape
     xplanet
     xorg.xev
-    xlibs.xmodmap
+    xorg.xmodmap
     xclip
     xsel
     xdotool
     wmctrl
+    easystroke
     feh
     arandr
     libnotify
@@ -158,7 +165,8 @@
     # Diagrams
     graphviz
     plantuml
-    xmind
+    # TODO broken on 22.05
+    #xmind
 
     # Writing
     texlive.combined.scheme-full
@@ -171,7 +179,7 @@
 
     # Remote file systems
     sshfs-fuse
-    cifs_utils
+    cifs-utils
 
     # For when I am traveling
     mosh
@@ -234,7 +242,7 @@
     virtmanager
     vagrant
     docker
-    docker_compose
+    docker-compose
 
     # Media
     pcmanfm
@@ -271,13 +279,13 @@
     wally-cli
 
     # Automation
-    ansible
-    terraform
-    vault
-    packer
-    consul
-    nixops
-    doctl
+    # ansible
+    # terraform
+    # vault
+    # packer
+    # consul
+    # nixops
+    # doctl
 
     # C
     gdb
@@ -307,10 +315,10 @@
     python3Packages.mypy
     python3Packages.coverage
 
-    unstable.python3Packages.python-language-server
-    python3Packages.pyls-black
-    python3Packages.pyls-isort
-    python3Packages.pyls-mypy
+    # unstable.python3Packages.python-language-server
+    # python3Packages.pyls-black
+    # python3Packages.pyls-isort
+    # python3Packages.pyls-mypy
 
     python3Packages.virtualenv
     python3Packages.virtualenvwrapper
