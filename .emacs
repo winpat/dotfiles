@@ -797,14 +797,12 @@ markdown reference."
   :ensure t
   :bind (("M-g" . goto-line-preview)))
 
-;; TODO This package is broken
-(use-package fasd
-  :ensure t
-  :config
-  ;; Let actions emacs also update the fasd database
-  (global-fasd-mode 1)
+
+(use-package recentf
+  :init (recentf-mode t)
+  :config (setq recentf-max-saved-items 50)
   (evil-leader/set-key
-   "j"   'fasd-find-file))
+	"j"   'consult-recent-file))
 
 (use-package selectrum
   :ensure t
