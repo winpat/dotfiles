@@ -233,6 +233,7 @@
 	"wk" 'windmove-up
 	"wl" 'windmove-right
 	"wt" 'transpose-windows
+	"wo" 'occur
 	"ws" 'toggle-window-split
 	"w1" 'delete-other-windows
 	"w2" (lambda () (interactive) (split-window-vertically) (other-window 1))
