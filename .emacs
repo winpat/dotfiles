@@ -925,3 +925,7 @@ markdown reference."
   :ensure t
   :mode (("\\.clj\\'" . clojure-mode)
          ("\\.edn\\'" . clojure-mode)))
+
+
+(use-package protobuf-mode
+  :ensure t)
