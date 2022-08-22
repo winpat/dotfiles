@@ -927,3 +927,7 @@ markdown reference."
 
 (use-package protobuf-mode
   :ensure t)
+
+(use-package persistent-scratch
+  :ensure t
+  :init (persistent-scratch-setup-default))
