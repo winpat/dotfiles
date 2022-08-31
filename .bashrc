@@ -83,6 +83,7 @@ alias ediff='emacsclient -c -a emacs -q --eval "(ediff-files \"$1\" \"$2\")";'
 alias er='systemctl --user restart emacs'
 alias g='git'
 alias t='tmux'
+alias tf='terraform'
 alias m='make'
 alias dc="docker-compose"
 alias o='xdg-open'
