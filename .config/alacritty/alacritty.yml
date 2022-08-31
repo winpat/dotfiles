@@ -23,7 +23,7 @@
   # available, otherwise `xterm-256color` is used.
   #TERM: alacritty
 env:
-  TERM: xterm-256color
+  TERM: xterm-24bit
 
 #window:
   # Window dimensions (changes require restart)
