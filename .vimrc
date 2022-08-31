@@ -11,6 +11,7 @@ Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'micha/vim-colors-solarized'
 Plug 'LnL7/vim-nix'
+Plug 'jvirtanen/vim-hcl'
 call plug#end()
 
 " Solarized <3
