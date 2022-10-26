@@ -830,14 +830,22 @@ markdown reference."
   (projectile-global-mode)
   (projectile-mode +1)
   :config
+  (defun discover-projects ()
+  	(let ((git-repositories (butlast (split-string-shell-command (shell-command-to-string "fd -I -td  -H .git ~/vcs | grep '.*\.git$'")))))
+  	  (dolist (dir git-repositories)
+  		(projectile-add-known-project (file-name-directory dir)))))
+
+  (discover-projects)
+
   (defun run-projectile-invalidate-cache (&rest _args)
 	;; We ignore the args to `magit-checkout'.
 	(projectile-invalidate-cache nil))
 
+  (setq projectile-project-search-path '("~/vcs/" ("~/vcs/parashift" . 1)))
+
   (advice-add 'magit-checkout :after #'run-projectile-invalidate-cache)
   (advice-add 'magit-branch-and-checkout :after #'run-projectile-invalidate-cache)
 
-  ;; Use `projectile-discover-projects-in-directory` to scan for projects
   (setq projectile-enable-caching t)
   (setq projectile-switch-project-action #'magit-status)
   (evil-leader/set-key
