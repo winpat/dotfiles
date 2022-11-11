@@ -700,6 +700,7 @@ markdown reference."
 
   (evil-leader/set-key
    "e"  'magit-dispatch
+   "h"  'magit-log-buffer-file
    "g"   'magit-status))
 
 (use-package hl-todo
