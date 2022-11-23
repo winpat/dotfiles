@@ -86,6 +86,7 @@ alias t='tmux'
 alias tf='terraform'
 alias m='make'
 alias dc="docker-compose"
+alias be="bundler exec"
 alias o='xdg-open'
 alias b="firefox"
 alias k="kubectl"
