@@ -924,8 +924,13 @@ markdown reference."
   (setq sqlformat-command 'pgformatter
 		sqlformat-args '("-f1")))
 
+(use-package flycheck-clj-kondo
+  :ensure t)
+
 (use-package clojure-mode
   :ensure t
+  :config
+  (require 'flycheck-clj-kondo)
   :mode (("\\.clj\\'" . clojure-mode)
          ("\\.edn\\'" . clojure-mode)))
 
