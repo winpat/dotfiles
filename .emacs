@@ -395,7 +395,12 @@
 
 (use-package lispy
   :ensure t
+  :hook ((emacs-lisp-mode clojure-mode) . lispy-mode)
   :diminish lispy-mode)
+
+(use-package lispyville
+  :ensure t
+  :hook (lispy-mode . lispyville-mode))
 
 ;; Allow to undo/redo window changes
 (winner-mode 1)
