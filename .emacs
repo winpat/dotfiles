@@ -936,13 +936,20 @@ markdown reference."
   :ensure t
   :config
   (require 'flycheck-clj-kondo)
+  (evil-leader/set-key-for-mode
+	'clojure-mode
+	"mt" 'cider-test-run-project-tests
+	"mj" 'cider-jack-in
+	"mb" 'cider-eval-buffer
+	"md" 'cider-debug-defun-at-point
+	"mr" 'cider-eval-region
+	"me" 'cider-eval-last-sexp)
   :mode (("\\.clj\\'" . clojure-mode)
          ("\\.edn\\'" . clojure-mode)))
 
 (use-package cider
   :ensure t
-  :mode (("\\.clj\\'" . clojure-mode)
-         ("\\.edn\\'" . clojure-mode)))
+  :hook (clojure-mode . cider-mode))
 
 
 (use-package protobuf-mode
