@@ -606,7 +606,7 @@
 (use-package smerge-mode
   :config
   (evil-leader/set-key-for-mode
-   'smerge-mode
+   'fundamental-mode
    "mn" 'smerge-next
    "mp" 'smerge-prev
    "ml" 'smerge-keep-lower
