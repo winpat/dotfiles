@@ -248,6 +248,7 @@
 	"dv" (lambda () (interactive) (dired "~/vcs/"))
 	"ds" (lambda () (interactive) (dired "~/shared/"))
 	"df" (lambda () (interactive) (dired "~/shared/fhnw"))
+	"fbt" (lambda () (interactive) (find-file "~/shared/todo.org"))
 	"fbh" (lambda () (interactive) (find-file "/etc/nixos/host-configuration.nix"))
 	"fbc" (lambda () (interactive) (find-file "/etc/nixos/configuration.nix"))
 	"fbi" (lambda () (interactive) (find-file "~/.config/i3/config"))
