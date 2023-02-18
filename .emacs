@@ -952,6 +952,11 @@ markdown reference."
   :ensure t
   :hook (clojure-mode . cider-mode))
 
+(use-package just-mode
+  :ensure t)
+
+(use-package ledger-mode
+  :ensure t)
 
 (use-package protobuf-mode
   :ensure t)
