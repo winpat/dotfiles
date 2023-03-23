@@ -839,7 +839,7 @@ markdown reference."
   (projectile-mode +1)
   :config
   (defun discover-projects ()
-  	(let ((git-repositories (butlast (split-string-shell-command (shell-command-to-string "fd -I -td  -H .git ~/vcs | grep '.*\.git$'")))))
+  	(let ((git-repositories (butlast (split-string-shell-command (shell-command-to-string "fd -I -td  -H .git ~/vcs | grep '.*\.git/$'")))))
   	  (dolist (dir git-repositories)
   		(projectile-add-known-project (file-name-directory dir)))))
 
