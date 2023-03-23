@@ -49,6 +49,10 @@
     '';
   };
 
+  virtualisation.docker.daemon.settings = {
+    "data-root" = "/data/docker";
+  };
+
 
   # Use proprietary graphic card driver for CUDA
   services.xserver.videoDrivers = [ "nvidia" ];
