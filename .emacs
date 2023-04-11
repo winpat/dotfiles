@@ -879,6 +879,12 @@ markdown reference."
   :ensure t
   :hook ((csharp-mode haskell-mode php-mode python-mode) . lsp))
 
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+						 (require 'lsp-pyright)
+						 (lsp))))
+
 (use-package makefile-executor
   :ensure t
   :config
