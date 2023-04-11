@@ -277,6 +277,9 @@
   (diminish 'git-gutter-mode)
   :ensure t)
 
+;; Emacs keybinding improvements
+(global-set-key (kbd "M-o") 'switch-to-buffer)
+(global-set-key (kbd "C-o") 'other-window)
 
 ;; There are may cool themes out there:
 ;;   - gruber-darker-theme
