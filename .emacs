@@ -888,6 +888,12 @@ markdown reference."
 						 (require 'lsp-pyright)
 						 (lsp))))
 
+(use-package lsp-tailwindcss
+  :init
+  (setq lsp-tailwindcss-add-on-mode t)
+  :config
+  (setq lsp-tailwindcss-major-modes '(svelte-mode html-mode sgml-mode mhtml-mode web-mode css-mode)))
+
 (use-package makefile-executor
   :ensure t
   :config
