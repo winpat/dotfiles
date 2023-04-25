@@ -208,8 +208,7 @@
   (evil-leader/set-key
 	"t" 'python-transient
 	;; "ap" 'list-packages
-	;; "ac" 'calc
-	;; "am" 'mu4e
+	"c" 'calc
 	;; "aw" 'woman
 	"bk" 'kill-buffer
 	"bl" 'ibuffer
@@ -468,8 +467,8 @@
 
 (use-package compile
   :config
-  (setq compilation-scroll-output 'first-error)
-  (evil-leader/set-key "c" 'compile))
+  ;; (evil-leader/set-key "c" 'compile)
+  (setq compilation-scroll-output 'first-error))
 
 (use-package deadgrep
   :ensure t
