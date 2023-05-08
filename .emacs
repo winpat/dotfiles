@@ -917,6 +917,11 @@ markdown reference."
   (setq flyspell-default-dictionary "en_US"
 		markdown-fontify-code-blocks-natively t))
 
+(use-package org-mode
+  :config
+  ;; Required so <s templates work
+  (require 'org-tempo))
+
 (use-package flycheck
   :ensure t)
 
