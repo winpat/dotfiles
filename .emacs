@@ -983,3 +983,8 @@ markdown reference."
 (use-package persistent-scratch
   :ensure t
   :init (persistent-scratch-setup-default))
+
+(use-package paredit
+  :ensure t
+  :hook ((clojure-mode . paredit-mode)
+		 (emacs-lisp-mode . paredit-mode)))
