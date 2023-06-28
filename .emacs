@@ -923,7 +923,8 @@ markdown reference."
   (require 'org-tempo))
 
 (use-package flycheck
-  :ensure t)
+  :ensure t
+  :hook (clojure-mode . flycheck-mode))
 
 (use-package rust-mode
   :ensure t)
