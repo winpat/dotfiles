@@ -61,9 +61,11 @@
     dpi = 140;
     libinput = {
       enable = true;
-      naturalScrolling = false;
-      middleEmulation = true;
-      tapping = true;
+      touchpad = {
+        middleEmulation = true;
+        naturalScrolling = false;
+        tapping = true;
+      };
     };
 
   };

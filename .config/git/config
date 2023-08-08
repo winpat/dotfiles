@@ -18,7 +18,7 @@ d = difftool
 cleanup-branches = !git fetch --all --prune && git branch -d $(git branch --merged=origin/master | grep -vE `git rev-parse --abbrev-ref HEAD`'|master')
 
 [tag]
-gpgsign = true
+#gpgsign = true
 
 [core]
 autocrlf = input
@@ -26,7 +26,7 @@ autocrlf = input
 [url "git@github.com:"]
 insteadOf = gh:
 
-[url "git@git.winpat.ch:"]
+[url "git@192.168.0.200:"]
 insteadOf = g:
 
 [url "git@gitlab.com:"]

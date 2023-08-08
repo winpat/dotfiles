@@ -1,6 +1,6 @@
 # tint2
 
-scale_relative_to_dpi 100
+scale_relative_to_dpi = 140
 
 # Background 1: Panel
 rounded = 0
