@@ -31,8 +31,6 @@
   # Let me install packages from the unstable channel
   nixpkgs.config = {
     packageOverrides = pkgs: {
-      easystroke = pkgs.callPackage /etc/nixos/pkgs/easystroke/default.nix { };
-
       # Allow to specify master/unstable packages declaritvely.
       # https://stackoverflow.com/questions/48831392/how-to-add-nixos-unstable-channel-declaratively-in-configuration-nix
       unstable = import (fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz) {
@@ -149,7 +147,6 @@
     xsel
     xdotool
     wmctrl
-    easystroke
     feh
     arandr
     libnotify
