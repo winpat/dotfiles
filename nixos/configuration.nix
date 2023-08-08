@@ -126,7 +126,7 @@
     httpie
 
     # Emacs
-    emacsUnstable
+    emacs-unstable
     mu
     isync
     sqlite  # Forge
@@ -301,7 +301,8 @@
     python3Packages.pytest
     python3Packages.pytest-mock
     python3Packages.pytest-isort
-    python3Packages.pytest-flake8
+    # TODO Remove or fix in 23.05
+    # python3Packages.pytest-flake8
     python3Packages.pytest-black
     python3Packages.pytest-mypy
     python3Packages.pytestcov
@@ -410,7 +411,9 @@
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    permitRootLogin = "yes";
+    settings = {
+      PermitRootLogin = "yes";
+    };
   };
 
   programs.ssh = {
@@ -440,7 +443,7 @@
   # Start an emacs user service
   services.emacs = {
     enable = true;
-    package = pkgs.emacsUnstable;
+    package = pkgs.emacs-unstable;
     defaultEditor = true;
   };
 
