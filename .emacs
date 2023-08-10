@@ -608,13 +608,12 @@
 
 (use-package smerge-mode
   :config
-  (evil-leader/set-key-for-mode
-   'fundamental-mode
-   "mn" 'smerge-next
-   "mp" 'smerge-prev
-   "ml" 'smerge-keep-lower
-   "mu" 'smerge-keep-upper
-   "me" 'smerge-ediff))
+  (evil-leader/set-key
+   "sn" 'smerge-next
+   "sp" 'smerge-prev
+   "sl" 'smerge-keep-lower
+   "su" 'smerge-keep-upper
+   "se" 'smerge-ediff))
 
 (use-package ediff
   :config
