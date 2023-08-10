@@ -879,6 +879,8 @@ markdown reference."
 ;;   npm i intelephense -g
 (use-package lsp-mode
   :ensure t
+  :config
+  (setq lsp-headerline-breadcrumb-enable nil)
   :hook ((csharp-mode haskell-mode php-mode python-mode) . lsp))
 
 (use-package lsp-pyright
