@@ -17,6 +17,7 @@ gem|tron|clu:
  - .config/dunst
  - .config/zathura
  - .config/alacritty
+ - .ipython/profile_default/startup/start.py
  - nixos/configuration.nix -> /etc/nixos/configuration.nix
  - nixos/cachix.nix -> /etc/nixos/cachix.nix
  - nixos/cachix -> /etc/nixos/cachix
