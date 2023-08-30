@@ -410,6 +410,16 @@
         <menu>client-list-combined-menu</menu>
       </action>
     </keybind>
+    <keybind key="W-Right">
+      <action name="GoToDesktop">
+		<to>next</to>
+      </action>
+    </keybind>
+    <keybind key="W-Left">
+      <action name="GoToDesktop">
+		<to>previous</to>
+      </action>
+    </keybind>
     <keybind key="A-S-Tab">
       <action name="PreviousWindow">
         <finalactions>
