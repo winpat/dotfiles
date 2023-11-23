@@ -206,7 +206,7 @@
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
-	"t" 'python-transient
+	"t" 'toggle-source-and-tests
 	;; "ap" 'list-packages
 	"c" 'calc
 	;; "aw" 'woman
@@ -748,6 +748,16 @@ markdown reference."
 (use-package rainbow-delimiters
   :ensure
   :hook (prog-mode . rainbow-delimiters-mode))
+
+(defun toggle-source-and-tests ()
+  "Toggle between source and test module."
+  (interactive)
+  (let* ((module-path (buffer-file-name))
+		 (module-name (file-name-nondirectory module-path))
+		 (package-path (file-name-directory module-path)))
+	(if (string-suffix-p "tests/" package-path)
+		(find-file (concat package-path "/../" (string-remove-prefix "test_" module-name)))
+	  (find-file (concat package-path "/tests/test_" module-name)))))
 
 (use-package python
   :config
