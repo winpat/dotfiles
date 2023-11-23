@@ -416,6 +416,8 @@
     };
   };
 
+  services.nfs.server.enable = true;
+
   programs.ssh = {
     startAgent = true;
     agentTimeout = "168h";
