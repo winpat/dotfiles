@@ -9,6 +9,7 @@ all:
  - .inputrc
  - .config/nixpkgs
  - .config/git
+ - .pdbrc.py
 
 gem|tron|clu:
  - .Xmodmap
