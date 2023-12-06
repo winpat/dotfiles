@@ -224,7 +224,8 @@
 	"n" 'counsel-open-notes
 	"," 'xref-pop-marker-stack
 	"." 'xref-find-definitions
-	"a" 'lsp-find-references
+	"a" 'xref-find-references
+	"-" 'eglot-rename
 	"ff" 'find-file
 	"fo" 'find-file-other-window
 	"wh" 'windmove-left
@@ -769,6 +770,10 @@ markdown reference."
   :after python
   :hook (python-mode . python-black-on-save-mode))
 
+(use-package eglot
+  :ensure t
+  :hook (python-mode . eglot-ensure))
+
 (use-package web-mode
   :ensure t
   :hook (ember-mode)
@@ -881,28 +886,6 @@ markdown reference."
 	"pk"  'projectile-kill-buffers
 	"pr"  'projectile-replace
 	"pR"  'projectile-replace-regexp))
-
-;; Python:
-;;   pip install 'python-language-server[all]'
-;; PHP:
-;;   npm i intelephense -g
-(use-package lsp-mode
-  :ensure t
-  :config
-  (setq lsp-headerline-breadcrumb-enable nil)
-  :hook ((csharp-mode haskell-mode php-mode python-mode) . lsp))
-
-(use-package lsp-pyright
-  :ensure t
-  :hook (python-mode . (lambda ()
-						 (require 'lsp-pyright)
-						 (lsp))))
-
-(use-package lsp-tailwindcss
-  :init
-  (setq lsp-tailwindcss-add-on-mode t)
-  :config
-  (setq lsp-tailwindcss-major-modes '(svelte-mode html-mode sgml-mode mhtml-mode web-mode css-mode)))
 
 (use-package makefile-executor
   :ensure t
