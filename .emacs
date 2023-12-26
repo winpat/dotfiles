@@ -985,3 +985,6 @@ markdown reference."
   :ensure t
   :hook ((clojure-mode . paredit-mode)
 		 (emacs-lisp-mode . paredit-mode)))
+
+(use-package zig-mode
+  :ensure t)
