@@ -248,11 +248,12 @@
 	"dv" (lambda () (interactive) (dired "~/vcs/"))
 	"ds" (lambda () (interactive) (dired "~/shared/"))
 	"df" (lambda () (interactive) (dired "~/shared/fhnw"))
-	"fbt" (lambda () (interactive) (find-file "~/shared/todo.org"))
-	"fbh" (lambda () (interactive) (find-file "/etc/nixos/host-configuration.nix"))
-	"fbc" (lambda () (interactive) (find-file "/etc/nixos/configuration.nix"))
-	"fbi" (lambda () (interactive) (find-file "~/.config/i3/config"))
-	"fbe" (lambda () (interactive) (find-file "~/.emacs"))))
+	"fs" (lambda () (interactive) (find-file "~/shared/"))
+	"ft" (lambda () (interactive) (find-file "~/shared/todo.org"))
+	"fh" (lambda () (interactive) (find-file "/etc/nixos/host-configuration.nix"))
+	"fc" (lambda () (interactive) (find-file "/etc/nixos/configuration.nix"))
+	"fi" (lambda () (interactive) (find-file "~/.config/i3/config"))
+	"fe" (lambda () (interactive) (find-file "~/.emacs"))))
 
 
 (use-package xclip
