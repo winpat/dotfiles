@@ -773,6 +773,8 @@ markdown reference."
 
 (use-package eglot
   :ensure t
+  :config
+  (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
   :hook (python-mode . eglot-ensure))
 
 (use-package web-mode
