@@ -206,6 +206,7 @@
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
+	"s" 'yas-insert-snippet
 	"t" 'toggle-source-and-tests
 	;; "ap" 'list-packages
 	"c" 'calc
@@ -990,3 +991,10 @@ markdown reference."
 
 (use-package zig-mode
   :ensure t)
+
+(use-package yasnippet
+  :ensure t
+  :config
+  (setq yas-snippet-dirs '("~/shared/snippets"))
+  (yas-reload-all)
+  (yas-global-mode))
