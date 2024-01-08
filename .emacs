@@ -711,7 +711,8 @@ markdown reference."
   (evil-leader/set-key
    "e"  'magit-dispatch
    "h"  'magit-log-buffer-file
-   "g"   'magit-status))
+   "l"  'magit-log-current
+   "g"  'magit-status))
 
 (use-package hl-todo
   :ensure t
@@ -998,3 +999,6 @@ markdown reference."
   (setq yas-snippet-dirs '("~/shared/snippets"))
   (yas-reload-all)
   (yas-global-mode))
+
+(use-package python-pytest
+  :ensure t)
