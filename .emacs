@@ -20,7 +20,7 @@
   (require 'use-package))
 
 ;; Font type and size
-(set-face-attribute 'default nil :height 110)
+(set-face-attribute 'default nil :height 130)
 (set-face-attribute 'default nil :family "Hack")
 
 ;; Allow to resize emacs to exactly 50% on openbox
