@@ -8,17 +8,6 @@
     /etc/nixos/work.nix  # Work sensitive settings which are not published
     /etc/nixos/host-configuration.nix
     /etc/nixos/hardware-configuration.nix
-    #/etc/nixos/cachix.nix
-  ];
-
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;}))
-  #  (self: super: {
-  #    # https://github.com/emilypeto/openbox-window-snap
-  #    openbox = super.openbox.overrideAttrs  (oldAttrs: rec {
-  #      patches = [ ./openbox-aerosnap.patch ];
-  #    });
-  #  })
   ];
 
   nix = {
@@ -80,8 +69,8 @@
 
   # List of font packages that are exposed to applications
   fonts = {
-    enableDefaultFonts = true;
-    fonts = with pkgs; [ hack-font font-awesome ];
+    enableDefaultPackages = true;
+    packages = with pkgs; [ hack-font font-awesome ];
   };
 
   # Required so libreoffice finds the hunspell dicts
@@ -112,7 +101,6 @@
     ripgrep
     fd
     tree
-    plan9port
     difftastic
 
     # Networking
@@ -126,10 +114,10 @@
     httpie
 
     # Emacs
-    emacs-unstable
-    mu
-    isync
-    sqlite  # Forge
+    emacs29
+
+    # Misc
+    sqlite
 
     # Spell checking
     hunspell
@@ -140,7 +128,6 @@
     alacritty
     dmenu
     xcape
-    xplanet
     xorg.xev
     xorg.xmodmap
     xclip
@@ -152,15 +139,9 @@
     libnotify
     dunst
     flameshot  # scrot on steroids
-    udiskie
     gparted
+    pavucontrol
     acpi
-
-    # i3
-    #i3-layout-manager
-    #python37Packages.i3ipc
-    perl
-    i3blocks
 
     # openbox
     tint2
@@ -191,8 +172,6 @@
     binutils
     usbutils
     pmutils
-    cups
-    pavucontrol
 
     # Lock screen
     i3lock-color
@@ -208,11 +187,8 @@
 
     # Communication
     weechat
-    unstable.discord
     slack
-    unstable.zoom-us
-    teams
-
+    unstable.discord
 
     # Databases
     pgcli
@@ -238,7 +214,7 @@
 
     # Virtualization and containers
     virt-viewer
-    virtmanager
+    virt-manager
     vagrant
     docker
     docker-compose
@@ -266,7 +242,7 @@
     bitwarden-cli
     pwgen
     yubikey-personalization
-    pinentry_gnome
+    pinentry-gnome
 
     # File synchronization
     rsync
@@ -278,53 +254,16 @@
     # Ergodox Ez
     wally-cli
 
-    # Automation
-    terraform
-    waypoint
-    nomad
-    vault
-    packer
-    consul
-    #ansible
-    #nixops
-    #doctl
-
     # C
     gdb
     gcc
+    zig
     cmake
 
     # Python 3
     python3
-
-    # Binaries
-    python3Packages.pytest
-    python3Packages.pytest-mock
-    python3Packages.pytest-isort
-    # TODO Remove or fix in 23.05
-    # python3Packages.pytest-flake8
-    python3Packages.pytest-black
-    python3Packages.pytest-mypy
-    python3Packages.pytestcov
-
     python3Packages.ipython
-    python3Packages.bpython
-
     python3Packages.ipdb
-
-    python3Packages.black
-    python3Packages.isort
-    python3Packages.flake8
-    python3Packages.mypy
-    python3Packages.coverage
-
-    # unstable.python3Packages.python-language-server
-    # python3Packages.pyls-black
-    # python3Packages.pyls-isort
-    # python3Packages.pyls-mypy
-
-    python3Packages.virtualenv
-    python3Packages.virtualenvwrapper
 
     # Data Science
     visidata
@@ -361,8 +300,8 @@
     dataDir = "/home/patrick";
     overrideFolders = false;
     overrideDevices = true;
-    devices = {
-      "mcp" = {
+    settings.devices = {
+      mcp = {
         addresses = [ "tcp://100.118.247.61:22000" ];
         id = "5XOROW7-FWKKSXP-YNUDYZK-XVZ4LMK-2VY474C-DGG33XP-4BSXPPT-VYOT2A2";
       };
@@ -374,19 +313,7 @@
     libu2f-host
   ];
 
-  # Add additional udev rules for Ergodox EZ and Planck EZ
-  services.udev.extraRules = ''
-    # Teensy rules for the Ergodox EZ Original / Shine / Glow
-    ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789B]?", ENV{ID_MM_DEVICE_IGNORE}="1"
-    ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789A]?", ENV{MTP_NO_PROBE}="1"
-    SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789ABCD]?", MODE:="0666"
-    KERNEL=="ttyACM*", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789B]?", MODE:="0666"
-
-    # STM32 rules for the Planck EZ Standard / Glow
-    SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", \
-        MODE:="0666", \
-        SYMLINK+="stm32_dfu"
-  '';
+  hardware.keyboard.zsa.enable = true;
 
   users.users.patrick = {
     isNormalUser = true;
@@ -445,7 +372,7 @@
   # Start an emacs user service
   services.emacs = {
     enable = true;
-    package = pkgs.emacs-unstable;
+    package = pkgs.emacs29;
     defaultEditor = true;
   };
 
@@ -462,10 +389,6 @@
     enable = true;
     layout = "ch";
     displayManager.lightdm.enable = true;
-    windowManager.i3 = {
-      enable = true;
-      package = pkgs.i3-gaps;
-    };
     windowManager.openbox.enable = true;
 
     # Lock the screen after 60 seconds of inactivity
@@ -486,21 +409,6 @@
 
   # Discover network printers
   services.avahi.enable = true;
-
-  # Use `nix run nixpkgs.hplipWithPlugin -c sudo hp-setup`. For further
-  # information checkout: https://nixos.wiki/wiki/Printing
-  services.printing = {
-    enable = true;
-    drivers = [
-      pkgs.hplip
-      pkgs.hplipWithPlugin
-    ];
-  };
-
-  # Required to run steam:
-  # https://github.com/NixOS/nixpkgs/issues/47932
-  #hardware.opengl.driSupport32Bit = true;
-  #hardware.pulseaudio.support32Bit = true;
 
   # NixOS allows either a lightweight build (default) or full that includes
   # bluetooth support.
