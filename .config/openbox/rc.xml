@@ -155,6 +155,11 @@
         <command>bash -c "wmctrl -a Emacs || emacsclient -c"</command>
       </action>
     </keybind>
+    <keybind key="W-c">
+      <action name="Execute">
+        <command>bash -c "wmctrl -a '*Calculator*' || emacs -q --eval '(progn (load-theme '\''leuven t) (set-frame-font \"Hack 12\" nil t) (full-calc))'"</command>
+      </action>
+    </keybind>
     <keybind key="W-m">
       <action name="Execute">
         <command>bash -c "wmctrl -a mu4e || emacs -q -T mu4e -l ~/.mail.el"</command>
@@ -230,7 +235,7 @@
     </keybind>
 
     <!-- center / reading mode -->
-    <keybind key="W-c">
+    <keybind key="W-x">
       <action name="UnmaximizeFull"/>
       <action name="MoveResizeTo">
         <x>30%</x>
