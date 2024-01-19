@@ -556,7 +556,9 @@
 		(rx (seq bol "." (not (any ".")))))
 
   (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
-  (evil-define-key 'normal dired-mode-map "o" 'dired-start-process))
+  (evil-define-key 'normal dired-mode-map
+	"o" 'dired-start-process
+	"s" 'dired-sort-toggle-or-edit))
 
 (use-package company
   :ensure t
