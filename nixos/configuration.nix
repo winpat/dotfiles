@@ -85,7 +85,6 @@
     # Base
     vim
     tmux
-    git
     file
     gnumake
     man-pages
@@ -102,6 +101,10 @@
     fd
     tree
     difftastic
+
+    # VCS
+    git
+    git-absorb
 
     # Networking
     nmap
