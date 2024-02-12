@@ -37,3 +37,6 @@ tool = vimdiff
 
 [diff "zip"]
 textconv = unzip -c -a
+
+[rerere]
+enabled = true
