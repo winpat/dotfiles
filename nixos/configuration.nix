@@ -192,7 +192,7 @@
 
     # Databases
     pgcli
-    postgresql
+    pspg
 
     # Browser
     firefox

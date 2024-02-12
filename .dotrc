@@ -9,6 +9,7 @@ all:
  - .inputrc
  - .config/nixpkgs
  - .config/git
+ - .config/pgcli/config
  - .pdbrc.py
 
 gem|tron|clu:
