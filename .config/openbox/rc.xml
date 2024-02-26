@@ -181,26 +181,26 @@
       </action>
     </keybind>
     <!-- Notifications -->
-    <keybind key="F12">
-      <action name="Execute">
-        <command>dunstctl action</command>
-      </action>
-    </keybind>
-    <keybind key="F11">
-      <action name="Execute">
-        <command>dunstctl history-pop</command>
-      </action>
-    </keybind>
-    <keybind key="F10">
-      <action name="Execute">
-        <command>dunstctl close</command>
-      </action>
-    </keybind>
-    <keybind key="F9">
-      <action name="Execute">
-        <command>dunstctl close-all</command>
-      </action>
-    </keybind>
+    <!-- <keybind key="F12"> -->
+    <!--   <action name="Execute"> -->
+    <!--     <command>dunstctl action</command> -->
+    <!--   </action> -->
+    <!-- </keybind> -->
+    <!-- <keybind key="F11"> -->
+    <!--   <action name="Execute"> -->
+    <!--     <command>dunstctl history-pop</command> -->
+    <!--   </action> -->
+    <!-- </keybind> -->
+    <!-- <keybind key="F10"> -->
+    <!--   <action name="Execute"> -->
+    <!--     <command>dunstctl close</command> -->
+    <!--   </action> -->
+    <!-- </keybind> -->
+    <!-- <keybind key="F9"> -->
+    <!--   <action name="Execute"> -->
+    <!--     <command>dunstctl close-all</command> -->
+    <!--   </action> -->
+    <!-- </keybind> -->
     <!-- Multimedia keys -->
     <keybind key="XF86AudioPlay">
       <action name="Execute">
