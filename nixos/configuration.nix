@@ -288,7 +288,7 @@
     picocom
 
     # GCP
-    (google-cloud-sdk.withExtraComponents [google-cloud-sdk.components.gke-gcloud-auth-plugin])
+    unstable.google-cloud-sdk
     kubectx
     kubectl
     k9s
