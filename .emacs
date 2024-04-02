@@ -214,6 +214,7 @@
 	"bk" 'kill-buffer
 	"bl" 'ibuffer
 	"bn" 'switch-to-next-buffer
+	"bw" 'copy-pwd
 	"bp" 'switch-to-prev-buffer
 	"bR" 'rename-file-and-buffer
 	"br" 'revert-buffer-no-confirm
@@ -394,10 +395,10 @@
 		(select-window (funcall selector)))
 	  (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
 
-  (defun copy-pwd ()
-	"Copy PWD to clipboard."
-	(interactive)
-	(kill-new (buffer-file-name)))
+(defun copy-pwd ()
+  "Copy PWD to clipboard."
+  (interactive)
+  (kill-new (buffer-file-name)))
 
 ;; (use-package lispy
 ;;   :ensure t
