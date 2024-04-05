@@ -88,6 +88,7 @@
     file
     gnumake
     man-pages
+    fend
     jq
     yq
     htop
