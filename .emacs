@@ -876,6 +876,7 @@ markdown reference."
   (setq projectile-project-search-path '("~/vcs/" ("~/vcs/parashift" . 1)))
 
   (advice-add 'magit-checkout :after #'run-projectile-invalidate-cache)
+  (advice-add 'magit-rebase-branch :after #'run-projectile-invalidate-cache)
   (advice-add 'magit-branch-and-checkout :after #'run-projectile-invalidate-cache)
 
   (setq projectile-enable-caching t)
