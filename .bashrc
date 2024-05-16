@@ -99,6 +99,11 @@ alias kctx="kubectx"
 alias kns="kubens"
 alias w="watch "
 
+# Configure completion for shell aliases
+source `which complete_alias`
+complete -F _complete_alias r
+complete -F _complete_alias k
+
 
 # Python virtualenv
 alias ae='deactivate &> /dev/null; source ./env/bin/activate'

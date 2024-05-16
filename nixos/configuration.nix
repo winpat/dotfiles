@@ -95,14 +95,17 @@
     htop
     strace
     bind
-    fasd
-    direnv
-    fzf
     bat
     ripgrep
     fd
     tree
     difftastic
+
+    # Shell
+    fzf
+    complete-alias
+    fasd
+    direnv
 
     # VCS
     git
