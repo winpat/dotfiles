@@ -97,6 +97,7 @@ alias ns="kubectl config view --minify --output 'jsonpath={..namespace}'; echo"
 alias ctx="kubectl config view --minify --output 'jsonpath={..context.cluster}'; echo"
 alias kctx="kubectx"
 alias kns="kubens"
+alias w="watch "
 
 
 # Python virtualenv
