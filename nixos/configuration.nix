@@ -87,6 +87,7 @@
     tmux
     file
     gnumake
+    just
     man-pages
     fend
     jq
