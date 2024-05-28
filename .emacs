@@ -979,6 +979,12 @@ markdown reference."
 (use-package just-mode
   :ensure t)
 
+(use-package justl
+  :ensure t
+  :config
+  (evil-leader/set-key
+ 	"i"  'justl-exec-recipe-in-dir))
+
 (use-package ledger-mode
   :ensure t)
 
