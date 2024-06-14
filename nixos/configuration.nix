@@ -397,7 +397,7 @@
   services.xserver = {
     enable = true;
     layout = "ch";
-    displayManager.gdm.enable = true;
+    displayManager.lightdm.enable = true;
     windowManager.openbox.enable = true;
 
     # Lock the screen after 60 seconds of inactivity
