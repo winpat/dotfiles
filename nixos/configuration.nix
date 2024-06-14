@@ -250,7 +250,6 @@
     bitwarden-cli
     pwgen
     yubikey-personalization
-    pinentry-gnome
 
     # File synchronization
     rsync
@@ -361,7 +360,6 @@
 
   programs.gnupg.agent = {
     enable = true;
-    pinentryFlavor = "gtk2";
   };
 
   # For when I am on the run :-)
