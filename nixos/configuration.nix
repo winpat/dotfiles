@@ -197,7 +197,7 @@
     # Communication
     weechat
     slack
-    unstable.discord
+    discord
 
     # Databases
     pgcli
