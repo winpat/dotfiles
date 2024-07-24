@@ -1012,3 +1012,11 @@ markdown reference."
 
 (use-package python-pytest
   :ensure t)
+
+
+(use-package rspec-mode
+  :ensure t
+  :config
+  (setq rspec-use-spring-when-possible nil)
+  (setq rspec-use-bundler-when-possible nil)
+  (setq rspec-spec-command "bin/rspec"))
