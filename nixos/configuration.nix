@@ -111,6 +111,7 @@
     # VCS
     git
     git-absorb
+    gh
 
     # Networking
     nmap
