@@ -432,7 +432,15 @@
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
+    # Modern headsets will generally try to connect using the A2DP profile.
+    # https://nixos.wiki/wiki/Bluetooth
+    settings = {
+      General = {
+        Enable = "Source,Sink,Media,Socket";
+      };
+    };
   };
+
 
   programs.noisetorch.enable = true;
 
