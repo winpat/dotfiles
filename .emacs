@@ -921,9 +921,18 @@ markdown reference."
 		markdown-fontify-code-blocks-natively t))
 
 (use-package org-mode
+  :custom-face
+  (org-block-begin-line ((t (:foreground "#8b8b8b" :extend t))))
+  (org-block-end-line ((t (:foreground "#8b8b8b" :extend t)))))
   :config
+  ;; Allow to modify image size
+  (setq org-image-actual-width nil)
+  ;; Hide emphasis markers
+  (setq org-hide-emphasis-markers t)
+  ;; Render emphasied text
+  (setq org-fontify-emphasized-text t)
   ;; Required so <s templates work
-  (require 'org-tempo))
+  (require 'org-tempo)
 
 (use-package org-tree-slide
   :ensure t
