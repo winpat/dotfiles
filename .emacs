@@ -925,6 +925,11 @@ markdown reference."
   ;; Required so <s templates work
   (require 'org-tempo))
 
+(use-package org-tree-slide
+  :ensure t
+  :config
+  (setq org-tree-slide-heading-emphasis t))
+
 (use-package flycheck
   :ensure t
   :hook (clojure-mode . flycheck-mode))
