@@ -185,7 +185,7 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+o exec "i3-nagbar -t warning -m 'Do you really want to exit i3?' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # Lock the screen
-bindsym $mod+o exec i3lock-color -k  -c 000000 --timecolor ffffffff --datecolor ffffffff --datestr='%d/%m/%Y'
+bindsym $mod+o exec i3lock-color -k  -c 000000 --time-color ffffff --date-color ffffff --date-str='%d/%m/%Y'
 
 # Don't follow the mouse
 focus_follows_mouse no

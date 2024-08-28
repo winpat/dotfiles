@@ -3,7 +3,7 @@
 Here are my dotfiles which I reuse across all my systems.
 
 * I use [NixOS](https://nixos.org/) as my operating system.
-* I use [openbox](http://openbox.org/wiki/Main_Page) as my window manager.
+* I use [i3](https://i3wm.org/) and [openbox](http://openbox.org/wiki/Main_Page) as my window manager.
 * I pretty much live in [Emacs](https://www.gnu.org/software/emacs/) and [tmux](https://github.com/tmux/tmux).
 
 
