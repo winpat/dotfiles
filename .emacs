@@ -499,7 +499,10 @@
   :diminish abbrev-mode
   :config
   (setq save-abbrevs 'silently)
-  (define-abbrev-table 'global-abbrev-table
+
+  (define-abbrev-table 'ruby-mode-abbrev-table
+	'(("bp" "binding.pry  # FIXME")))
+  (define-abbrev-table 'python-mode-abbrev-table
 	'(("bp" "breakpoint()  # FIXME"))))
 
 ;; Emacs has this builtin now, it's fast
