@@ -985,7 +985,8 @@ markdown reference."
 	"md" 'cider-debug-defun-at-point
 	"mr" 'cider-eval-region
 	"me" 'cider-eval-last-sexp)
-  :bind (("C-x C-d" . cider-debug-defun-at-point))
+  :bind (("C-x C-d" . cider-debug-defun-at-point)
+		 ("C-x C-i" . cider-inspect-last-result))
   :mode (("\\.clj\\'" . clojure-mode)
          ("\\.edn\\'" . clojure-mode)))
 
