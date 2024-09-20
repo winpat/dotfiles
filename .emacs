@@ -190,6 +190,9 @@
 	   (setq-default text-scale-mode-amount (+ text-scale-mode-amount inc))
 	   (global-text-scale-mode 1))
 
+(use-package emacs-lisp
+  :bind (("C-c C-d" . helpful-at-point)))
+
 (use-package evil
   :ensure t
   :init
