@@ -762,15 +762,7 @@ markdown reference."
   :ensure
   :hook (prog-mode . rainbow-delimiters-mode))
 
-(defun toggle-source-and-tests ()
-  "Toggle between source and test module."
-  (interactive)
-  (let* ((module-path (buffer-file-name))
-		 (module-name (file-name-nondirectory module-path))
-		 (package-path (file-name-directory module-path)))
-	(if (string-suffix-p "tests/" package-path)
-		(find-file (concat package-path "/../" (string-remove-prefix "test_" module-name)))
-	  (find-file (concat package-path "/tests/test_" module-name)))))
+
 
 (use-package python
   :config
@@ -1041,3 +1033,33 @@ markdown reference."
   (setq rspec-use-spring-when-possible nil)
   (setq rspec-use-bundler-when-possible nil)
   (setq rspec-spec-command "bin/rspec"))
+
+(defun toggle-source-and-tests ()
+  "Toggle between the source and test file"
+  (interactive)
+  (pcase major-mode
+	('python-mode (python/toggle-source-and-test))
+	('ruby-mode (ruby/toggle-source-and-test))))
+
+(defun python/toggle-source-and-test ()
+  (let* ((module-path (buffer-file-name))
+		 (module-name (file-name-nondirectory module-path))
+		 (package-path (file-name-directory module-path)))
+	(if (string-suffix-p "tests/" package-path)
+		(find-file (concat package-path "/../" (string-remove-prefix "test_" module-name)))
+	  (find-file (concat package-path "/tests/test_" module-name)))))
+
+(defun ruby/toggle-source-and-test ()
+  (let* ((file-name (file-name-nondirectory (buffer-file-name)))
+		 (is-spec (string-match-p "_spec\\.rb\\'" file-name))
+		 (project-root (projectile-project-root))
+		 (project-files (projectile-project-files project-root))
+		 (target (if is-spec
+					 (replace-regexp-in-string "_spec\\.rb\\'" ".rb" file-name)
+				   (replace-regexp-in-string "\\.rb\\'" "_spec.rb" file-name)))
+		 (matches (seq-filter (lambda (path) (string-match-p target path)) project-files))
+		 (open (lambda (path) (find-file (expand-file-name path project-root)))))
+	(cond
+	 ((not matches) (message (format "No matches found for %s." target)))
+	 ((= (length matches) 1) (funcall open (car matches)))
+	 (t (funcall open (selectrum-completing-read "Matches: " matches))))))
