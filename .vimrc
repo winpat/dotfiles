@@ -1,22 +1,7 @@
 " .vimrc of Patrick Winter <patrickwinter@posteo.ch>
 
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall | source $MYVIMRC
-endif
-
-call plug#begin('~/.vim/plugged')
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'micha/vim-colors-solarized'
-Plug 'LnL7/vim-nix'
-Plug 'jvirtanen/vim-hcl'
-call plug#end()
-
-" Solarized <3
-colorscheme solarized
-set background=dark
+" Load theme
+colorscheme retrobox
 
 " Ergnomic replacement for esc
 :imap jk <Esc>
@@ -65,7 +50,6 @@ endfor
 
 " line numbering
 set number
-"set relativenumber
 
 " enable syntax highlighting
 syntax on
