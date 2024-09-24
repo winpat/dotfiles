@@ -26,8 +26,6 @@ gem|tron|clu:
  - nixos/cachix -> /etc/nixos/cachix
 
 tron:
- - .config/i3
- - .config/i3blocks
  - .config/openbox
  - .config/tint2
  - nixos/tron-configuration.nix -> /etc/nixos/host-configuration.nix
@@ -38,8 +36,6 @@ clu:
  - nixos/clu-configuration.nix -> /etc/nixos/host-configuration.nix
 
 gem:
- - .config/i3
- - .config/i3blocks
  - .config/openbox
  - .config/tint2
  - nixos/gem-configuration.nix -> /etc/nixos/host-configuration.nix

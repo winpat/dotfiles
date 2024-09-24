@@ -153,10 +153,6 @@
     pavucontrol
     acpi
 
-    # i3
-    perl
-    i3blocks
-
     # openbox
     tint2
     obconf
@@ -402,12 +398,7 @@
     enable = true;
     layout = "ch";
     displayManager.lightdm.enable = true;
-
     windowManager.openbox.enable = true;
-    windowManager.i3 = {
-      enable = true;
-      package = pkgs.i3-gaps;
-    };
 
     # Lock the screen after 60 seconds of inactivity
     xautolock = {

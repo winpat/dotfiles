@@ -1,9 +1,0 @@
-#!/bin/bash
-
-lsusb | grep Yubico &> /dev/null
-
-if [[ $? -eq 1 ]]; then
-    echo 'yubikey'
-    echo 'yubikey'
-    echo '#FF0000' # color
-fi
