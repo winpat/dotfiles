@@ -11,9 +11,7 @@ set -o emacs
 # Environment variables
 export EDITOR="emacsclient -nw"
 
-# Password store
-#export PASSWORD_STORE_DIR="$HOME/vcs/passwords/"
-
+# Add custom scripts to $PATH
 export PATH="$HOME/bin:$PATH"
 
 # Ignore commands that start with a whitespace.
@@ -77,10 +75,10 @@ alias grep='grep --color=auto'
 
 # Aliases
 alias e='emacsclient -nw'
-alias r='just'
-alias da='direnv allow'
 alias mg="emacsclient -nw -e '(progn (magit-status) (delete-other-windows))'"
 alias ediff='emacsclient -c -a emacs -q --eval "(ediff-files \"$1\" \"$2\")";'
+alias r='just'
+alias da='direnv allow'
 alias er='systemctl --user restart emacs'
 alias g='git'
 alias t='tmux'
@@ -92,23 +90,16 @@ alias dc="docker-compose"
 alias be="bundler exec"
 alias o='xdg-open'
 alias b="firefox"
+alias w="watch "
+# Kubernetes
 alias k="kubectl"
 alias ns="kubectl config view --minify --output 'jsonpath={..namespace}'; echo"
 alias ctx="kubectl config view --minify --output 'jsonpath={..context.cluster}'; echo"
 alias kctx="kubectx"
 alias kns="kubens"
-alias w="watch "
-
-# Configure completion for shell aliases
-source `which complete_alias`
-complete -F _complete_alias r
-complete -F _complete_alias k
-
-
 # Python virtualenv
 alias ae='deactivate &> /dev/null; source ./env/bin/activate'
 alias de='deactivate'
-
 # Navigation
 alias ..="cd .."
 alias ...="cd ../.."
@@ -117,16 +108,10 @@ alias cdm='cd /mnt'
 alias cdf='cd ~/shared/fhnw'
 alias cds='cd ~/shared'
 
-# Store global npm packages in home directory
-export NPM_CONFIG_PREFIX="$HOME/.npm/node_modules/"
-export PATH="$PATH:$HOME/.npm/node_modules/bin"
-
-# Set GOPATH to hidden directory in home directory
-export GOPATH="$HOME/.go/"
-export PATH="$PATH:$HOME/.go/bin"
-
-# dircolors
-test -r "~/.dir_colors" && eval $(dircolors ~/.dir_colors)
+# Configure completion for shell aliases
+source `which complete_alias`
+complete -F _complete_alias r
+complete -F _complete_alias k
 
 # fzf solarized dark theme
 export FZF_DEFAULT_OPTS='
