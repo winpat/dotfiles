@@ -37,10 +37,6 @@ clu:
  - .config/tint2
  - nixos/clu-configuration.nix -> /etc/nixos/host-configuration.nix
 
-mcp:
- - .mbsyncrc
- - .mail.el
-
 gem:
  - .config/i3
  - .config/i3blocks

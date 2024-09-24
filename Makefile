@@ -10,11 +10,6 @@ bin: ## Move scripts and tooling in place
 		ln -sf $$file ~/bin/$$f; \
 	done
 
-mail: ## Initalize mbsync + mu4e setup
-	mkdir -p ~/mail/posteo ~/mail/fhnw ~/mail/adfinis ~/mail/hotmail
-	mbsync -a
-	mu index --maildir=~/mail/
-
 terminfo: ## Create .terminfo for 24bit colors
 	tic -x -o ~/.terminfo terminfo/xterm-24bit.terminfo
 	sudo tic -x -o /root/.terminfo terminfo/xterm-24bit.terminfo
