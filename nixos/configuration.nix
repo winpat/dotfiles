@@ -341,6 +341,8 @@
     ];
   };
 
+  programs.direnv.enable = true;
+
   programs.bash.enableCompletion = true;
 
   security.sudo.wheelNeedsPassword = false;
