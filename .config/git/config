@@ -40,3 +40,6 @@ textconv = unzip -c -a
 
 [rerere]
 enabled = true
+
+[absorb]
+maxStack=50
