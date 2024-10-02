@@ -150,6 +150,7 @@
     "fh" (lambda () (interactive) (find-file "/etc/nixos/host-configuration.nix"))
     "fs" (lambda () (interactive) (find-file "~/shared/"))
     "ft" (lambda () (interactive) (find-file "~/shared/todo.org"))
+    "n" 'open-note
     "o" 'switch-to-buffer
     "t" 'toggle-source-and-tests
     "w1" 'delete-other-windows
@@ -161,6 +162,13 @@
     "wo" 'other-window
     "ws" 'toggle-window-split
     "wt" 'swap-windows))
+
+(defun open-note ()
+  (interactive)
+  (let* ((files (directory-files notes-directory))
+	 (notes (seq-filter (lambda (f) (not (string-prefix-p "." f))) files))
+	 (target (completing-read "Note: " notes)))
+    (find-file (concat notes-directory "/" target))))
 
 (use-package windmove
   :init
@@ -579,8 +587,7 @@
   :bind (("M-g" . goto-line-preview))
   :init
   (evil-leader/set-key
-    "r" 'consult-ripgrep
-    "n" (lambda () (interactive) (consult-fd notes-directory))))
+    "r" 'consult-ripgrep))
 
 (use-package eglot
   :ensure t
