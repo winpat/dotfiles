@@ -737,6 +737,31 @@
   ;; https://github.com/jschaf/esup/issues/85#issuecomment-1130110196
   (setq esup-depth 0))
 
+(use-package f
+  :ensure t)
+
+(use-package gptel
+  :ensure t
+  :bind (("M-m" . toggle-gptel))
+  :config
+  (add-hook 'gptel-mode-hook 'visual-line-mode)
+  (setq
+   gptel-model "claude-3-opus-20240229"
+   gptel-backend (gptel-make-anthropic "Claude"
+		   :stream t
+		   :key (f-read-text "~/.anthropic"))))
+
+(defun toggle-gptel ()
+  (interactive)
+  (let* ((current-buffer-name (buffer-name))
+	 (gptel-buffer-name "*Claude*")
+	 (gptel-buffer (get-buffer gptel-buffer-name)))
+    (if (string= current-buffer-name gptel-buffer-name)
+	(previous-buffer)
+      (if (not gptel-buffer)
+	  (switch-to-buffer (gptel gptel-buffer-name))
+	(switch-to-buffer gptel-buffer)))))
+
 (defun toggle-source-and-tests ()
   "Toggle between the source and test file"
   (interactive)
