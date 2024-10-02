@@ -572,6 +572,23 @@
   :config
   (setq org-tree-slide-heading-emphasis t))
 
+(use-package treesit
+  :config
+  (setq treesit-language-source-alist
+	'((elisp "https://github.com/Wilfred/tree-sitter-elisp")
+	  (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+	  (html "https://github.com/tree-sitter/tree-sitter-html")
+	  (css "https://github.com/tree-sitter/tree-sitter-css")
+	  (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+	  (json "https://github.com/tree-sitter/tree-sitter-json")
+	  (python "https://github.com/tree-sitter/tree-sitter-python")
+          (ruby "https://github.com/tree-sitter/tree-sitter-ruby"))))
+
+(use-package treesit-auto
+  :ensure t
+  :config
+  (global-treesit-auto-mode))
+
 (use-package vertico
   :ensure t
   :config (vertico-mode 1))
@@ -766,8 +783,9 @@
   "Toggle between the source and test file"
   (interactive)
   (pcase major-mode
-    ('python-mode (python/toggle-source-and-test))
-    ('ruby-mode (ruby/toggle-source-and-test))))
+    ((or 'python-mode 'python-ts-mode) (python/toggle-source-and-test))
+    ((or 'ruby-mode 'ruby-ts-mode) (ruby/toggle-source-and-test))
+    (_ (message "%s is not supported" major-mode))))
 
 (defun python/toggle-source-and-test ()
   (let* ((module-path (buffer-file-name))
