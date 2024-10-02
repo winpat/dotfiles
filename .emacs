@@ -584,7 +584,7 @@
 
 (use-package consult
   :ensure t
-  :bind (("M-g" . goto-line-preview))
+  :bind (("M-g" . consult-goto-line))
   :init
   (evil-leader/set-key
     "r" 'consult-ripgrep))
