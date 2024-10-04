@@ -502,8 +502,7 @@
 (use-package paredit
   :ensure t
   :diminish (paredit-mode)
-  :hook ((clojure-mode . paredit-mode)
-	 (emacs-lisp-mode . paredit-mode)))
+  :hook ((clojure-mode emacs-lisp-mode)))
 
 (use-package dired
   :defer t
@@ -633,11 +632,6 @@
   :ensure t
   :mode (("\\.rs\\'" . rust-mode)))
 
-;; TODO Research difference to flyspell
-(use-package flycheck
-  :ensure t
-  :hook (clojure-mode . flycheck-mode))
-
 (use-package ispell
   :ensure t
   :config
@@ -654,12 +648,16 @@
   (setq flyspell-default-dictionary "en_US"
 	markdown-fontify-code-blocks-natively t))
 
+(use-package flycheck
+  :ensure t
+  :hook clojure-mode)
+
 (use-package flycheck-clj-kondo
-  :hook clojure-mode
   :ensure t)
 
 (use-package clojure-mode
   :ensure t
+  :config (require 'flycheck-clj-kondo)
   :bind (("C-x C-d" . cider-debug-defun-at-point)
 	 ("C-x C-i" . cider-inspect-last-result))
   :mode (("\\.clj\\'" . clojure-mode)
