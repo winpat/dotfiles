@@ -465,7 +465,7 @@
 (use-package abbrev
   :init (setq-default abbrev-mode 1)
   :diminish abbrev-mode
-  :hook prog-mode
+  :hook (python-ts-mode ruby-ts-mode)
   :config
   (setq save-abbrevs 'silently)
   (define-abbrev-table 'ruby-mode-abbrev-table
