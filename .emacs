@@ -144,6 +144,7 @@
     "br" (lambda () (interactive) (revert-buffer t t))
     "bn" (lambda () (interactive) (kill-new (buffer-name)))
     "bw" (lambda () (interactive) (kill-new (buffer-file-name)))
+    "bp" (lambda () (interactive) (kill-new (f-relative (buffer-file-name) (projectile-project-root))))
     "c" 'calc
     "d." (lambda () (interactive) (dired "."))
     "dd" (lambda () (interactive) (dired "~/downloads/"))
@@ -270,7 +271,6 @@
     "pf"  'projectile-find-file
     "fp"  'projectile-find-file
     "pb"  'projectile-switch-to-buffer
-    "bp"  'projectile-switch-to-buffer
     "p!"  'projectile-run-shell-command-in-root
     "pk"  'projectile-kill-buffers
     "pr"  'projectile-replace
