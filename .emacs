@@ -161,6 +161,7 @@
     "n" 'open-note
     "o" 'switch-to-buffer
     "t" 'toggle-source-and-tests
+    "iu" (lambda () (interactive) (shell-command "uuidgen" t))
     "w1" 'delete-other-windows
     "w2" (lambda () (interactive) (split-window-vertically) (other-window 1))
     "w3" (lambda () (interactive) (split-window-horizontally) (other-window 1))
@@ -691,7 +692,7 @@
   :ensure t
   :init
   (evil-leader/set-key
-    "i"  'justl-exec-recipe-in-dir))
+    "j"  'justl-exec-recipe-in-dir))
 
 (use-package just-mode
   :mode (("\\Justfile\\'" . just-mode))
@@ -764,6 +765,7 @@
 
 (use-package gptel
   :ensure t
+  :pin melpa
   :bind (("M-m" . toggle-gptel))
   :config
   (add-hook 'gptel-mode-hook 'visual-line-mode)
