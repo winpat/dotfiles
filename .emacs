@@ -81,6 +81,7 @@
 
 (use-package zoom
   :ensure t
+  :diminish (zoom-mode)
   :init (zoom-mode 1)
   :config
   (custom-set-variables
@@ -103,8 +104,6 @@
    ("C-c C-d" . helpful-at-point)))
 
 (use-package diminish
-  :init
-  (diminish 'python-black-on-save-mode)
   :ensure t)
 
 (use-package eldoc
@@ -494,6 +493,7 @@
 
 (use-package rainbow-mode
   :ensure t
+  :diminish (rainbow-mode)
   :config (setq rainbow-mode 1))
 
 (use-package rainbow-delimiters
@@ -622,6 +622,7 @@
 
 (use-package python-black
   :ensure t
+  :diminish (python-black-on-save-mode)
   :after python
   :hook (python-mode . python-black-on-save-mode))
 
@@ -748,6 +749,7 @@
 
 (use-package undo-tree
   :ensure t
+  :diminish (undo-tree-mode)
   :config
   (undo-tree-mode 1)
   (evil-leader/set-key
