@@ -161,6 +161,7 @@
     "o" 'switch-to-buffer
     "t" 'toggle-source-and-tests
     "iu" (lambda () (interactive) (shell-command "uuidgen" t))
+    "ii" 'create-init-py-file
     "w1" 'delete-other-windows
     "w2" (lambda () (interactive) (split-window-vertically) (other-window 1))
     "w3" (lambda () (interactive) (split-window-horizontally) (other-window 1))
@@ -818,6 +819,18 @@
      ((not matches) (message (format "No matches found for %s." target)))
      ((= (length matches) 1) (funcall open (car matches)))
      (t (funcall open (completing-read "Matches: " matches))))))
+
+(defun create-init-py-file ()
+  "Create an empty __init__.py file in the current directory if it doesn't exist."
+  (interactive)
+  (if (derived-mode-p 'dired-mode)
+      (let ((init-file (expand-file-name "__init__.py" default-directory)))
+	(if (file-exists-p init-file)
+	    (message "__init__.py already exists.")
+	  (progn
+	    (write-region "" nil init-file)
+	    (revert-buffer)
+	    (message "__init__.py file created."))))))
 
 ;; Reset GC threshold to back to default
 (setq gc-cons-threshold 800000)
