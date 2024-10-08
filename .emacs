@@ -157,6 +157,7 @@
     "fh" (lambda () (interactive) (find-file "/etc/nixos/host-configuration.nix"))
     "fs" (lambda () (interactive) (find-file "~/shared/"))
     "ft" (lambda () (interactive) (find-file "~/shared/todo.org"))
+    "fw" (lambda () (interactive) (find-file "~/shared/workspace.md"))
     "n" 'open-note
     "o" 'switch-to-buffer
     "t" 'toggle-source-and-tests
