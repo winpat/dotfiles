@@ -66,6 +66,7 @@
 
 ;; Emacs keybinding improvements
 (global-set-key (kbd "M-o") 'switch-to-buffer)
+(global-set-key (kbd "M-j") (lambda () (interactive) (join-line 1)))
 (global-set-key (kbd "C-o") 'other-window)
 
 (setq package-archives
