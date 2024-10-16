@@ -673,6 +673,7 @@
   :after clojure-mode
   :hook (clojure-mode . cider-mode)
   :config
+  (add-hook 'before-save-hook 'cider-format-buffer)
   (evil-leader/set-key-for-mode
     'clojure-mode
     "mt" 'cider-test-run-project-tests
