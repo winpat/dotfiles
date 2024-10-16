@@ -145,7 +145,7 @@
     "bn" (lambda () (interactive) (kill-new (buffer-name)))
     "bw" (lambda () (interactive) (kill-new (buffer-file-name)))
     "bp" (lambda () (interactive) (kill-new (f-relative (buffer-file-name) (projectile-project-root))))
-    "c" 'calc
+    "c" 'quick-calc
     "d." (lambda () (interactive) (dired "."))
     "dd" (lambda () (interactive) (dired "~/downloads/"))
     "dh" (lambda () (interactive) (dired "~"))
