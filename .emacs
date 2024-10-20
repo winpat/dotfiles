@@ -80,14 +80,6 @@
   :ensure t
   :init (load-theme 'naysayer t))
 
-(use-package zoom
-  :ensure t
-  :diminish (zoom-mode)
-  :init (zoom-mode 1)
-  :config
-  (custom-set-variables
-   '(zoom-size '(0.618 . 0.618))))
-
 (use-package helpful
   :ensure t
   :commands (helpful-callable
