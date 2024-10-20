@@ -128,6 +128,7 @@
 
     # Misc
     sqlite
+    rlwrap
 
     # Spell checking
     hunspell
