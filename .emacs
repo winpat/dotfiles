@@ -463,9 +463,9 @@
   :hook (python-ts-mode ruby-ts-mode)
   :config
   (setq save-abbrevs 'silently)
-  (define-abbrev-table 'ruby-mode-abbrev-table
+  (define-abbrev-table 'ruby-ts-mode-abbrev-table
     '(("bp" "byebug # FIXME")))
-  (define-abbrev-table 'python-mode-abbrev-table
+  (define-abbrev-table 'python-ts-mode-abbrev-table
     '(("bp" "breakpoint()  # FIXME"))))
 
 (use-package which-key
