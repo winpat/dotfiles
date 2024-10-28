@@ -768,7 +768,7 @@
   :config
   (add-hook 'gptel-mode-hook 'visual-line-mode)
   (setq
-   gptel-model "claude-3-opus-20240229"
+   gptel-model "claude-3-5-sonnet-20241022"
    gptel-backend (gptel-make-anthropic "Claude"
 		   :stream t
 		   :key (f-read-text "~/.anthropic"))))
