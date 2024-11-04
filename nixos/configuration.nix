@@ -103,9 +103,11 @@
     difftastic
 
     # Shell
+    nushell
     fzf
     complete-alias
     fasd
+    zoxide
     direnv
 
     # VCS
