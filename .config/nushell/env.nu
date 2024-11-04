@@ -124,3 +124,5 @@ alias w = watch
 alias k = kubectl
 alias kctx = kubectx
 alias kns = kubens
+
+zoxide init nushell | save -f ~/.zoxide.nu
