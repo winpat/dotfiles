@@ -99,3 +99,28 @@ $env.NU_PLUGIN_DIRS = [
 
 # To load from a custom file you can use:
 # source ($nu.default-config-dir | path join 'custom.nu')
+
+# Aliases
+alias .. = cd ..
+alias ... = cd ../..
+alias cdv = cd ~/vcs
+alias cds = cd ~/shared
+alias o = open
+alias l = ls
+alias ll = ls -al
+alias e = emacsclient -nw
+alias mg = emacsclient -nw -e '(progn (magit-status) (delete-other-windows))'
+alias r = just
+alias da = direnv allow
+alias er = systemctl --user restart emacs
+alias g = git
+alias t = tmux
+alias tf = terraform
+alias p = pytest
+alias m = make
+alias dc = docker-compose
+alias b = firefox
+alias w = watch
+alias k = kubectl
+alias kctx = kubectx
+alias kns = kubens
