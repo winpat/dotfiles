@@ -6,3 +6,5 @@
 
 .ssh/*
 !.ssh/config
+
+.config/nushell/history.txt
