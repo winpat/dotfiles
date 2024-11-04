@@ -103,6 +103,7 @@
     difftastic
 
     # Shell
+    carapace
     nushell
     fzf
     complete-alias

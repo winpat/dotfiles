@@ -902,4 +902,8 @@ $env.config = {
     ]
 }
 
+# Zoxide
 source ~/.zoxide.nu
+
+# Carapace
+source ~/.cache/carapace/init.nu
