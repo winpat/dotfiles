@@ -10,13 +10,12 @@ all:
  - .config/nixpkgs
  - .config/git
  - .config/pgcli/config
+ - .config/nushell
  - .pdbrc.py
  - .pryrc
 
 gem|tron|clu:
  - .Xmodmap
- - .gtkrc-2.0
- - .ideavimrc
  - .config/dunst
  - .config/zathura
  - .config/alacritty
