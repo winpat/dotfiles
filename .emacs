@@ -736,6 +736,11 @@
   :ensure t
   :mode (("\\.proto\\'" . protobuf-mode)))
 
+(use-package web-mode
+  :ensure t
+  :pin melpa
+  :mode (("\\.html.j2\\'" . web-mode)))
+
 (use-package sqlformat
   :ensure t
   :hook (sql-mode-hook . sqlformat-on-save-mode)
