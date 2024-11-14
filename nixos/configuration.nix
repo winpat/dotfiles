@@ -334,7 +334,6 @@
     home = "/home/patrick";
     description = "Patrick Winter";
     extraGroups = ["wheel" "networkmanager" "docker" "libvirtd" "systemd-journal" "dialout"];
-    shell = pkgs.nushell;
   };
 
   # Use a dedicated user for pair programming
