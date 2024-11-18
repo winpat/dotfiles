@@ -210,7 +210,6 @@
 
     # Browser
     firefox
-    chromium
 
     # Tray applications
     pasystray
