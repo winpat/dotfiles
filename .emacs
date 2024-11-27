@@ -498,7 +498,7 @@
 (use-package paredit
   :ensure t
   :diminish (paredit-mode)
-  :hook ((clojure-mode emacs-lisp-mode)))
+  :hook ((clojure-mode emacs-lisp-mode janet-mode)))
 
 (use-package dired
   :defer t
@@ -674,6 +674,10 @@
     "md" 'cider-debug-defun-at-point
     "mr" 'cider-eval-region
     "me" 'cider-eval-last-sexp))
+
+(use-package janet-mode
+  :ensure t
+  :mode (("\\.janet\\'" . janet-mode)))
 
 (use-package makefile-executor
   :ensure t
