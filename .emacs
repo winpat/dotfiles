@@ -54,9 +54,10 @@
 (setq x-select-enable-primary t)
 
 ;; Common paths that change depending on the operating system
-(setq sync-directory  "~/shared"
+(setq sync-directory "~/shared"
       notes-directory (format "%s/notes" sync-directory)
-      vcs-directory   (format "%s/vcs"   sync-directory))
+      todo-list-directory (format "%s/todo" sync-directory)
+      vcs-directory (format "%s/vcs" sync-directory))
 
 ;; Don't create backup files
 (setq make-backup-files nil)
@@ -149,7 +150,7 @@
     "fe" (lambda () (interactive) (find-file "~/.emacs"))
     "fh" (lambda () (interactive) (find-file "/etc/nixos/host-configuration.nix"))
     "fs" (lambda () (interactive) (find-file "~/shared/"))
-    "ft" (lambda () (interactive) (find-file "~/shared/todo.org"))
+    "ft" 'open-todo-list
     "fw" (lambda () (interactive) (find-file "~/shared/workspace.md"))
     "n" 'open-note
     "o" 'switch-to-buffer
@@ -165,6 +166,13 @@
     "wo" 'other-window
     "ws" 'toggle-window-split
     "wt" 'swap-windows))
+
+(defun open-todo-list ()
+  (interactive)
+  (let* ((files (directory-files todo-list-directory))
+	 (todo-lists (seq-filter (lambda (f) (not (string-prefix-p "." f))) files))
+	 (target (completing-read "To Do List: " todo-lists)))
+    (find-file (concat todo-list-directory "/" target))))
 
 (defun open-note ()
   (interactive)
