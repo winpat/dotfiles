@@ -390,6 +390,12 @@
     defaultEditor = true;
   };
 
+  # Anti virus
+  services.clamav = {
+    scanner.enable = true;
+    updater.enable = true;
+  };
+
   virtualisation = {
     # libvirtd.enable = true;
     docker.enable = true;
