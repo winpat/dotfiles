@@ -11,7 +11,7 @@
   ];
 
   nix = {
-    package = pkgs.nixFlakes;
+    package = pkgs.nixVersions.stable;
     extraOptions = ''
     experimental-features = nix-command flakes
   '';
@@ -332,7 +332,7 @@
 
   programs.direnv.enable = true;
 
-  programs.bash.enableCompletion = true;
+  programs.bash.completion.enable = true;
 
   security.sudo.wheelNeedsPassword = false;
 
@@ -393,7 +393,9 @@
 
   services.xserver = {
     enable = true;
-    layout = "ch";
+    xkb = {
+      layout = "ch";
+    };
     displayManager.lightdm.enable = true;
     windowManager.openbox.enable = true;
 
@@ -415,13 +417,6 @@
 
   # Discover network printers
   services.avahi.enable = true;
-
-  # NixOS allows either a lightweight build (default) or full that includes
-  # bluetooth support.
-  hardware.pulseaudio = {
-    enable = true;
-    package = pkgs.pulseaudioFull;
-  };
 
   services.blueman.enable = true;
 
