@@ -138,7 +138,7 @@
     hunspellDicts.en-us-large
 
     # Desktop
-    alacritty
+    ghostty
     dmenu
     xcape
     xorg.xev

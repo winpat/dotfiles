@@ -1,0 +1,6 @@
+font-family = Hack
+font-size = 14
+theme = Builtin Solarized Dark
+gtk-titlebar = false
+gtk-adwaita = false
+confirm-close-surface = false

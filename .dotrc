@@ -18,7 +18,7 @@ gem|tron|clu:
  - .Xmodmap
  - .config/dunst
  - .config/zathura
- - .config/alacritty
+ - .config/ghostty
  - .ipython/profile_default/startup/start.py
  - nixos/configuration.nix -> /etc/nixos/configuration.nix
  - nixos/cachix.nix -> /etc/nixos/cachix.nix
