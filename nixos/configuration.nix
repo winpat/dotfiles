@@ -90,7 +90,6 @@
     gnumake
     just
     man-pages
-    fend
     jq
     yq
     htop
@@ -200,7 +199,6 @@
     unrar
 
     # Communication
-    weechat
     slack
     discord
 
@@ -258,7 +256,6 @@
 
     # File synchronization
     rsync
-    unison
 
     # Clipboard manager
     copyq
@@ -282,19 +279,8 @@
     python3Packages.numpy
     python3Packages.pandas
 
-    # JavaScript
-    nodejs
-
     # Development
     pre-commit
-    cookiecutter
-
-    # Nix awesomeness
-    cachix
-    nixfmt
-
-    # Electronics
-    picocom
 
     # GCP
     (google-cloud-sdk.withExtraComponents ([google-cloud-sdk.components.gke-gcloud-auth-plugin]))
