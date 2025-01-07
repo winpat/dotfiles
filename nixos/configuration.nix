@@ -287,6 +287,7 @@
     kubectx
     kubectl
     k9s
+    kubernetes-helm
 
     # Misc
     asciiquarium
