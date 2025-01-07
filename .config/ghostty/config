@@ -4,3 +4,7 @@ theme = Builtin Solarized Dark
 gtk-titlebar = false
 gtk-adwaita = false
 confirm-close-surface = false
+keybind = clear
+keybind = ctrl+shift+v=paste_from_clipboard
+keybind = ctrl+shift+i=inspector:toggle
+keybind = ctrl+shift+r=reload_config
