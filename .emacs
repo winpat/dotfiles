@@ -23,6 +23,9 @@
 (line-number-mode 1)
 (column-number-mode 1)
 
+;; Don't emmit sounds
+(setq visible-bell 1)
+
 ;; Disable the blinking cursor
 (setq blink-cursor-mode nil)
 (setq visible-cursor nil)
