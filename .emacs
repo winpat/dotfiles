@@ -158,7 +158,7 @@
     "n" 'open-note
     "o" 'switch-to-buffer
     "t" 'toggle-source-and-tests
-    "iu" (lambda () (interactive) (shell-command "uuidgen" t))
+    "iu" (lambda () (interactive) (string-chop-newline (shell-command "uuidgen" t)))
     "ii" 'create-init-py-file
     "w1" 'delete-other-windows
     "w2" (lambda () (interactive) (split-window-vertically) (other-window 1))
