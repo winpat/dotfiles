@@ -152,7 +152,6 @@
     "fc" (lambda () (interactive) (find-file "/etc/nixos/configuration.nix"))
     "fe" (lambda () (interactive) (find-file "~/.emacs"))
     "fh" (lambda () (interactive) (find-file "/etc/nixos/host-configuration.nix"))
-    "fs" (lambda () (interactive) (find-file "~/shared/"))
     "ft" 'open-todo-list
     "fw" (lambda () (interactive) (find-file "~/shared/notes/workspace.md"))
     "n" 'open-note
@@ -489,7 +488,8 @@
   :diminish yas-minor-mode
   :init
   (evil-leader/set-key
-    "s" 'yas-insert-snippet)
+    "s" 'yas-insert-snippet
+    "fs" 'yas-visit-snippet-file)
   :config
   (setq yas-snippet-dirs '("~/shared/snippets")))
 
