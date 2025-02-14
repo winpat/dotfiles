@@ -491,7 +491,9 @@
     "s" 'yas-insert-snippet
     "fs" 'yas-visit-snippet-file)
   :config
-  (setq yas-snippet-dirs '("~/shared/snippets")))
+  (setq yas-snippet-dirs '("~/shared/snippets"))
+  (yas-global-mode))
+
 
 (use-package display-line-numbers-mode
   :init (setq display-line-numbers-type 'relative)
