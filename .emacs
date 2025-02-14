@@ -80,6 +80,10 @@
 
 (package-initialize)
 
+
+;; Work specifc settings
+(load (format "%s/emacs/work.el" sync-directory) t)
+
 (use-package naysayer-theme
   :ensure t
   :init (load-theme 'naysayer t))
