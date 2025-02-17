@@ -397,8 +397,8 @@
     "l"  'magit-log-current
     "g"  'magit-status)
   :config
-  (transient-append-suffix 'magit-commit "c"
-    '("a" "Absorb" magit-commit-absorb))
+  (transient-append-suffix 'magit-commit "c" '("a" "Absorb" magit-commit-absorb))
+  (transient-append-suffix 'magit-commit "c" '("A" "Amend" magit-commit-amend))
 
   (setq magit-diff-refine-hunk t
 	magit-repository-directories '(("~/vcs/" . 2))))
