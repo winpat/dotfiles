@@ -126,7 +126,7 @@
     httpie
 
     # Emacs
-    emacs29
+    emacs30
 
     # Misc
     sqlite
@@ -373,7 +373,7 @@
   # Start an emacs user service
   services.emacs = {
     enable = true;
-    package = pkgs.emacs29;
+    package = pkgs.emacs30;
     defaultEditor = true;
   };
 
