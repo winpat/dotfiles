@@ -1,8 +1,7 @@
 font-family = Hack
 font-size = 14
 theme = Builtin Solarized Dark
-gtk-titlebar = false
-gtk-adwaita = false
+window-decoration = server
 confirm-close-surface = false
 keybind = clear
 keybind = ctrl+shift+v=paste_from_clipboard
