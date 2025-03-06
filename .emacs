@@ -787,6 +787,9 @@
   ;; https://github.com/jschaf/esup/issues/85#issuecomment-1130110196
   (setq esup-depth 0))
 
+(use-package ascii-table
+  :ensure t)
+
 (use-package f
   :ensure t)
 
