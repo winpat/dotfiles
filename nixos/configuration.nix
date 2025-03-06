@@ -266,8 +266,11 @@
     # C
     gdb
     gcc
-    zig
+    ccls
     cmake
+
+    # Zig
+    zig
 
     # Python 3
     python3
