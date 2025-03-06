@@ -91,7 +91,6 @@
     just
     man-pages
     jq
-    yq
     htop
     strace
     bind
@@ -203,6 +202,7 @@
     discord
 
     # Databases
+    postgresql
     pgcli
     pspg
 
@@ -223,10 +223,7 @@
     # https://github.com/NixOS/nixpkgs/issues/32730
     hicolor-icon-theme
 
-    # Virtualization and containers
-    virt-viewer
-    virt-manager
-    vagrant
+    # Docker 
     docker
     docker-compose
 
@@ -247,12 +244,10 @@
     xarchiver
 
     # Security
+    pwgen
     gnupg
     pass
     bitwarden
-    bitwarden-cli
-    pwgen
-    yubikey-personalization
 
     # File synchronization
     rsync
