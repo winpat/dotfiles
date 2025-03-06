@@ -271,6 +271,7 @@
 
     # Zig
     zig
+    zls
 
     # Python 3
     python3
