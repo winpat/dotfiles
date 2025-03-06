@@ -275,6 +275,7 @@
 
     # Python 3
     python3
+    pyright
     python3Packages.ipython
     python3Packages.ipdb
 
