@@ -638,6 +638,9 @@
   :after python
   :hook (python-mode . python-black-on-save-mode))
 
+(use-package cython-mode
+  :ensure t)
+
 (use-package zig-mode
   :ensure t
   :mode (("\\.zig\\'" . zig-mode)))
