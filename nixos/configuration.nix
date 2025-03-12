@@ -249,6 +249,10 @@
     pass
     bitwarden
 
+    # Git Forge
+    gh
+    glab
+
     # File synchronization
     rsync
 
@@ -268,9 +272,16 @@
     zig
     zls
 
+    # Lisp
+    clojure
+    janet
+    sbcl
+
     # Python 3
     python3
     pyright
+    ruff
+    mypy
     python3Packages.ipython
     python3Packages.ipdb
 
