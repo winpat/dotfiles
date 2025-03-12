@@ -649,6 +649,10 @@
   :ensure t
   :mode (("\\.rs\\'" . rust-mode)))
 
+(use-package sly
+  :ensure t
+  :config (setq inferior-lisp-program "sbcl"))
+
 (use-package ispell
   :ensure t
   :config
