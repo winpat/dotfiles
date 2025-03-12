@@ -54,4 +54,6 @@
   };
 
   programs.noisetorch.enable = true;
+
+  programs.streamcontroller.enable = true;
 }
