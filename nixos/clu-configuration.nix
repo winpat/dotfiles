@@ -52,4 +52,6 @@
   virtualisation.docker.daemon.settings = {
     "data-root" = "/data/docker";
   };
+
+  programs.noisetorch.enable = true;
 }
