@@ -1,0 +1,10 @@
+#!/bin/bash
+
+TASK=$(emacsclient -a '' --eval '(eval org-clock-current-task)' | sed s'/"\(.*\)"/\1/' | sed 's/\\//g')
+
+if [[ $TASK == "nil" ]]; then
+    echo ""
+else
+    echo ${TASK}
+fi
+

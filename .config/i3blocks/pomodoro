@@ -1,0 +1,126 @@
+#!/usr/bin/env python3
+
+import notify2
+from time import time
+from os import getenv
+
+class PomodoroTimer:
+
+    def __init__(self, duration, state_file):
+
+        self.duration = duration
+        self.state_file = state_file
+
+        try:
+            open(self.state_file, 'r')
+        except FileNotFoundError:
+            with open(self.state_file, 'w') as f:
+                f.write('-')
+
+    def start(self):
+
+        with open(self.state_file, 'w') as f:
+            f.write(str(time()))
+
+        self.get_time_left()
+
+    def stop(self):
+
+        with open(self.state_file, 'w') as f:
+            f.write('-')
+
+        self.get_time_left()
+
+    def get_time_left(self):
+
+        start_time = ""
+        color = "#FFFFFF"
+
+        with open(self.state_file, 'r') as f:
+            start_time = f.read()
+
+	# Check if timer is inactive
+        if start_time == "-":
+            print("\n\n" + color)
+            return
+
+        try:
+            minutes_left = self.duration - int((float(time()) - float(start_time)) / 60)
+        except ValueError:
+            self.stop()
+
+        if minutes_left < 0 :
+            notify2.Notification("Time is up").show()
+            self.stop()
+        if minutes_left <= 1:
+             color = "#FF0000"
+        elif minutes_left <= 5:
+             color = "#FF7C00"
+        else:
+             color = "#40B000"
+
+        print("{}\n{}\n{}".format(minutes_left, minutes_left, color))
+
+        return minutes_left
+
+    def increase(self):
+
+        start_time = 0
+
+        with open(self.state_file, 'r') as f:
+            start_time = f.read()
+
+            if start_time == "-":
+                start_time = float(time())
+            else:
+                start_time = float(start_time)
+
+        increased_time = start_time + 60
+
+        with open(self.state_file, 'w') as f:
+            f.write(str(increased_time))
+
+        self.get_time_left()
+
+    def decrease(self):
+
+        start_time = 0
+
+        with open(self.state_file, 'r') as f:
+            start_time = f.read()
+
+            if start_time == "-":
+                self.get_time_left()
+            else:
+                start_time = float(start_time)
+
+        decreased_time = start_time - 60
+
+        if decreased_time < 0:
+            self.stop()
+
+        with open(self.state_file, 'w') as f:
+            f.write(str(decreased_time))
+
+        self.get_time_left()
+
+# Get pressed i3 button
+button = getenv("BLOCK_BUTTON")
+
+# Initialize d-bus session for notifactions
+notify2.init("Pomodoro Timer")
+
+# Use a persistent file if you want to your timer to survive reboots.
+# Otherwiese use an in-memory filesystem such as `/dev/shm`.
+pt = PomodoroTimer(25, '/tmp/pomodoro')
+
+if button == "2":    # Middle click
+    pt.start()
+elif button == "3":  # Right click
+    pt.stop()
+elif button == "4":  # Scroll up
+    pt.increase()
+elif button == "5":  # Scroll down
+    pt.decrease()
+else:
+    pt.get_time_left()

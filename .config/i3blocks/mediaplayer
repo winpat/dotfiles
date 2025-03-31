@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+PLAYER=${BLOCK_INSTANCE:-vlc}
+ARTIST="$(playerctl -p ${PLAYER} metadata artist)"
+TITLE="$(playerctl -p ${PLAYER} metadata title)"
+
+# Select based on player
+case "${PLAYER}" in
+    spotify)
+	ICON=""
+	;;
+    vlc)
+	ICON=""
+	;;
+esac
+
+# Check wheter the button was pressed
+case ${BLOCK_BUTTON} in
+    1)
+	playerctl -p ${PLAYER} previous
+	;;
+    2)
+	playerctl -p ${PLAYER} play-pause
+	;;
+    3)
+	playerctl -p ${PLAYER} next
+	;;
+esac
+
+# Compose format string
+if [[ -z "${ARTIST}" ]] && [[ -z "${TITLE}" ]]
+  then
+    echo ""
+    echo ""
+elif [[ "${ARTIST}" == "" ]] && [[ "${TITLE}" != "(null)" ]]
+  then
+    printf "%s %s\n" "${ICON}" "${TITLE}"
+    echo "${ICON}"
+else
+    # Long text
+    printf "%s %s - %s\n" "${ICON}" "${ARTIST}" "${TITLE}"
+    echo "${ICON}"
+fi

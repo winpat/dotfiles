@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo "`nmcli connection show --active | awk '$3 == "vpn" { print tolower($1) }' | paste -sd ',' -`"
+echo ''
+echo '#859900'

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if [[ -z $BLOCK_BUTTON ]]; then
+    echo "${USER} ➜ ${HOSTNAME}"
+fi
