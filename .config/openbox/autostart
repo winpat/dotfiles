@@ -1,7 +1,8 @@
 xrdb -merge $HOME/.Xresources $HOME/.Xdefaults &
 xmodmap $HOME/.Xmodmap &
 xcape -e 'Shift_L=Shift_L|parenleft;Shift_R=Shift_R|parenright' &
-#tint2 &
+feh --bg-scale ~/shared/media/images/Wallpaper/3840×2160/nixos_inverted.png
+tint2 &
 copyq &
 nm-applet &
 udiskie &
