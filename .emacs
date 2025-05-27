@@ -800,14 +800,28 @@
 (use-package gptel
   :ensure t
   :pin melpa
-  :bind (("M-m" . toggle-gptel))
+  :bind (("M-m" . toggle-gptel)
+	 ("M-l" . gptel-menu))
   :config
   (add-hook 'gptel-mode-hook 'visual-line-mode)
+
   (setq
    gptel-model "claude-sonnet-4-20250514"
    gptel-backend (gptel-make-anthropic "Claude"
 		   :stream t
-		   :key (f-read-text "~/.anthropic"))))
+		   :key (f-read-text "~/.anthropic")))
+
+  (gptel-make-preset 'lang
+    :description "A preset for building lang"
+    :backend "Claude"
+    :model "claude-sonnet-4-20250514"
+    :system "You are a language designer and compiler engineer working on modern Lisp written in Zig.")
+
+  (gptel-make-preset 'lisp
+    :description "A preset for learning Common Lisp"
+    :backend "Claude"
+    :model "claude-sonnet-4-20250514"
+    :system "You are a lisp hacker, helping to learn Common Lisp."))
 
 (defun toggle-gptel ()
   (interactive)
