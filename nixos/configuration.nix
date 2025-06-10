@@ -282,6 +282,7 @@
     pyright
     ruff
     mypy
+    uv
     python3Packages.ipython
     python3Packages.ipdb
 
