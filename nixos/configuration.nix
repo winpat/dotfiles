@@ -278,7 +278,10 @@
     sbcl
 
     # Python 3
-    python3
+    python313
+    python312
+    python311
+    python310
     pyright
     ruff
     mypy
