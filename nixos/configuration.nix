@@ -423,6 +423,9 @@
     };
   };
 
+  # Fix i3lock-color after upgrading to nixpkgs 25.05
+  security.pam.services.i3lock.enable = true;
+
   # Gotta get that melatonine
   services.redshift.enable = true;
 
