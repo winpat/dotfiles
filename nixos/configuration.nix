@@ -306,6 +306,9 @@
     # Misc
     asciiquarium
     cbonsai
+
+    # AI
+    master.claude-code
   ];
 
   services.syncthing = {
