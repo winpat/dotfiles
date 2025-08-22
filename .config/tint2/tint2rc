@@ -1,6 +1,6 @@
 # tint2
 
-scale_relative_to_dpi = 140
+scale_relative_to_dpi = 110
 
 # Background 1: Panel
 rounded = 0
@@ -132,7 +132,7 @@ systray_monitor = 1
 # Clock
 time1_format = %d.%m.%Y %H:%M
 clock_font_color = #ffffff 100
-clock_padding = 8 0
+clock_padding = 0 0
 
 # Battery indicator
 #

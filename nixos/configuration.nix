@@ -36,7 +36,6 @@
 
   # Give me the newest features!
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "kvm-amd" "kvm-intel" ];
     plymouth.enable = true;
     supportedFilesystems = [ "ntfs" ];

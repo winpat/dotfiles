@@ -53,7 +53,21 @@
     "data-root" = "/data/docker";
   };
 
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia = {
+    modesetting.enable = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    nvidiaSettings = false;
+    open = false;
+  };
+  hardware.nvidia-container-toolkit.enable = true;
+
   programs.noisetorch.enable = true;
 
   programs.streamcontroller.enable = true;
+
+  services.printing = {
+    enable = true;
+    drivers = [ pkgs.hplip ];
+  };
 }
