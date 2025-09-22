@@ -384,6 +384,14 @@
     in ["${automount_opts},credentials=/home/patrick/.samba/personal"];
   };
 
+  fileSystems."/net/guitar" = {
+    device = "//192.168.0.200/guitar";
+    fsType = "cifs";
+    options = let
+      automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+    in ["${automount_opts},credentials=/home/patrick/.samba/personal"];
+  };
+
   # Enable smart card reader
   services.pcscd.enable = true;
 
