@@ -643,7 +643,15 @@
 
 (use-package zig-mode
   :ensure t
-  :mode (("\\.zig\\'" . zig-mode)))
+  :mode (("\\.zig\\'" . zig-mode))
+  :hook ((zig-mode . eglot-ensure)
+         (zig-mode . (lambda ()
+                       (add-hook 'before-save-hook
+                                 (lambda ()
+                                   (when (eglot-managed-p)
+                                     (eglot-code-action-organize-imports nil)))
+                                 nil t)))))
+
 
 (use-package rust-mode
   :ensure t
