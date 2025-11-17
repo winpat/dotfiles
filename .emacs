@@ -4,6 +4,9 @@
 ;; Always use `text-mode` as default major mode
 (setq default-major-mode 'text-mode)
 
+;; Increase the default line width
+(setq-default fill-column 100)
+
 ;; Disable message in scratch buffer
 (setq initial-scratch-message nil)
 
