@@ -63,7 +63,7 @@
 (setq sync-directory "~/shared"
       notes-directory (format "%s/notes" sync-directory)
       todo-list-directory (format "%s/todo" sync-directory)
-      vcs-directory (format "%s/vcs" sync-directory))
+      vcs-directory "~/vcs")
 
 ;; Don't create backup files
 (setq make-backup-files nil)
