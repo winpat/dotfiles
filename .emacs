@@ -87,9 +87,13 @@
 ;; Work specifc settings
 (load (format "%s/emacs/work.el" sync-directory) t)
 
-(use-package naysayer-theme
+;;(use-package naysayer-theme
+;;  :ensure t
+;;  :init (load-theme 'naysayer t))
+
+(use-package timu-caribbean-theme
   :ensure t
-  :init (load-theme 'naysayer t))
+  :init (load-theme 'timu-caribbean t))
 
 (use-package helpful
   :ensure t
