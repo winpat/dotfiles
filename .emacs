@@ -72,9 +72,9 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Emacs keybinding improvements
-(global-set-key (kbd "M-o") 'switch-to-buffer)
+(global-set-key (kbd "C-o") 'switch-to-buffer)
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line 1)))
-(global-set-key (kbd "C-o") 'other-window)
+(global-set-key (kbd "M-o") 'other-window)
 
 (setq package-archives
       '(("gnu"   . "https://elpa.gnu.org/packages/")
