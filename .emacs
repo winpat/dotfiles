@@ -1,23 +1,26 @@
 ;; Increase GC threshold to speed up startup
 (setq gc-cons-threshold 100000000)
 
-;; Always use `text-mode` as default major mode
-(setq default-major-mode 'text-mode)
-
 ;; Increase the default line width
-(setq-default fill-column 100)
+(setq-default fill-column 80)
+
+;; Paths to frequently used directories
+(setq sync-directory "~/shared"
+      notes-directory (format "%s/notes" sync-directory)
+      todo-list-directory (format "%s/todo" sync-directory)
+      vcs-directory "~/vcs")
+
+;; Font type and size
+(set-face-attribute 'default nil :height 120)
+(set-face-attribute 'default nil :family "Hack")
 
 ;; Disable message in scratch buffer
 (setq initial-scratch-message nil)
 
-;; Disable the Emacs startup screen and show *scratch* instead
+;; Disable the Emacs startup screen and show *scratch* buffer instead
 (setq inhibit-startup-screen t)
 
-;; Don't pollute .emacs with the result of customize invocations
-(setq custom-file (make-temp-file ""))
-(setq custom-safe-themes t)
-
-;; Disable the ugly scoll, tool and menu bar
+;; Disable the scoll, tool and menu bar
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -26,55 +29,67 @@
 (line-number-mode 1)
 (column-number-mode 1)
 
-;; Don't emmit sounds
+;; Don't emit sounds
 (setq visible-bell 1)
 
-;; Disable the blinking cursor
+;; Disable the blinking cursor in GUI
 (setq blink-cursor-mode nil)
-(setq visible-cursor nil)
 
-;; Show matching parens
-(show-paren-mode 1)
+;; Disable the blinking cursor in TUI
+(setq visible-cursor nil)
 
 ;; Allow to answer even important questions with "y" or "n"
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; Highlight selections and allow overwriting them
-(transient-mark-mode 1)
-(delete-selection-mode 1)
-
 ;; Emacs...  Don't break lines for me, thx
 (setq-default truncate-lines t)
 
-;; Automatically follow symlinks and don't ask about it
+;; Automatically follow symlinks and don't ask ab2out it
 (setq vc-follow-symlinks t)
-
-;; Font type and size
-(set-face-attribute 'default nil :height 130)
-(set-face-attribute 'default nil :family "Hack")
 
 ;; Allow to resize emacs to exactly 50% on openbox
 (setq frame-resize-pixelwise t)
 
-;; Copy paste
-(setq x-select-enable-primary t)
-
-;; Common paths that change depending on the operating system
-(setq sync-directory "~/shared"
-      notes-directory (format "%s/notes" sync-directory)
-      todo-list-directory (format "%s/todo" sync-directory)
-      vcs-directory "~/vcs")
-
-;; Don't create backup files
-(setq make-backup-files nil)
-
 ;; Always trim trailing whitespace.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; Emacs keybinding improvements
+;; TODO Emacs keybinding improvements
+(global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "M-i") 'delete-other-windows)
 (global-set-key (kbd "C-o") 'switch-to-buffer)
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line 1)))
-(global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "C-.") 'xref-find-definitions)
+(global-set-key (kbd "C-,") 'xref-go-back)
+(global-set-key (kbd "M-m") 'comment-dwim)
+(global-set-key (kbd "C-c o") 'occur)
+(global-set-key (kbd "C-c <SPC>") 'set-mark-command)
+(global-set-key (kbd "C-c f f") 'find-file)
+(global-set-key (kbd "C-c f o") 'find-file-other-window)
+(global-set-key (kbd "C-c f c") (lambda () (interactive) (find-file "/etc/nixos/configuration.nix")))
+(global-set-key (kbd "C-c f e") (lambda () (interactive) (find-file "~/.emacs")))
+(global-set-key (kbd "C-c f w") (lambda () (interactive) (find-file "~/shared/notes/workspace.md")))
+(global-set-key (kbd "C-c t") 'open-todo-list)
+(global-set-key (kbd "C-c n") 'open-note)
+(global-set-key (kbd "C-c b ,") (lambda () (interactive) (global-text-scale-adjust 1)))
+(global-set-key (kbd "C-c b .") (lambda () (interactive) (global-text-scale-adjust -1)))
+(global-set-key (kbd "C-c b 0") (lambda () (interactive) (global-text-scale-adjust (- text-scale-mode-amount)) (global-text-scale-mode -1)))
+(global-set-key (kbd "C-c b R") 'rename-file-and-buffer)
+(global-set-key (kbd "C-c b k") 'kill-buffer)
+(global-set-key (kbd "C-c b l") 'ibuffer)
+(global-set-key (kbd "C-c b r") (lambda () (interactive) (revert-buffer t t)))
+(global-set-key (kbd "C-c b n") (lambda () (interactive) (kill-new (buffer-name))))
+(global-set-key (kbd "C-c b w") (lambda () (interactive) (kill-new (buffer-file-name))))
+(global-set-key (kbd "C-c b p") (lambda () (interactive) (kill-new (f-relative (buffer-file-name) (projectile-project-root)))))
+(global-set-key (kbd "C-c i u") (lambda () (interactive) (string-chop-newline (shell-command "uuidgen" t))))
+(global-set-key (kbd "C-c i i") 'create-init-py-file)
+(global-set-key (kbd "C-c 1") 'delete-other-windows)
+(global-set-key (kbd "C-c 2") (lambda () (interactive) (split-window-vertically) (other-window 1)))
+(global-set-key (kbd "C-c 3") (lambda () (interactive) (split-window-horizontally) (other-window 1)))
+(global-set-key (kbd "C-c =") 'balance-windows)
+(global-set-key (kbd "C-c w d") 'delete-window)
+(global-set-key (kbd "C-c w o") 'other-window)
+(global-set-key (kbd "C-c w s") 'toggle-window-split)
+(global-set-key (kbd "C-c w t") 'swap-windows)
 
 (setq package-archives
       '(("gnu"   . "https://elpa.gnu.org/packages/")
@@ -82,10 +97,6 @@
 	("melpa" . "https://melpa.org/packages/")))
 
 (package-initialize)
-
-
-;; Work specifc settings
-(load (format "%s/emacs/work.el" sync-directory) t)
 
 ;;(use-package naysayer-theme
 ;;  :ensure t
@@ -103,13 +114,22 @@
 	     helpful-command
 	     helpful-function
 	     helpful-at-point)
-  :bind
-  (("C-h f" . helpful-callable)
-   ("C-h v" . helpful-variable)
-   ("C-h k" . helpful-key)
-   ("C-h x" . helpful-command)
-   ("C-h F" . 'helpful-function)
-   ("C-c C-d" . helpful-at-point)))
+  :bind (("C-h f" . helpful-callable)
+	 ("C-h v" . helpful-variable)
+	 ("C-h k" . helpful-key)
+	 ("C-h x" . helpful-command)
+	 ("C-h F" . 'helpful-function)
+	 ("C-c C-d" . helpful-at-point)))
+
+(use-package which-key
+  :diminish which-key-mode
+  :init (which-key-mode))
+
+
+(use-package dimmer
+  :ensure t
+  :init (dimmer-mode)
+  :config (setq dimmer-fraction 0.4))
 
 (use-package diminish
   :ensure t)
@@ -117,320 +137,44 @@
 (use-package eldoc
   :diminish eldoc-mode)
 
-(use-package dimmer
-  :ensure t
-  :config
-  (setq dimmer-fraction 0.2)
-  (setq dimmer-exclusion-regexp "^\*helm.*\\|^ \*Minibuf-.*\\|^ \*Echo.*")
-  (dimmer-mode))
-
 (use-package autorevert
   :diminish auto-revert-mode)
 
-(use-package evil
+(use-package display-line-numbers-mode
+  :init (setq display-line-numbers-type 'relative)
+  :hook (prog-mode git-timemachine-mode))
+
+(use-package rainbow-mode
   :ensure t
-  :init (setq evil-want-keybinding nil)
-  :config (evil-mode 1))
+  :diminish (rainbow-mode)
+  :init (rainbow-mode))
 
-(use-package evil-leader
+(use-package rainbow-delimiters
   :ensure t
-  :init (global-evil-leader-mode)
-  :config
-  (evil-leader/set-leader "<SPC>")
-  (evil-leader/set-key
-    "," 'xref-pop-marker-stack
-    "." 'xref-find-definitions
-    "a" 'xref-find-references
-    "<SPC>" 'execute-extended-command
-    "b," '(lambda () (interactive) (global-text-scale-adjust 1))
-    "b." '(lambda () (interactive) (global-text-scale-adjust -1))
-    "b0" '(lambda () (interactive) (global-text-scale-adjust (- text-scale-mode-amount)) (global-text-scale-mode -1))
-    "bR" 'rename-file-and-buffer
-    "bk" 'kill-buffer
-    "bl" 'ibuffer
-    "br" (lambda () (interactive) (revert-buffer t t))
-    "bn" (lambda () (interactive) (kill-new (buffer-name)))
-    "bw" (lambda () (interactive) (kill-new (buffer-file-name)))
-    "bp" (lambda () (interactive) (kill-new (f-relative (buffer-file-name) (projectile-project-root))))
-    "c" 'calc
-    "d." (lambda () (interactive) (dired "."))
-    "dd" (lambda () (interactive) (dired "~/downloads/"))
-    "dh" (lambda () (interactive) (dired "~"))
-    "ds" (lambda () (interactive) (dired "~/shared/"))
-    "dv" (lambda () (interactive) (dired "~/vcs/"))
-    "ff" 'find-file
-    "fo" 'find-file-other-window
-    "fc" (lambda () (interactive) (find-file "/etc/nixos/configuration.nix"))
-    "fe" (lambda () (interactive) (find-file "~/.emacs"))
-    "fh" (lambda () (interactive) (find-file "/etc/nixos/host-configuration.nix"))
-    "ft" 'open-todo-list
-    "fw" (lambda () (interactive) (find-file "~/shared/notes/workspace.md"))
-    "n" 'open-note
-    "o" 'switch-to-buffer
-    "t" 'toggle-source-and-tests
-    "iu" (lambda () (interactive) (string-chop-newline (shell-command "uuidgen" t)))
-    "ii" 'create-init-py-file
-    "w1" 'delete-other-windows
-    "w2" (lambda () (interactive) (split-window-vertically) (other-window 1))
-    "w3" (lambda () (interactive) (split-window-horizontally) (other-window 1))
-    "w=" 'balance-windows
-    "wd" 'delete-window
-    "wo" 'occur
-    "wo" 'other-window
-    "ws" 'toggle-window-split
-    "wt" 'swap-windows))
+  :hook (prog-mode . rainbow-delimiters-mode))
 
-(defun open-todo-list ()
-  (interactive)
-  (let* ((files (directory-files todo-list-directory))
-	 (todo-lists (seq-filter (lambda (f) (not (string-prefix-p "." f))) files))
-	 (target (completing-read "To Do List: " todo-lists)))
-    (find-file (concat todo-list-directory "/" target))))
+(use-package paredit
+  :ensure t
+  :diminish (paredit-mode)
+  :hook ((emacs-lisp-mode clojure-mode janet-mode)))
 
-(defun open-note ()
-  (interactive)
-  (let* ((files (directory-files notes-directory))
-	 (notes (seq-filter (lambda (f) (not (string-prefix-p "." f))) files))
-	 (target (completing-read "Note: " notes)))
-    (find-file (concat notes-directory "/" target))))
+(use-package undo-tree
+  :ensure t
+  :diminish (undo-tree-mode)
+  :init (undo-tree-mode)
+  :bind (("C-c U" . undo-tree-undo)))
 
 (use-package windmove
-  :init
-  (evil-leader/set-key
-    "wh" 'windmove-left
-    "wj" 'windmove-down
-    "wk" 'windmove-up
-    "wl" 'windmove-right))
+  :bind (("C-c l" . 'windmove-right)
+	 ("C-c k" . 'windmove-up)
+	 ("C-c j" . 'windmove-down)
+	 ("C-c h" . 'windmove-left)))
 
-(use-package elisp-mode
-  :config
-  (evil-leader/set-key-for-mode
-    'emacs-lisp-mode
-    "mt" 'ert
-    "mr" 'eval-region
-    "mb" 'eval-buffer
-    "me" 'eval-last-sexp))
+(use-package winner
+  :init (winner-mode 1)
+  :bind (("C-c u" . winner-undo)
+	 ("C-c r" . winner-redo)))
 
-(use-package package
-  :config
-  (evil-define-key 'normal package-menu-mode-map
-    "i" 'package-menu-mark-install
-    "U" 'package-menu-mark-upgrades
-    "d" 'package-menu-mark-delete
-    "u" 'package-menu-mark-unmark
-    "x" 'package-menu-execute
-    "q" 'quit-window))
-
-(use-package key-chord
-  :ensure t
-  :init (key-chord-mode 1)
-  :after (evil)
-  :config
-  (setq key-chord-two-keys-delay 0.5)
-  (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
-  (key-chord-define evil-insert-state-map "kj" 'evil-normal-state))
-
-;; Make a visual selection with v or V, and then hit * to search that
-;; selection forward, or # to search that selection backward.
-(use-package evil-visualstar
-  :ensure t
-  :after evil
-  :config
-  (global-evil-visualstar-mode 1))
-
-;; Effectively comment out stuff
-(use-package evil-commentary
-  :ensure t
-  :diminish evil-commentary-mode
-  :after evil
-  :config (evil-commentary-mode 1))
-
-;; TODO make use of this
-(use-package evil-numbers
-  :ensure t
-  :after evil)
-
-(use-package evil-surround
-  :ensure t
-  :after evil
-  :config (global-evil-surround-mode 1))
-
-(use-package evil-collection
-  :ensure t
-  :after evil
-  :diminish evil-collection-unimpaired-mode
-  :config (evil-collection-init))
-
-(use-package projectile
-  :ensure t
-  :diminish projectile-mode
-  :init (projectile-mode 1)
-  :config
-  (defun run-projectile-invalidate-cache (&rest _args)
-    ;; We ignore the args to `magit-checkout'.
-    (projectile-invalidate-cache nil))
-
-  (advice-add 'magit-checkout :after #'run-projectile-invalidate-cache)
-  (advice-add 'magit-rebase-branch :after #'run-projectile-invalidate-cache)
-  (advice-add 'magit-branch-and-checkout :after #'run-projectile-invalidate-cache)
-
-  (setq projectile-enable-caching t
-	projectile-switch-project-action #'magit-status
-	projectile-project-search-path '("~/vcs/" ("~/vcs/parashift" . 1)))
-
-  (evil-leader/set-key
-    "pp"  'projectile-switch-project
-    "pd"  'projectile-dired-find-dir
-    "pg"  'projectile-rg
-    "pG"  'projectile-grep
-    "po"  'projectile-find-other-file
-    "pf"  'projectile-find-file
-    "fp"  'projectile-find-file
-    "pb"  'projectile-switch-to-buffer
-    "p!"  'projectile-run-shell-command-in-root
-    "pk"  'projectile-kill-buffers
-    "pr"  'projectile-replace
-    "pR"  'projectile-replace-regexp))
-
-(use-package projectile-ripgrep
-  :after projectile
-  :ensure t)
-
-(use-package company
-  :ensure t
-  :hook (prog-mode . company-mode)
-  :diminish company-mode
-  :config
-  ;; Disable autocompletion delay
-  (setq company-idle-delay 0)
-  (setq company-backends
-	'((company-files
-	   company-keywords
-	   company-capf
-	   company-yasnippet))))
-
-(use-package shell-pop
-  :ensure t
-  :bind (("M-z" . shell-pop))
-  :config
-  (custom-set-variables
-   '(shell-pop-shell-type (quote ("eshell" "*eshell*" (lambda nil (eshell)))))))
-
-;; TODO Fix
-;; (use-package smerge-mode
-;;   :config
-;;   (evil-leader/set-key
-;;    "sn" 'smerge-next
-;;    "sp" 'smerge-prev
-;;    "sl" 'smerge-keep-lower
-;;    "su" 'smerge-keep-upper
-;;    "se" 'smerge-ediff))
-
-(use-package ediff
-  :defer t
-  :config
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-  ;; Put windows side by side
-  (setq ediff-split-window-function (quote split-window-horizontally)))
-
-(use-package direnv
-  :ensure t
-  :config
-  (direnv-mode))
-
-(use-package persistent-scratch
-  :ensure t
-  :init (persistent-scratch-setup-default))
-
-(use-package unfill
-  :ensure t
-  :bind (("C-c q" . unfill-region)))
-
-(use-package markdown-mode
-  :ensure t
-  :commands (markdown-mode gfm-mode)
-  :mode (("\\README\\.md\\'" . gfm-mode)
-	 ("\\.md\\'" . markdown-mode)
-	 ("\\.markdown\\'" . markdown-mode))
-  :config
-  (setq markdown-command "pandoc --standalone --mathjax -f markdown -t html")
-  (setq markdown-enable-math t)
-  (setq markdown-enable-html t)
-  (setq markdown-enable-wiki-links t)
-  (setq markdown-link-space-sub-char " ")
-
-  (evil-leader/set-key-for-mode
-    'markdown-mode
-    "mi" 'markdown-toggle-inline-images))
-
-(use-package browse-at-remote
-  :ensure t
-  :config
-  (custom-set-variables
-   '(browse-at-remote-remote-type-domains
-     (quote
-       ("github.com" . "github")
-       ("gitlab.com" . "gitlab"))))
-  :bind
-  (("C-c b" . browse-at-remote)))
-
-(use-package git-gutter
-  :ensure t
-  :diminish git-gutter-mode
-  :init (global-git-gutter-mode 1))
-
-(use-package git-link
-  :ensure t
-  :bind (("C-x l" . git-link)))
-
-(use-package git-timemachine
-  :ensure t
-  :commands git-timemachine-toggle
-  :init
-  (evil-leader/set-key "v" 'git-timemachine-toggle)
-  :config
-  ;; http://blog.binchen.org/posts/use-git-timemachine-with-evil.html
-  (evil-make-overriding-map git-timemachine-mode-map 'normal)
-  ;; Force update evil keymaps after git-timemachine-mode loaded
-  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
-
-;; Magit <3
-(use-package magit
-  :ensure t
-  :init
-  (evil-leader/set-key
-    "e"  'magit-dispatch
-    "h"  'magit-log-buffer-file
-    "l"  'magit-log-current
-    "g"  'magit-status)
-  :config
-  (transient-append-suffix 'magit-commit "c" '("a" "Absorb" magit-commit-absorb))
-  (transient-append-suffix 'magit-commit "c" '("A" "Amend" magit-commit-amend))
-
-  (setq magit-diff-refine-hunk t
-	magit-repository-directories '(("~/vcs/" . 2))))
-
-(use-package hl-todo
-  :ensure t
-  :hook (prog-mode))
-
-
-;; Taken from http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
-(defun rename-file-and-buffer ()
-  "Rename the current buffer and file it is visiting."
-  (interactive)
-  (let ((filename (buffer-file-name)))
-	(if (not (and filename (file-exists-p filename)))
-		(message "Buffer is not visiting a file!")
-	  (let ((new-name (read-file-name "New name: " filename)))
-		(cond
-		 ((vc-backend filename) (vc-rename-file filename new-name))
-		 (t
-		  (rename-file filename new-name t)
-		  (set-visited-file-name new-name t t)))))))
-
-
-;; TODO Refactor and study
 (defun toggle-window-split ()
   (interactive)
   (if (= (count-windows) 2)
@@ -470,64 +214,41 @@
 	(select-window (funcall selector)))
       (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
 
-(use-package winner
-  :init
-  (winner-mode 1)
-  :config
-  (evil-leader/set-key
-    "wu" 'winner-undo
-    "wr" 'winner-redo))
-
-(use-package abbrev
-  :init (setq-default abbrev-mode 1)
-  :diminish abbrev-mode
-  :hook (python-ts-mode ruby-ts-mode)
-  :config
-  (setq save-abbrevs 'silently)
-  (define-abbrev-table 'ruby-ts-mode-abbrev-table
-    '(("bp" "byebug # FIXME")))
-  (define-abbrev-table 'python-ts-mode-abbrev-table
-    '(("bp" "breakpoint()  # FIXME"))))
-
-(use-package which-key
-  :ensure t
-  :diminish which-key-mode
-  :init (which-key-mode))
-
-(use-package yasnippet
-  :ensure t
-  :diminish yas-minor-mode
-  :init
-  (evil-leader/set-key
-    "s" 'yas-insert-snippet
-    "fs" 'yas-visit-snippet-file)
-  :config
-  (setq yas-snippet-dirs '("~/shared/snippets"))
-  (yas-global-mode))
-
-
-(use-package display-line-numbers-mode
-  :init (setq display-line-numbers-type 'relative)
-  :hook (prog-mode git-timemachine-mode))
-
-(use-package rainbow-mode
-  :ensure t
-  :diminish (rainbow-mode)
-  :config (setq rainbow-mode 1))
-
-(use-package rainbow-delimiters
-  :ensure t
-  :hook (prog-mode . rainbow-delimiters-mode))
-
-(use-package paredit
-  :ensure t
-  :diminish (paredit-mode)
-  :hook ((clojure-mode emacs-lisp-mode janet-mode)))
-
 (use-package dired
   :defer t
   :config
-  (defun dired-start-process (cmd &optional file-list)
+  (setq dired-guess-shell-alist-user
+	'(("\\.pdf\\'" "zathura")
+	  ("\\.eps\\'" "zathura")
+	  ("\\.jpe?g\\'" "feh")
+	  ("\\.png\\'" "feh")
+	  ("\\.ods\\'" "libreoffice")
+	  ("\\.csv\\'" "libreoffice")
+	  ("\\.\\(?:mp4\\|mkv\\|avi\\|flv\\|ogv\\)\\'" "vlc")
+	  ("\\.\\(?:mp3\\|flac\\)\\'" "vlc")
+	  ("\\.html?\\'" "firefox")))
+
+  ;; If the next window is a dired buffer, make it the target for dired actions.
+  (setq dired-dwim-target t)
+
+  ;; Use human readable units
+  (setq-default dired-listing-switches "-alh")
+
+  ;; Reload dired buffer when content changes
+  (setq dired-auto-revert-buffer t)
+
+  ;; Hide hidden files
+  (require 'dired-x)
+  (setq dired-omit-files (rx (seq bol "." (not (any ".")))))
+  (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
+
+  :bind (("C-c d ." . dired)
+	 ("C-c d h" . (lambda () (interactive) (dired "~")))
+	 ("C-c d h" . (lambda () (interactive) (dired "~/downloads/")))
+	 ("C-c d s" . (lambda () (interactive) (dired sync-directory)))
+	 ("C-c d v" . (lambda () (interactive) (dired vcs-directory)))))
+
+(defun dired-start-process (cmd &optional file-list)
     (interactive
      (let ((files (dired-get-marked-files t current-prefix-arg)))
        (list
@@ -544,76 +265,49 @@
 		     cmd)
 		   (mapconcat #'expand-file-name file-list "\" \"")))))
 
-  (setq dired-guess-shell-alist-user
-	'(("\\.pdf\\'" "zathura")
-	  ("\\.eps\\'" "zathura")
-	  ("\\.jpe?g\\'" "feh")
-	  ("\\.png\\'" "feh")
-	  ("\\.gif\\'" "feh")
-	  ("\\.xpm\\'" "feh")
-	  ("\\.ods\\'" "libreoffice")
-	  ("\\.csv\\'" "libreoffice")
-	  ("\\.tex\\'" "pdflatex" "latex")
-	  ("\\.\\(?:mp4\\|mkv\\|avi\\|flv\\|ogv\\)\\'" "vlc")
-	  ("\\.\\(?:mp3\\|flac\\)\\'" "vlc")
-	  ("\\.html?\\'" "firefox")))
+;; Taken from http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
+(defun rename-file-and-buffer ()
+  "Rename the current buffer and file it is visiting."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+	(message "Buffer is not visiting a file!")
+      (let ((new-name (read-file-name "New name: " filename)))
+	(cond
+	 ((vc-backend filename) (vc-rename-file filename new-name))
+	 (t
+	  (rename-file filename new-name t)
+	  (set-visited-file-name new-name t t)))))))
 
-  ;; If there is a Dired buffer displayed in the next window, use its current directory, instead of
-  ;; this Dired buffer's current directory as target (rename, copy, ...).
-  (setq dired-dwim-target t)
+(defun open-todo-list ()
+  (interactive)
+  (let* ((files (directory-files todo-list-directory))
+	 (todo-lists (seq-filter (lambda (f) (not (string-prefix-p "." f))) files))
+	 (target (completing-read "To Do List: " todo-lists)))
+    (find-file (concat todo-list-directory "/" target))))
 
-  ;; Use human readable units
-  (setq-default dired-listing-switches "-alh")
+(defun open-note ()
+  (interactive)
+  (let* ((files (directory-files notes-directory))
+	 (notes (seq-filter (lambda (f) (not (string-prefix-p "." f))) files))
+	 (target (completing-read "Note: " notes)))
+    (find-file (concat notes-directory "/" target))))
 
-  ;; Reload dired buffer when content changes
-  (setq dired-auto-revert-buffer t)
-
-  ;; Hide hidden files
-  (require 'dired-x)
-  (setq dired-omit-files (rx (seq bol "." (not (any ".")))))
-  (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
-
-  (evil-define-key 'normal dired-mode-map
-    "o" 'dired-start-process
-    "s" 'dired-sort-toggle-or-edit))
-
-(use-package org
-  :mode (("\\.org\\'" . org-mode))
-  :custom-face
-  (org-block-begin-line ((t (:foreground "#8b8b8b" :extend t))))
-  (org-block-end-line ((t (:foreground "#8b8b8b" :extend t))))
-  :config
-  ;; Allow to modify image size
-  (setq org-image-actual-width nil)
-  ;; Hide emphasis markers
-  (setq org-hide-emphasis-markers t)
-  ;; Render emphasied text
-  (setq org-fontify-emphasized-text t)
-  ;; Required so <s templates work
-  (require 'org-tempo))
-
-(use-package org-tree-slide
+(use-package projectile
   :ensure t
-  :after org
-  :config
-  (setq org-tree-slide-heading-emphasis t))
-
-(use-package treesit
-  :config
-  (setq treesit-language-source-alist
-	'((elisp "https://github.com/Wilfred/tree-sitter-elisp")
-	  (yaml "https://github.com/ikatyang/tree-sitter-yaml")
-	  (html "https://github.com/tree-sitter/tree-sitter-html")
-	  (css "https://github.com/tree-sitter/tree-sitter-css")
-	  (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-	  (json "https://github.com/tree-sitter/tree-sitter-json")
-	  (python "https://github.com/tree-sitter/tree-sitter-python")
-          (ruby "https://github.com/tree-sitter/tree-sitter-ruby"))))
-
-(use-package treesit-auto
-  :ensure t
-  :config
-  (global-treesit-auto-mode))
+  :diminish projectile-mode
+  :init (projectile-mode 1)
+  (setq projectile-enable-caching t
+	projectile-switch-project-action #'magit-status
+	projectile-project-search-path '(vcs-directory))
+  :bind (("C-c p p" . projectile-switch-project)
+	 ("C-c p f" . projectile-find-file)
+	 ("C-c p o" . projectile-find-other-file)
+	 ("C-c p d" . projectile-dired-find-dir)
+	 ("C-c p b" . projectile-switch-to-buffer)
+	 ("C-c p !" . projectile-run-shell-command-in-root)
+	 ("C-c p k" . projectile-kill-buffers)
+	 ("C-c p r" . projectile-replace)))
 
 (use-package vertico
   :ensure t
@@ -627,26 +321,108 @@
 
 (use-package consult
   :ensure t
-  :bind (("M-g" . consult-goto-line))
-  :init
-  (evil-leader/set-key
-    "r" 'consult-ripgrep))
+  :bind (("M-g"   . consult-goto-line)
+	 ("C-c r" . consult-ripgrep)))
+
+(use-package company
+  :ensure t
+  :hook (prog-mode . company-mode)
+  :diminish company-mode
+  :config
+  ;; Disable autocompletion delay
+  (setq company-idle-delay 0)
+  (setq company-backends
+	'((company-files
+	   company-keywords
+	   company-capf
+	   company-yasnippet))))
+
+(use-package abbrev
+  :init (abbrev-mode)
+  :diminish abbrev-mode
+  :hook (python-ts-mode)
+  :config (define-abbrev-table 'python-ts-mode-abbrev-table
+	    '(("bp" "breakpoint()  # FIXME"))))
+
+(use-package yasnippet
+  :ensure t
+  :diminish yas-minor-mode
+  :init (yas-global-mode)
+  :config (setq yas-snippet-dirs '("~/shared/snippets")))
+
+
+(use-package direnv
+  :ensure t
+  :config
+  (direnv-mode))
+
+(use-package persistent-scratch
+  :ensure t
+  :init (persistent-scratch-setup-default))
+
+(use-package unfill
+  :ensure t
+  :bind (("C-c q" . unfill-region)))
+
+(use-package markdown-mode
+  :ensure t)
+
+(use-package org
+  :config
+  ;; Allow to modify image size
+  (setq org-image-actual-width nil)
+  ;; Hide emphasis markers
+  (setq org-hide-emphasis-markers t)
+  ;; Render emphasised text
+  (setq org-fontify-emphasized-text t)
+  ;; Required so <s templates work
+  (require 'org-tempo))
+
+(use-package browse-at-remote
+  :ensure t
+  :bind (("C-c B" . browse-at-remote)))
+
+(use-package git-link
+  :ensure t
+  :bind (("C-c L" . git-link)))
+
+(use-package git-timemachine
+  :ensure t
+  :commands git-timemachine-toggle)
+
+;; Magit <3
+(use-package magit
+  :ensure t
+  :config
+  (transient-append-suffix 'magit-commit "c" '("a" "Absorb" magit-commit-absorb))
+  (transient-append-suffix 'magit-commit "c" '("A" "Amend" magit-commit-amend))
+  (setq magit-diff-refine-hunk t
+	magit-repository-directories '(("~/vcs/" . 2)))
+  :bind (("C-c g" . magit)))
+
+(use-package hl-todo
+  :ensure t
+  :hook (prog-mode))
 
 (use-package eglot
   :ensure t
-  :config
-  (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
-  (evil-leader/set-key "-" 'eglot-rename)
+  :config (setq eglot-ignored-server-capabilities
+		'(:inlayHintProvider))
   :hook (python-mode . eglot-ensure))
 
-(use-package python-black
+(use-package ispell
   :ensure t
-  :diminish (python-black-on-save-mode)
-  :after python
-  :hook (python-mode . python-black-on-save-mode))
+  :config
+  (when (executable-find "hunspell")
+    (setq-default ispell-program-name "hunspell")
+    (setq ispell-really-hunspell t)))
 
-(use-package cython-mode
-  :ensure t)
+(use-package flyspell
+  :ensure t
+  :after (ispell)
+  :hook ((markdown-mode org-mode) . flyspell-mode)
+  :config
+  (setq flyspell-default-dictionary "en_US"))
 
 (use-package zig-mode
   :ensure t
@@ -659,36 +435,7 @@
                                      (eglot-code-action-organize-imports nil)))
                                  nil t)))))
 
-
-(use-package rust-mode
-  :ensure t
-  :mode (("\\.rs\\'" . rust-mode)))
-
-(use-package sly
-  :ensure t
-  :config (setq inferior-lisp-program "sbcl"))
-
-(use-package ispell
-  :ensure t
-  :config
-  (setenv "DICPATH" "/home/patrick/.nix-profile/share/hunspell/")
-  (when (executable-find "hunspell")
-    (setq-default ispell-program-name "hunspell")
-    (setq ispell-really-hunspell t)))
-
-(use-package flyspell
-  :ensure t
-  :after (ispell)
-  :hook ((markdown-mode org-mode) . flyspell-mode)
-  :config
-  (setq flyspell-default-dictionary "en_US"
-	markdown-fontify-code-blocks-natively t))
-
-(use-package flycheck
-  :ensure t
-  :hook clojure-mode)
-
-(use-package flycheck-clj-kondo
+(use-package cython-mode
   :ensure t)
 
 (use-package clojure-mode
@@ -704,100 +451,56 @@
   :after clojure-mode
   :hook (clojure-mode . cider-mode)
   :config
-  (add-hook 'before-save-hook 'cider-format-buffer)
-  (evil-leader/set-key-for-mode
-    'clojure-mode
-    "mt" 'cider-test-run-project-tests
-    "mj" 'cider-jack-in
-    "mb" 'cider-eval-buffer
-    "md" 'cider-debug-defun-at-point
-    "mr" 'cider-eval-region
-    "me" 'cider-eval-last-sexp))
+  (add-hook 'before-save-hook 'cider-format-buffer))
 
 (use-package janet-mode
-  :ensure t
-  :mode (("\\.janet\\'" . janet-mode)))
+  :ensure t)
 
-(use-package makefile-executor
+
+(use-package flycheck
   :ensure t
-  :defer t
-  :config
-  (add-hook 'makefile-mode-hook 'makefile-executor-mode)
-  (evil-leader/set-key
-    "pm"  'makefile-executor-execute-project-target
-    "pl"  'makefile-executor-execute-last))
+  :hook clojure-mode)
+
+(use-package flycheck-clj-kondo
+  :ensure t)
 
 (use-package justl
   :commands justl-exec-recipe-in-dir
-  :ensure t
-  :init
-  (evil-leader/set-key
-    "j"  'justl-exec-recipe-in-dir))
+  :ensure t)
+
+(use-package calc
+  :bind (("C-c c" . calc)))
 
 (use-package just-mode
-  :mode (("\\Justfile\\'" . just-mode))
   :ensure t)
 
 (use-package plantuml-mode
   :ensure t
-  :mode (("\\.plantuml\\'" . plantuml-mode))
-  :config
-  (setq plantuml-default-exec-mode 'executable
-	plantuml-output-type "png"))
+  :config)
 
 (use-package graphviz-dot-mode
-  :ensure t
-  :mode (("\\.dot\\'" . graphviz-dot-mode)))
+  :ensure t)
 
 (use-package nix-mode
-  :ensure t
-  :mode (("\\.nix\\'" . nix-mode)))
+  :ensure t)
 
 (use-package dockerfile-mode
-  :ensure t
-  :mode (("\\Dockerfile\\'" . dockerfile-mode)))
+  :ensure t)
 
 (use-package yaml-mode
-  :ensure t
-  :mode (("\\.yml\\'" . yaml-mode)
-	 ("\\.yaml\\'" . yaml-mode)))
+  :ensure t)
 
 (use-package json-mode
-  :mode (("\\.json\\'" . json-mode))
   :ensure t)
 
 (use-package hcl-mode
-  :ensure t
-  :mode (("\\.tf\\'" . hcl-mode)
-	 ("\\.hcl\\'" . hcl-mode)))
+  :ensure t)
 
 (use-package jinja2-mode
-  :ensure t
-  :mode (("\\.j2\\'" . jinja2-mode)))
+  :ensure t)
 
 (use-package protobuf-mode
-  :ensure t
-  :mode (("\\.proto\\'" . protobuf-mode)))
-
-(use-package web-mode
-  :ensure t
-  :pin melpa
-  :mode (("\\.html.j2\\'" . web-mode)))
-
-(use-package sqlformat
-  :ensure t
-  :hook (sql-mode-hook . sqlformat-on-save-mode)
-  :config
-  (setq sqlformat-command 'pgformatter
-	sqlformat-args '("-f1")))
-
-(use-package undo-tree
-  :ensure t
-  :diminish (undo-tree-mode)
-  :config
-  (undo-tree-mode 1)
-  (evil-leader/set-key
-    "u" 'undo-tree-visualize))
+  :ensure t)
 
 (use-package esup
   :ensure t
@@ -815,8 +518,8 @@
 (use-package gptel
   :ensure t
   :pin melpa
-  :bind (("M-m" . toggle-gptel)
-	 ("M-l" . gptel-menu))
+  :bind (("C-c m" . toggle-gptel)
+	 ("C-c M" . gptel-menu))
   :config
   (add-hook 'gptel-mode-hook 'visual-line-mode)
 
@@ -824,19 +527,7 @@
    gptel-model 'claude-sonnet-4-5-20250929
    gptel-backend (gptel-make-anthropic "Claude"
 		   :stream t
-		   :key (f-read-text "~/.anthropic")))
-
-  (gptel-make-preset 'lang
-    :description "A preset for building lang"
-    :backend "Claude"
-    :model "claude-sonnet-4-20250514"
-    :system "You are a language designer and compiler engineer working on modern Lisp written in Zig.")
-
-  (gptel-make-preset 'lisp
-    :description "A preset for learning Common Lisp"
-    :backend "Claude"
-    :model "claude-sonnet-4-20250514"
-    :system "You are a lisp hacker, helping to learn Common Lisp."))
+		   :key (f-read-text "~/.anthropic"))))
 
 (defun toggle-gptel ()
   (interactive)
@@ -849,14 +540,6 @@
 	  (switch-to-buffer (gptel gptel-buffer-name))
 	(switch-to-buffer gptel-buffer)))))
 
-(defun toggle-source-and-tests ()
-  "Toggle between the source and test file"
-  (interactive)
-  (pcase major-mode
-    ((or 'python-mode 'python-ts-mode) (python/toggle-source-and-test))
-    ((or 'ruby-mode 'ruby-ts-mode) (ruby/toggle-source-and-test))
-    (_ (message "%s is not supported" major-mode))))
-
 (defun python/toggle-source-and-test ()
   (let* ((module-path (buffer-file-name))
 	 (module-name (file-name-nondirectory module-path))
@@ -864,21 +547,6 @@
     (if (string-suffix-p "tests/" package-path)
 	(find-file (concat package-path "/../" (string-remove-prefix "test_" module-name)))
       (find-file (concat package-path "/tests/test_" module-name)))))
-
-(defun ruby/toggle-source-and-test ()
-  (let* ((file-name (file-name-nondirectory (buffer-file-name)))
-	 (is-spec (string-match-p "_spec\\.rb\\'" file-name))
-	 (project-root (projectile-project-root))
-	 (project-files (projectile-project-files project-root))
-	 (target (if is-spec
-		     (replace-regexp-in-string "_spec\\.rb\\'" ".rb" file-name)
-		   (replace-regexp-in-string "\\.rb\\'" "_spec.rb" file-name)))
-	 (matches (seq-filter (lambda (path) (string-match-p target path)) project-files))
-	 (open (lambda (path) (find-file (expand-file-name path project-root)))))
-    (cond
-     ((not matches) (message (format "No matches found for %s." target)))
-     ((= (length matches) 1) (funcall open (car matches)))
-     (t (funcall open (completing-read "Matches: " matches))))))
 
 (defun create-init-py-file ()
   "Create an empty __init__.py file in the current directory if it doesn't exist."
