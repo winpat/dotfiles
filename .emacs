@@ -153,6 +153,10 @@
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
+(use-package god-mode
+  :ensure t
+  :bind (("<escape>" . god-local-mode)))
+
 (use-package paredit
   :ensure t
   :diminish (paredit-mode)
@@ -434,6 +438,10 @@
                                    (when (eglot-managed-p)
                                      (eglot-code-action-organize-imports nil)))
                                  nil t)))))
+
+(use-package python-mode
+  :config (define-key python-mode-map (kbd "C-c C-p") nil))
+
 
 (use-package cython-mode
   :ensure t)
