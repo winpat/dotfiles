@@ -50,6 +50,9 @@
 ;; Allow to resize emacs to exactly 50% on openbox
 (setq frame-resize-pixelwise t)
 
+;; Don't create ~ backup files
+(setq make-backup-files nil)
+
 ;; Always trim trailing whitespace.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
