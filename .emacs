@@ -127,11 +127,6 @@
   :init (which-key-mode))
 
 
-(use-package dimmer
-  :ensure t
-  :init (dimmer-mode)
-  :config (setq dimmer-fraction 0.4))
-
 (use-package diminish
   :ensure t)
 
