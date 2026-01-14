@@ -455,9 +455,7 @@
 (use-package cider
   :ensure t
   :after clojure-mode
-  :hook (clojure-mode . cider-mode)
-  :config
-  (add-hook 'before-save-hook 'cider-format-buffer))
+  :hook (clojure-mode . cider-mode))
 
 (use-package janet-mode
   :ensure t)
