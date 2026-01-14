@@ -375,6 +375,7 @@
   :ensure t)
 
 (use-package org
+  :mode "\\.org\\'"
   :config
   ;; Allow to modify image size
   (setq org-image-actual-width nil)
@@ -493,6 +494,7 @@
   :ensure t)
 
 (use-package nix-mode
+  :mode "\\.nix\\'"
   :ensure t)
 
 (use-package dockerfile-mode
@@ -502,6 +504,7 @@
   :ensure t)
 
 (use-package json-mode
+  :mode "\\.json\\'"
   :ensure t)
 
 (use-package hcl-mode
@@ -511,6 +514,7 @@
   :ensure t)
 
 (use-package protobuf-mode
+  :mode "\\.proto\\'"
   :ensure t)
 
 (use-package esup
