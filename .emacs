@@ -64,13 +64,10 @@
 (global-set-key (kbd "C-.") 'xref-find-definitions)
 (global-set-key (kbd "C-,") 'xref-go-back)
 (global-set-key (kbd "M-m") 'comment-dwim)
+(global-set-key (kbd "C-c s") 'save-buffer)
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "C-c <SPC>") 'set-mark-command)
-(global-set-key (kbd "C-c f f") 'find-file)
-(global-set-key (kbd "C-c f o") 'find-file-other-window)
-(global-set-key (kbd "C-c f c") (lambda () (interactive) (find-file "/etc/nixos/configuration.nix")))
-(global-set-key (kbd "C-c f e") (lambda () (interactive) (find-file "~/.emacs")))
-(global-set-key (kbd "C-c f w") (lambda () (interactive) (find-file "~/shared/notes/workspace.md")))
+(global-set-key (kbd "C-c f") 'find-file)
 (global-set-key (kbd "C-c t") 'open-todo-list)
 (global-set-key (kbd "C-c n") 'open-note)
 (global-set-key (kbd "C-c b ,") (lambda () (interactive) (global-text-scale-adjust 1)))
@@ -251,7 +248,7 @@
 
   :bind (("C-c d ." . dired)
 	 ("C-c d h" . (lambda () (interactive) (dired "~")))
-	 ("C-c d h" . (lambda () (interactive) (dired "~/downloads/")))
+	 ("C-c d d" . (lambda () (interactive) (dired "~/downloads/")))
 	 ("C-c d s" . (lambda () (interactive) (dired sync-directory)))
 	 ("C-c d v" . (lambda () (interactive) (dired vcs-directory)))))
 
@@ -314,6 +311,7 @@
 	 ("C-c p b" . projectile-switch-to-buffer)
 	 ("C-c p !" . projectile-run-shell-command-in-root)
 	 ("C-c p k" . projectile-kill-buffers)
+	 ("C-c p s" . projectile-save-project-buffers)
 	 ("C-c p r" . projectile-replace)))
 
 (use-package vertico
