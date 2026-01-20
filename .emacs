@@ -366,7 +366,11 @@
   :bind (("C-c q" . unfill-region)))
 
 (use-package markdown-mode
-  :ensure t)
+  :ensure t
+  :config
+  ;; Allow to open wiki links with " " in their file name.
+  (setq markdown-enable-wiki-links t)
+  (setq markdown-link-space-sub-char " "))
 
 (use-package org
   :mode "\\.org\\'"
