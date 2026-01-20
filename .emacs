@@ -571,5 +571,22 @@
 	    (revert-buffer)
 	    (message "__init__.py file created."))))))
 
+
+
+(use-package inheritenv
+  :vc (:url "https://github.com/purcell/inheritenv" :rev :newest))
+
+
+(use-package eat
+  :ensure t)
+
+(use-package claude-code
+  :ensure t
+  :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest)
+  :config (claude-code-mode)
+  :bind-keymap ("C-c c" . claude-code-command-map)
+  :bind (:repeat-map my-claude-code-map ("M" . claude-code-cycle-mode)))
+
+
 ;; Reset GC threshold to back to default
 (setq gc-cons-threshold 800000)
