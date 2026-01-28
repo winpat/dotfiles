@@ -64,7 +64,7 @@
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line 1)))
 (global-set-key (kbd "C-.") 'xref-find-definitions)
 (global-set-key (kbd "C-,") 'xref-go-back)
-(global-set-key (kbd "M-m") 'comment-dwim)
+;; (global-set-key (kbd "M-m") 'comment-dwim)
 (global-set-key (kbd "C-c s") 'save-buffer)
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "C-c <SPC>") 'set-mark-command)
