@@ -91,6 +91,9 @@ alias be="bundler exec"
 alias o='xdg-open'
 alias b="firefox"
 alias w="watch "
+alias zb="zig build"
+alias zt="zig test"
+alias zr="zig run"
 # Kubernetes
 alias k="kubectl"
 alias ns="kubectl config view --minify --output 'jsonpath={..namespace}'; echo"
