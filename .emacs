@@ -60,8 +60,10 @@
 ;; TODO Emacs keybinding improvements
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-i") 'delete-other-windows)
-(global-set-key (kbd "C-o") 'switch-to-buffer)
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line 1)))
+(global-set-key (kbd "M-n") 'comment-dwim)
+(global-set-key (kbd "C-M-r") 'replace-regexp)
+(global-set-key (kbd "C-o") 'switch-to-buffer)
 (global-set-key (kbd "C-.") 'xref-find-definitions)
 (global-set-key (kbd "C-,") 'xref-go-back)
 ;; (global-set-key (kbd "M-m") 'comment-dwim)
