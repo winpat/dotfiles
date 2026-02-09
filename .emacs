@@ -149,9 +149,9 @@
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
-(use-package god-mode
-  :ensure t
-  :bind (("<escape>" . god-local-mode)))
+;; (use-package god-mode
+;;   :ensure t
+;;   :bind (("<escape>" . god-local-mode)))
 
 (use-package paredit
   :ensure t
