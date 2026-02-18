@@ -20,8 +20,6 @@
   # Let me install packages from the unstable channel
   nixpkgs.config = {
     packageOverrides = pkgs: {
-      # Allow to specify master/unstable packages declaritvely.
-      # https://stackoverflow.com/questions/48831392/how-to-add-nixos-unstable-channel-declaratively-in-configuration-nix
       unstable = import (fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz) {
         config = config.nixpkgs.config;
       };
@@ -53,18 +51,8 @@
     };
   };
 
-  services.tailscale.enable = true;
-
-  # Select internationalisation properties.
-  i18n = {
-    defaultLocale = "en_US.UTF-8";
-  };
-
-  console = {
-    keyMap = "de_CH-latin1";
-  };
-
-  # Set your time zone.
+  i18n.defaultLocale = "en_US.UTF-8";
+  console.keyMap = "de_CH-latin1";
   time.timeZone = "Europe/Zurich";
 
   # List of font packages that are exposed to applications
@@ -78,10 +66,7 @@
   # https://github.com/NixOS/nixpkgs/pull/80353
   environment.pathsToLink = [ "/share/hunspell" ];
 
-  # List packages installed in system profile. To search by name, run:
-  # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
-
     # Base
     vim
     tmux
@@ -93,25 +78,21 @@
     htop
     strace
     bind
-    bat
     ripgrep
     fd
     tree
     difftastic
 
     # Shell
-    carapace
-    nushell
     fzf
     fasd
     complete-alias
-    zoxide
-    direnv
 
     # VCS
     git
     git-absorb
     gh
+    glab
 
     # Networking
     nmap
@@ -121,10 +102,6 @@
     # HTTP
     wget
     curl
-    httpie
-
-    # Emacs
-    emacs30
 
     # Misc
     sqlite
@@ -147,13 +124,11 @@
     wmctrl
     feh
     arandr
-    libnotify
     dunst
-    flameshot  # scrot on steroids
+    flameshot
     gparted
     pavucontrol
     acpi
-    udiskie
 
     # openbox
     tint2
@@ -175,9 +150,6 @@
     sshfs-fuse
     cifs-utils
 
-    # For when I am traveling
-    mosh
-
     # Misc Desktop Applications
     dmidecode
     pciutils
@@ -196,6 +168,7 @@
     zip
     unzip
     unrar
+    xarchiver
 
     # Communication
     slack
@@ -217,18 +190,12 @@
     networkmanager
     networkmanager-openvpn
     openvpn
-    tailscale
 
     # Fix missing icon for networkmanageapplet
     # https://github.com/NixOS/nixpkgs/issues/32730
     hicolor-icon-theme
 
-    # Docker 
-    docker
-    docker-compose
-
     # Media
-    pcmanfm
     pcmanfm-qt
     spotify
     mpv
@@ -236,22 +203,16 @@
     playerctl
     gimp
     gcolor3
-    noisetorch
     imagemagick
     ffmpeg
     zathura
     xournalpp
-    xarchiver
 
     # Security
     pwgen
     gnupg
     pass
     bitwarden-desktop
-
-    # Git Forge
-    gh
-    glab
 
     # File synchronization
     rsync
@@ -275,7 +236,6 @@
     # Lisp
     clojure
     janet
-    sbcl
 
     # Python 3
     python313
@@ -312,6 +272,39 @@
     master.claude-code
   ];
 
+  users.users.patrick = {
+    isNormalUser = true;
+    home = "/home/patrick";
+    description = "Patrick Winter";
+    extraGroups = ["wheel" "networkmanager" "docker" "libvirtd" "systemd-journal" "dialout"];
+  };
+
+  services.udisks2.enable = true;
+
+  programs.nix-ld.enable = true;
+
+  programs.direnv.enable = true;
+
+  programs.bash.completion.enable = true;
+
+  security.sudo.wheelNeedsPassword = false;
+
+  services.openssh.enable = true;
+
+  programs.ssh.startAgent = true;
+
+  programs.mosh.enable = true;
+
+  services.tailscale.enable = true;
+
+  programs.gnupg.agent.enable = true;
+
+  services.pcscd.enable = true;
+
+  virtualisation.docker.enable = true;
+
+  hardware.keyboard.zsa.enable = true;
+
   services.syncthing = {
     enable = true;
     user = "patrick";
@@ -325,57 +318,6 @@
       };
     };
   };
-
-  services.udev.packages = with pkgs; [
-    yubikey-personalization
-    libu2f-host
-  ];
-
-  hardware.keyboard.zsa.enable = true;
-
-  users.users.patrick = {
-    isNormalUser = true;
-    home = "/home/patrick";
-    description = "Patrick Winter";
-    extraGroups = ["wheel" "networkmanager" "docker" "libvirtd" "systemd-journal" "dialout"];
-  };
-
-  # Use a dedicated user for pair programming
-  users.users.pair = {
-    isNormalUser = true;
-    description = "User for tmux-based pair programming";
-    openssh.authorizedKeys.keys = [
-      "command=\"/run/current-system/sw/bin/tmux -S /tmp/tmux-pair attach -t pair\" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCWlePj9VDxv236PwNMB+yEHPe6S3fA0f8OLPDwapwCb35YfprCBMrKWJz8O62RynXi0Cb3087KB8lePEKcrvmsuth+z071WdjmRsU7x36lonfJ3TFIi6vi+/vC9Mx2fHvCycKQqfY/rvL6bmvufRZC2l5BIh1s8ZpIaKdQJc4mREEVaYf8ybyEr/D3hu36NWn9rNGEiIRINNOrgmFRFJvtRlb/YuCa/5ZY5FOL968CAgqphER5CpJ0LzBvCKrBKegWdqUfgjtkkzmcEVRZo2GGH7Cu9tCHYMT0DRSTn0RHNaqj4tp5Hz2zDWVVLptJQYis5M/8HzWIVO7KJPFhN/SZ me"
-    ];
-  };
-
-  programs.direnv.enable = true;
-
-  programs.bash.completion.enable = true;
-
-  security.sudo.wheelNeedsPassword = false;
-
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "yes";
-    };
-  };
-
-  services.nfs.server.enable = true;
-
-  programs.ssh = {
-    startAgent = true;
-    agentTimeout = "168h";
-  };
-
-  programs.gnupg.agent = {
-    enable = true;
-  };
-
-  # For when I am on the run :-)
-  programs.mosh.enable = true;
 
   fileSystems."/net/media" = {
     device = "//192.168.0.200/media";
@@ -393,9 +335,6 @@
     in ["${automount_opts},credentials=/home/patrick/.samba/personal"];
   };
 
-  # Enable smart card reader
-  services.pcscd.enable = true;
-
   # Start an emacs user service
   services.emacs = {
     enable = true;
@@ -403,54 +342,26 @@
     defaultEditor = true;
   };
 
-  # # Anti virus
-  # services.clamav = {
-  #   scanner.enable = true;
-  #   updater.enable = true;
-  # };
-
-  virtualisation = {
-    # libvirtd.enable = true;
-    docker.enable = true;
-  };
-
-  # Use composite manager for extra fanciness
-  services.compton.enable = true;
+  services.picom.enable = true;
   services.unclutter.enable = true;
-
   services.xserver = {
     enable = true;
-    xkb = {
-      layout = "ch";
-    };
+    xkb.layout = "ch";
     displayManager.lightdm.enable = true;
     windowManager.openbox.enable = true;
-
-    # Lock the screen after 60 seconds of inactivity
-    xautolock = {
-      enable = true;
-      locker = "${pkgs.i3lock-color}/bin/i3lock-color -c 000000 -k --date-color ffffff --time-color ffffff --date-str='%d/%m/%Y'";
-      time = 3;
-    };
   };
 
-  # Fix i3lock-color after upgrading to nixpkgs 25.05
-  security.pam.services.i3lock.enable = true;
-
-  # Gotta get that melatonine
   services.redshift.enable = true;
-
   location = {
     latitude = 47.519093;
     longitude = 8.017178;
   };
 
-  # Discover network printers
-  services.avahi.enable = true;
+  # Fix i3lock-color after upgrading to nixpkgs 25.05
+  security.pam.services.i3lock.enable = true;
 
+  # Bluetooth
   services.blueman.enable = true;
-
-  # Enable bluetooth
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
@@ -462,10 +373,6 @@
       };
     };
   };
-
-  services.udisks2.enable = true;
-
-  programs.nix-ld.enable = true;
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
