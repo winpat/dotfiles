@@ -168,7 +168,7 @@
     libreoffice
     pandoc
     pdftk
-    poppler_utils
+    poppler-utils
     pdfgrep
 
     # Remote file systems
@@ -247,7 +247,7 @@
     pwgen
     gnupg
     pass
-    bitwarden
+    bitwarden-desktop
 
     # Git Forge
     gh
@@ -403,11 +403,11 @@
     defaultEditor = true;
   };
 
-  # Anti virus
-  services.clamav = {
-    scanner.enable = true;
-    updater.enable = true;
-  };
+  # # Anti virus
+  # services.clamav = {
+  #   scanner.enable = true;
+  #   updater.enable = true;
+  # };
 
   virtualisation = {
     # libvirtd.enable = true;
