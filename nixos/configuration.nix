@@ -153,6 +153,7 @@
     gparted
     pavucontrol
     acpi
+    udiskie
 
     # openbox
     tint2
@@ -461,6 +462,8 @@
       };
     };
   };
+
+  services.udisks2.enable = true;
 
   programs.nix-ld.enable = true;
 
