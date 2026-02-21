@@ -446,6 +446,9 @@
 (use-package python-mode
   :config (define-key python-mode-map (kbd "C-c C-p") nil))
 
+(use-package ruff-format
+  :ensure t
+  :hook (python-mode . ruff-format-on-save-mode))
 
 (use-package cython-mode
   :ensure t)
