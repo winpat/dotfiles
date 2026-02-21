@@ -349,6 +349,7 @@
     xkb.layout = "ch";
     displayManager.lightdm.enable = true;
     windowManager.openbox.enable = true;
+    windowManager.i3.enable = true;
   };
 
   services.redshift.enable = true;
