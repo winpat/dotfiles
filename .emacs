@@ -139,7 +139,6 @@
   :diminish auto-revert-mode)
 
 (use-package display-line-numbers-mode
-  :init (setq display-line-numbers-type 'relative)
   :hook (prog-mode git-timemachine-mode))
 
 (use-package rainbow-mode
