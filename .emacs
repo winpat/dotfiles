@@ -415,9 +415,8 @@
 
 (use-package eglot
   :ensure t
-  :config (setq eglot-ignored-server-capabilities
-		'(:inlayHintProvider))
-  :hook (python-mode . eglot-ensure))
+  :hook ((python-mode zig-mode) . eglot-ensure)
+  :config (setq eglot-ignored-server-capabilities '(:inlayHintProvider)))
 
 (use-package ispell
   :ensure t
@@ -436,8 +435,7 @@
 (use-package zig-mode
   :ensure t
   :mode (("\\.zig\\'" . zig-mode))
-  :hook ((zig-mode . eglot-ensure)
-         (zig-mode . (lambda ()
+  :hook ((zig-mode . (lambda ()
                        (add-hook 'before-save-hook
                                  (lambda ()
                                    (when (eglot-managed-p)
