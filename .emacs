@@ -444,7 +444,7 @@
                                      (eglot-code-action-organize-imports nil)))
                                  nil t)))))
 
-(use-package python-mode
+(use-package python
   :config (define-key python-mode-map (kbd "C-c C-p") nil))
 
 (use-package ruff-format
