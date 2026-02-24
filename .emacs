@@ -350,7 +350,9 @@
   :ensure t
   :diminish yas-minor-mode
   :init (yas-global-mode)
-  :config (setq yas-snippet-dirs '("~/shared/snippets")))
+  :config
+  (setq yas-snippet-dirs '("~/shared/snippets"))
+  (yas-reload-all))
 
 
 (use-package direnv
