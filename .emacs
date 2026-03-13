@@ -69,6 +69,7 @@
 ;; (global-set-key (kbd "M-m") 'comment-dwim)
 (global-set-key (kbd "C-c s") 'save-buffer)
 (global-set-key (kbd "C-c o") 'occur)
+(global-set-key (kbd "M-h") 'ff-find-other-file)
 (global-set-key (kbd "C-c <SPC>") 'set-mark-command)
 (global-set-key (kbd "C-c f") 'find-file)
 (global-set-key (kbd "C-c t") 'open-todo-list)
