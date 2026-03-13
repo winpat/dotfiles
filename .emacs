@@ -410,6 +410,9 @@
 	magit-repository-directories '(("~/vcs/" . 2)))
   :bind (("C-c g" . magit)))
 
+(use-package smerge-mode
+  :init (setq smerge-command-prefix (kbd "C-c v")))
+
 (use-package hl-todo
   :ensure t
   :hook (prog-mode))
