@@ -436,6 +436,11 @@
   :config
   (setq flyspell-default-dictionary "en_US"))
 
+(use-package cc-mode
+    :hook (c-mode . (lambda ()
+      (setq comment-start "// "
+            comment-end   ""))))
+
 (use-package zig-mode
   :ensure t
   :mode (("\\.zig\\'" . zig-mode))
