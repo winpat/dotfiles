@@ -449,7 +449,13 @@
                                  (lambda ()
                                    (when (eglot-managed-p)
                                      (eglot-code-action-organize-imports nil)))
-                                 nil t)))))
+                                 nil t))))
+  :config
+  (defun my/zig-test-buffer-from-project-root (orig-fun &rest args)
+    (let ((default-directory (project-root (project-current t))))
+      (apply orig-fun args)))
+
+  (advice-add 'zig-test-buffer :around #'my/zig-test-buffer-from-project-root))
 
 (use-package python
   :config (define-key python-mode-map (kbd "C-c C-p") nil))
