@@ -102,13 +102,9 @@
 
 (package-initialize)
 
-;;(use-package naysayer-theme
-;;  :ensure t
-;;  :init (load-theme 'naysayer t))
-
-(use-package timu-caribbean-theme
-  :ensure t
-  :init (load-theme 'timu-caribbean t))
+(use-package naysayer-theme
+ :ensure t
+ :init (load-theme 'naysayer t))
 
 (use-package helpful
   :ensure t
