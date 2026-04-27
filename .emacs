@@ -12,7 +12,7 @@
 
 ;; Font type and size
 (set-face-attribute 'default nil :height 120)
-(set-face-attribute 'default nil :family "Hack")
+(set-face-attribute 'default nil :family "JetBrains Mono")
 
 ;; Disable message in scratch buffer
 (setq initial-scratch-message nil)

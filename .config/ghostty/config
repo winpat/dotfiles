@@ -1,5 +1,5 @@
 theme = Elegant
-font-family = Hack
+font-family = JetBrains Mono
 font-size = 14
 window-decoration = server
 confirm-close-surface = false

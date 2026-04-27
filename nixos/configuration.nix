@@ -58,7 +58,7 @@
   # List of font packages that are exposed to applications
   fonts = {
     enableDefaultPackages = true;
-    packages = with pkgs; [ hack-font font-awesome ];
+    packages = with pkgs; [ hack-font font-awesome jetbrains-mono ];
   };
 
   # Required so libreoffice finds the hunspell dicts
