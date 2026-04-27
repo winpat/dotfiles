@@ -147,10 +147,6 @@
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
-;; (use-package god-mode
-;;   :ensure t
-;;   :bind (("<escape>" . god-local-mode)))
-
 (use-package paredit
   :ensure t
   :diminish (paredit-mode)
@@ -351,7 +347,6 @@
   (setq yas-snippet-dirs '("~/shared/snippets"))
   (yas-reload-all))
 
-
 (use-package direnv
   :ensure t
   :config
@@ -433,9 +428,11 @@
   (setq flyspell-default-dictionary "en_US"))
 
 (use-package cc-mode
-    :hook (c-mode . (lambda ()
-      (setq comment-start "// "
-            comment-end   ""))))
+  :mode (("\\.c\\'" . cc-mode)
+	 ("\\.cpp\\'" . cc-mode))
+  :hook (c-mode . (lambda ()
+		    (setq comment-start "// "
+			  comment-end   ""))))
 
 (use-package zig-mode
   :ensure t
@@ -456,16 +453,12 @@
 (use-package python
   :config (define-key python-mode-map (kbd "C-c C-p") nil))
 
-(use-package ruff-format
-  :ensure t
-  :hook (python-mode . ruff-format-on-save-mode))
-
 (use-package cython-mode
-  :ensure t)
+  :ensure t
+  :mode (("\\.pyx\\'" . cython-mode)))
 
 (use-package clojure-mode
   :ensure t
-  :config (require 'flycheck-clj-kondo)
   :bind (("C-x C-d" . cider-debug-defun-at-point)
 	 ("C-x C-i" . cider-inspect-last-result))
   :mode (("\\.clj\\'" . clojure-mode)
@@ -476,10 +469,6 @@
   :after clojure-mode
   :hook (clojure-mode . cider-mode))
 
-(use-package janet-mode
-  :ensure t)
-
-
 (use-package flycheck
   :ensure t
   :hook clojure-mode)
@@ -487,12 +476,15 @@
 (use-package flycheck-clj-kondo
   :ensure t)
 
-(use-package justl
-  :commands justl-exec-recipe-in-dir
+(use-package janet-mode
   :ensure t)
 
 (use-package calc
   :bind (("C-c c" . calc)))
+
+(use-package justl
+  :commands justl-exec-recipe-in-dir
+  :ensure t)
 
 (use-package just-mode
   :ensure t)
@@ -541,31 +533,6 @@
 (use-package f
   :ensure t)
 
-(use-package gptel
-  :ensure t
-  :pin melpa
-  :bind (("C-c m" . toggle-gptel)
-	 ("C-c M" . gptel-menu))
-  :config
-  (add-hook 'gptel-mode-hook 'visual-line-mode)
-
-  (setq
-   gptel-model 'claude-sonnet-4-5-20250929
-   gptel-backend (gptel-make-anthropic "Claude"
-		   :stream t
-		   :key (f-read-text "~/.anthropic"))))
-
-(defun toggle-gptel ()
-  (interactive)
-  (let* ((current-buffer-name (buffer-name))
-	 (gptel-buffer-name "*Claude*")
-	 (gptel-buffer (get-buffer gptel-buffer-name)))
-    (if (string= current-buffer-name gptel-buffer-name)
-	(previous-buffer)
-      (if (not gptel-buffer)
-	  (switch-to-buffer (gptel gptel-buffer-name))
-	(switch-to-buffer gptel-buffer)))))
-
 (defun python/toggle-source-and-test ()
   (let* ((module-path (buffer-file-name))
 	 (module-name (file-name-nondirectory module-path))
@@ -585,23 +552,6 @@
 	    (write-region "" nil init-file)
 	    (revert-buffer)
 	    (message "__init__.py file created."))))))
-
-
-
-(use-package inheritenv
-  :vc (:url "https://github.com/purcell/inheritenv" :rev :newest))
-
-
-(use-package eat
-  :ensure t)
-
-(use-package claude-code
-  :ensure t
-  :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest)
-  :config (claude-code-mode)
-  :bind-keymap ("C-c c" . claude-code-command-map)
-  :bind (:repeat-map my-claude-code-map ("M" . claude-code-cycle-mode)))
-
 
 ;; Reset GC threshold to back to default
 (setq gc-cons-threshold 800000)
