@@ -54,6 +54,9 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
+;; Save customizations to a different file
+(setq custom-file "~/.emacs.d/custom.el")
+
 ;; Always trim trailing whitespace.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
