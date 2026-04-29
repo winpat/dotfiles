@@ -319,6 +319,33 @@
   :bind (("M-g"   . consult-goto-line)
 	 ("C-c r" . consult-ripgrep)))
 
+(use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode))
+
+(use-package embark
+  :ensure t
+  :bind
+  (("C-." . embark-act)
+   ("M-." . embark-dwim)
+   ("C-h B" . embark-bindings))
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+  ;; Add Embark to the mouse context menu. Also enable `context-menu-mode'.
+  (context-menu-mode 1)
+  (add-hook 'context-menu-functions #'embark-context-menu 100)
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+(use-package embark-consult
+  :ensure t)
+
 (use-package company
   :ensure t
   :hook (prog-mode . company-mode)
