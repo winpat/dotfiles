@@ -119,7 +119,6 @@
     xorg.xev
     xorg.xmodmap
     xclip
-    xsel
     xdotool
     wmctrl
     feh
