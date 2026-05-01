@@ -343,7 +343,6 @@
   };
 
   services.picom.enable = true;
-  services.unclutter.enable = true;
   services.xserver = {
     enable = true;
     xkb.layout = "ch";
