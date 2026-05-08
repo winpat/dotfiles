@@ -457,9 +457,8 @@
   :config
   (setq flyspell-default-dictionary "en_US"))
 
-(use-package cc-mode
-  :mode (("\\.c\\'" . cc-mode)
-	 ("\\.cpp\\'" . cc-mode))
+(use-package c-mode
+  :mode "\\.c\\'"
   :hook (c-mode . (lambda ()
 		    (setq comment-start "// "
 			  comment-end   ""))))
