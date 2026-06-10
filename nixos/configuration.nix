@@ -1,32 +1,11 @@
-# configuration.nix of Patrick Winter <patrickwinter@posteo.ch>
-
-{ config, pkgs, ... }:
-
+{ config, pkgs, lib, unstable, llm-agents, ... }:
 
 {
-  imports = [
-    /etc/nixos/work.nix  # Work sensitive settings which are not published
-    /etc/nixos/host-configuration.nix
-    /etc/nixos/hardware-configuration.nix
-  ];
-
   nix = {
     package = pkgs.nixVersions.stable;
     extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
-  };
-
-  # Let me install packages from the unstable channel
-  nixpkgs.config = {
-    packageOverrides = pkgs: {
-      unstable = import (fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz) {
-        config = config.nixpkgs.config;
-      };
-      master = import (fetchTarball https://github.com/NixOS/nixpkgs/archive/master.tar.gz) {
-        config = config.nixpkgs.config;
-      };
-    };
+        experimental-features = nix-command flakes
+    '';
   };
 
   # Required to install spotify, unrar, discord, ...
@@ -244,7 +223,9 @@
     cbonsai
 
     # AI
-    claude-code
+    llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code
+    llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pi
+    llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex
   ];
 
   users.users.patrick = {

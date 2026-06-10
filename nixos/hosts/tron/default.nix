@@ -1,10 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-    <nixos-hardware/lenovo/thinkpad/x1/6th-gen>
-  ];
-
   networking = {
     hostName = "tron";
     hostId = "7a78ecea";
