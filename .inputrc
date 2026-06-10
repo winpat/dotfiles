@@ -1,31 +1,98 @@
+# ~/.inputrc — readline configuration
+# Applies to every program using GNU readline (bash, psql, python, gdb, ...).
+
+# By default, readline re-binds terminal special characters (the ones set via
+# stty, e.g. C-w = werase, C-u = kill-line) to their tty meaning, overriding
+# any custom bindings. Turning this off lets the "\C-w" binding below take
+# effect instead of being clobbered by the terminal driver.
 # See http://lists.gnu.org/archive/html/bug-bash/2009-03/msg00033.html
 set bind-tty-special-chars off
+
+# Never ring the terminal bell (no audible beep, no visual flash),
+# e.g. on ambiguous completion or when there is nothing to complete.
 set bell-style none
 
-# http://www.humbug.in/2010/enable-alt-key-in-xterm/
-set meta-flag on
-set convert-meta off
-set output-meta on
+# --- Emacs-style region bindings ---------------------------------------------
 
-# Define my favorite Emacs key bindings.
+# C-@ (Ctrl-Space sends this): set the mark at point, like Emacs' set-mark.
 "\C-@": set-mark
-"\C-w": kill-region
-"\M-w": copy-region-as-kill
-"\M-/" dabbrev-expand
 
-# Use cycleable menu for completion
+# C-w: kill (cut) the text between mark and point into the kill ring,
+# like Emacs' kill-region. Only works because bind-tty-special-chars is off,
+# otherwise C-w would stay the terminal's "delete previous word".
+"\C-w": kill-region
+
+# M-w: copy the region between mark and point into the kill ring without
+# deleting it, like Emacs' copy-region-as-kill. Paste with C-y (yank).
+"\M-w": copy-region-as-kill
+
+# --- Completion --------------------------------------------------------------
+
+# When menu-completing, first insert the common prefix of all matches
+# before cycling through the individual candidates.
 set menu-complete-display-prefix on
+
+# If a completion is ambiguous, list all matches immediately on the first
+# TAB press instead of requiring a second one.
 set show-all-if-ambiguous on
+
+# Colorize completion candidates by file type (like ls --color),
+# using the LS_COLORS environment variable.
 set colored-stats on
+
+# Highlight the common prefix of the completion candidates in color.
 set colored-completion-prefix on
+
+# Case-insensitive completion: "doc<TAB>" also matches "Documents".
 set completion-ignore-case on
+
+# TAB cycles forward through the completion candidates (menu completion)
+# instead of just inserting the longest common prefix.
 TAB: menu-complete
+
+# Shift-TAB (terminals send the CSI Z escape sequence) cycles backward
+# through the completion candidates.
 "\e[Z": menu-complete-backward
 
-# Filter history entries by what has already been entered.
+# If the text after the cursor already matches the completion, skip over it
+# instead of inserting a duplicate. E.g. cursor in the middle of "Makefile"
+# won't produce "Makefileile".
+set skip-completed-text on
+
+# Print all completion candidates at once instead of paging them through
+# an internal more-style prompt.
+set page-completions off
+
+# Always just show me the competions options, even if there are many.
+set completion-query-items -1
+
+# Treat hyphens and underscores as equivalent during completion, so
+# "my_dir<TAB>" matches "my-dir". Only works with completion-ignore-case on,
+# which you have. Great for projects that mix naming styles.
+set completion-map-case on
+
+# --- History -----------------------------------------------------------------
+
+# Edited-then-abandoned history entries: if you recall an old command, modify
+# it, but then move to another entry and run that instead, readline normally
+# keeps your edits on the abandoned entry for the rest of the session.
+# This reverts all such stray edits when you hit Enter.
+set revert-all-at-newline on
+
+# Up arrow: search history backward for entries starting with the text
+# already typed on the line (prefix search instead of plain previous-entry).
 "\e[A": history-search-backward
+
+# Down arrow: same as above, but search forward through history.
 "\e[B": history-search-forward
 
-# Disable beeps and do not display control characters.
-set bell-style none
+# --- Misc --------------------------------------------------------------------
+
+# Paste multiline clipboard content as a single editable blob instead of
+# executing each line on its embedded newlines. Default since readline 8.1,
+# but stating it protects you on older hosts — it's a real safety feature.
+set enable-bracketed-paste on
+
+# Don't echo control characters; e.g. pressing C-c won't display "^C"
+# on the line before the signal takes effect.
 set echo-control-characters off
