@@ -71,17 +71,15 @@
     vim
     tmux
     file
-    gnumake
     just
     man-pages
     jq
-    htop
+    btop
     strace
     bind
     ripgrep
     fd
     tree
-    difftastic
 
     # Shell
     fzf
@@ -90,9 +88,6 @@
 
     # VCS
     git
-    git-absorb
-    gh
-    glab
 
     # Networking
     nmap
@@ -116,8 +111,8 @@
     ghostty
     dmenu
     xcape
-    xorg.xev
-    xorg.xmodmap
+    xev
+    xmodmap
     xclip
     xdotool
     wmctrl
@@ -205,13 +200,11 @@
     imagemagick
     ffmpeg
     zathura
-    xournalpp
 
     # Security
     pwgen
     gnupg
     pass
-    bitwarden-desktop
 
     # File synchronization
     rsync
@@ -226,7 +219,7 @@
     gdb
     gcc
     ccls
-    cmake
+    gnumake
 
     # Zig
     zig
@@ -236,36 +229,25 @@
     clojure
     janet
 
-    # Python 3
-    python313
-    python312
-    python311
-    python310
-    pyright
-    ruff
-    mypy
+    # Python
+    python3
     uv
-    python3Packages.ipython
-    python3Packages.ipdb
 
     # Data Science
     visidata
-    python3Packages.numpy
-    python3Packages.pandas
 
     # GCP
     (google-cloud-sdk.withExtraComponents ([google-cloud-sdk.components.gke-gcloud-auth-plugin]))
     kubectx
     kubectl
     k9s
-    kubernetes-helm
 
     # Misc
     asciiquarium
     cbonsai
 
     # AI
-    master.claude-code
+    claude-code
   ];
 
   users.users.patrick = {
