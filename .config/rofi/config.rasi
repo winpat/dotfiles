@@ -1,0 +1,101 @@
+configuration {
+    modi:        "drun,run,window";
+    show-icons:  true;
+    font:        "JetBrains Mono 11";
+    display-drun:   "run";
+    display-run:    "shell";
+    display-window: "window";
+}
+
+* {
+    bg:      #14151fee;
+    surface: #2a2535ff;
+    accent:  #b85040ff;
+    bright:  #d96a4fff;
+    muted:   #7a5260ff;
+    text:    #e3d8d2ff;
+
+    background-color: transparent;
+    text-color:       @text;
+}
+
+window {
+    background-color: @bg;
+    border:           1px solid;
+    border-color:     @accent;
+    border-radius:    10px;
+    width:            520px;
+    padding:          12px;
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+    spacing:  8px;
+}
+
+inputbar {
+    background-color: @surface;
+    padding:          8px 12px;
+    border-radius:    8px;
+    children:         [ prompt, entry ];
+    spacing:          8px;
+}
+
+prompt {
+    text-color: @bright;
+}
+
+entry {
+    placeholder:       "search";
+    placeholder-color: @muted;
+}
+
+listview {
+    lines:        8;
+    spacing:      4px;
+    scrollbar:    false;
+    fixed-height: true;
+}
+
+element {
+    padding:       6px 10px;
+    border-radius: 6px;
+    spacing:       8px;
+}
+
+element normal.normal,
+element alternate.normal {
+    background-color: transparent;
+    text-color:       @text;
+}
+
+element normal.active,
+element alternate.active {
+    background-color: transparent;
+    text-color:       @bright;
+}
+
+element normal.urgent,
+element alternate.urgent {
+    background-color: transparent;
+    text-color:       @accent;
+}
+
+element selected.normal,
+element selected.active,
+element selected.urgent {
+    background-color: @accent;
+    text-color:       @bg;
+}
+
+element-text {
+    background-color: inherit;
+    text-color:       inherit;
+    vertical-align:   0.5;
+}
+
+element-icon {
+    size:             1.2em;
+    background-color: inherit;
+    vertical-align:   0.5;
+}

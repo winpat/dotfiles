@@ -108,25 +108,25 @@
     hunspellDicts.en-us-large
 
     # Desktop
+    nwg-look
     ghostty
-    dmenu
-    xcape
-    xev
-    xmodmap
-    xclip
-    xdotool
-    wmctrl
-    feh
-    arandr
+    rofi
+    hyprlock
+    hyprpaper
+    hyprshot
+    waybar
+    wl-clipboard   # clipboard
+    wtype          # synthetic keyboard input
+    wev            # event viewer
+    grim           # screenshot backend (used by hyprshot)
+    slurp          # region selector
+    cliphist       # clipboard history
+    gammastep      # color temperature
+    imv            # image viewer
     dunst
-    flameshot
     gparted
     pavucontrol
     acpi
-
-    # openbox
-    tint2
-    obconf
 
     # Diagrams
     graphviz
@@ -151,12 +151,12 @@
     usbutils
     pmutils
 
-    # Lock screen
-    i3lock-color
-
     # GTK theme
     arc-theme
     arc-icon-theme
+
+    # Cursor theme
+    kdePackages.breeze
 
     # Compression
     zip
@@ -208,9 +208,6 @@
 
     # File synchronization
     rsync
-
-    # Clipboard manager
-    copyq
 
     # Ergodox Ez
     wally-cli
@@ -316,26 +313,21 @@
   # Start an emacs user service
   services.emacs = {
     enable = true;
-    package = pkgs.emacs30;
+    package = pkgs.emacs30-pgtk;
     defaultEditor = true;
   };
 
-  services.picom.enable = true;
-  services.xserver = {
+  programs.hyprland.enable = true;
+
+  services.greetd = {
     enable = true;
-    xkb.layout = "ch";
-    displayManager.lightdm.enable = true;
-    windowManager.openbox.enable = true;
+    settings.default_session = {
+      command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd start-hyprland";
+      user = "greeter";
+    };
   };
 
-  services.redshift.enable = true;
-  location = {
-    latitude = 47.519093;
-    longitude = 8.017178;
-  };
-
-  # Fix i3lock-color after upgrading to nixpkgs 25.05
-  security.pam.services.i3lock.enable = true;
+  security.pam.services.hyprlock = {};
 
   # Bluetooth
   services.blueman.enable = true;

@@ -10,9 +10,9 @@
       todo-list-directory (format "%s/todo" sync-directory)
       vcs-directory "~/vcs")
 
-;; Font type and size
-(set-face-attribute 'default nil :height 120)
-(set-face-attribute 'default nil :family "JetBrains Mono")
+;; Font type and size — use default-frame-alist so daemon-spawned frames
+;; pick up the font (set-face-attribute doesn't survive daemon init).
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono-14"))
 
 ;; Disable message in scratch buffer
 (setq initial-scratch-message nil)
@@ -506,6 +506,9 @@
   :ensure t)
 
 (use-package janet-mode
+  :ensure t)
+
+(use-package lua-mode
   :ensure t)
 
 (use-package calc

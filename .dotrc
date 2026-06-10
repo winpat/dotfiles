@@ -1,5 +1,3 @@
----
-
 all:
  - .emacs
  - .vimrc
@@ -7,34 +5,17 @@ all:
  - .bash_profile
  - .bashrc
  - .inputrc
- - .config/nixpkgs
  - .config/git
- - .config/pgcli/config
- - .config/nushell
- - .pdbrc.py
- - .pryrc
 
-gem|tron|clu:
- - .Xmodmap
- - .config/dunst
- - .config/zathura
+tron|clu:
  - .config/ghostty
- - .ipython/profile_default/startup/start.py
+ - .config/hypr
+ - .config/waybar
+ - .config/rofi
  - nixos/configuration.nix -> /etc/nixos/configuration.nix
- - nixos/cachix.nix -> /etc/nixos/cachix.nix
- - nixos/cachix -> /etc/nixos/cachix
 
 tron:
- - .config/openbox
- - .config/tint2
  - nixos/tron-configuration.nix -> /etc/nixos/host-configuration.nix
 
 clu:
- - .config/openbox
- - .config/tint2
  - nixos/clu-configuration.nix -> /etc/nixos/host-configuration.nix
-
-gem:
- - .config/openbox
- - .config/tint2
- - nixos/gem-configuration.nix -> /etc/nixos/host-configuration.nix
