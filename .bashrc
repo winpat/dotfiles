@@ -132,6 +132,5 @@ fi
 # Wire up direnv
 eval "$(direnv hook bash)"
 
-# Wire up fasd
-alias j='fasd_cd -d'
-eval "$(fasd --init auto)"
+# Wire up zoxide
+eval "$(zoxide init --cmd j bash)"

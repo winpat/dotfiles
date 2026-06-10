@@ -83,7 +83,7 @@
 
     # Shell
     fzf
-    fasd
+    zoxide
     complete-alias
 
     # VCS
