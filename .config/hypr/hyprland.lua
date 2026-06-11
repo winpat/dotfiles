@@ -321,8 +321,8 @@ for i = 1, 10 do
 end
 
 -- Example special workspace (scratchpad)
-hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+hl.bind(mainMod .. " + A",         hl.dsp.workspace.toggle_special("magic"))
+hl.bind(mainMod .. " + SHIFT + A", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
@@ -339,6 +339,20 @@ hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_S
 hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),                  { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),                  { locked = true, repeating = true })
+
+-- Screenshots via hyprshot (installed in nixos/configuration.nix).
+-- Saves to ~/screenshots and copies to the clipboard.
+local screenshotDir = os.getenv("HOME") .. "/screenshots"
+
+local function screenshot(mode)
+    local cmd = string.format("sh -c 'mkdir -p %s && hyprshot -m %s -o %s'",
+                              screenshotDir, mode, screenshotDir)
+    return hl.dsp.exec_cmd(cmd)
+end
+
+hl.bind(mainMod .. " + S",         screenshot("region"))
+hl.bind(mainMod .. " + CTRL + S",  screenshot("window"))
+hl.bind(mainMod .. " + SHIFT + S", screenshot("output"))
 
 -- Requires playerctl
 hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })
