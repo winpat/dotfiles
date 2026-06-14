@@ -443,6 +443,8 @@
   :hook ((python-mode zig-mode) . eglot-ensure)
   :config (setq eglot-ignored-server-capabilities '(:inlayHintProvider)))
 
+(add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
+
 (use-package ispell
   :ensure t
   :config
@@ -477,7 +479,21 @@
     (let ((default-directory (project-root (project-current t))))
       (apply orig-fun args)))
 
-  (advice-add 'zig-test-buffer :around #'my/zig-test-buffer-from-project-root))
+  (advice-add 'zig-test-buffer :around #'my/zig-test-buffer-from-project-root)
+
+  ;; The Zig compiler renders an in-place progress display (tree drawing,
+  ;; cursor moves, OSC taskbar progress) whenever it writes to a TTY.  Emacs'
+  ;; `compilation-start' gives the subprocess a pty by default, so the first
+  ;; (non-cached) build fills the buffer with raw escape codes that
+  ;; `ansi-color' can't strip -- they aren't SGR color sequences.  Force a
+  ;; pipe so Zig sees no TTY and skips the progress UI, and pass `--color on'
+  ;; so real diagnostic colors still come through for
+  ;; `ansi-color-compilation-filter'.
+  (defun my/zig--run-cmd-no-pty (orig-fun cmd &optional source &rest args)
+    (let ((process-connection-type nil))
+      (apply orig-fun cmd source (append args '("--color" "on")))))
+
+  (advice-add 'zig--run-cmd :around #'my/zig--run-cmd-no-pty))
 
 (use-package python
   :config (define-key python-mode-map (kbd "C-c C-p") nil))
