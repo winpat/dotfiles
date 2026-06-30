@@ -548,6 +548,17 @@
   :mode "\\.nix\\'"
   :ensure t)
 
+(use-package typst-ts-mode
+  :ensure t
+  :mode "\\.typ\\'"
+  :hook ((typst-ts-mode . eglot-ensure)
+         (typst-ts-mode . flyspell-mode))
+  :config
+  ;; tinymist is the Typst language server.
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '(typst-ts-mode . ("tinymist")))))
+
 (use-package dockerfile-mode
   :ensure t)
 

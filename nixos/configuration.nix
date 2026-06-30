@@ -113,6 +113,8 @@
 
     # Writing
     texlive.combined.scheme-full
+    typst          # Typst compiler
+    tinymist       # Typst language server
     libreoffice
     pandoc
     pdftk
