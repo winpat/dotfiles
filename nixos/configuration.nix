@@ -90,16 +90,18 @@
     nwg-look
     ghostty
     rofi
-    hyprlock
-    hyprpaper
-    hyprshot
-    waybar
+    swaylock-effects  # swaylock + clock/date + gaussian blur (styled via ~/.config/swaylock/config)
+    swayidle        # idle management: auto-lock / screen-off / lock-on-suspend
+    swaybg
+    kanshi          # multi-monitor output profiles
+    sfwbar          # tint2-style panel
     wl-clipboard   # clipboard
     wtype          # synthetic keyboard input
     wev            # event viewer
-    grim           # screenshot backend (used by hyprshot)
+    grim           # screenshot backend
     slurp          # region selector
-    cliphist       # clipboard history
+    satty          # screenshot annotation editor (flameshot-like)
+    copyq          # clipboard manager
     gammastep      # color temperature
     imv            # image viewer
     dunst
@@ -300,17 +302,17 @@
     defaultEditor = true;
   };
 
-  programs.hyprland.enable = true;
+  programs.labwc.enable = true;
 
   services.greetd = {
     enable = true;
     settings.default_session = {
-      command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd start-hyprland";
+      command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd labwc";
       user = "greeter";
     };
   };
 
-  security.pam.services.hyprlock = {};
+  security.pam.services.swaylock = {};
 
   # Bluetooth
   services.blueman.enable = true;

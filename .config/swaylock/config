@@ -1,0 +1,55 @@
+# swaylock-effects config. Used by both the W-u keybind (rc.xml) and the
+# swayidle auto-lock / before-sleep hooks (labwc autostart) -- keeping the
+# styling here means neither needs per-invocation flags.
+#
+# Colors follow the Arc-Darker palette shared with sfwbar/labwc:
+#   bg   #0c0d12   accent #3a5f8a   text #d3dae3   error/red #cc575d
+# Requires swaylock-effects (base swaylock has no clock/blur); the package is
+# set in nixos/configuration.nix.
+
+# --- Background: blurred screenshot (frosted-glass look) ---
+screenshots
+effect-blur=7x5
+effect-vignette=0.4:0.4
+fade-in=0.2
+
+# --- Clock & date, centered above the ring ---
+clock
+timestr=%H:%M
+datestr=%a %e %B
+font=JetBrains Mono
+font-size=28
+
+# --- Unlock indicator ring ---
+indicator
+indicator-radius=110
+indicator-thickness=8
+indicator-caps-lock
+
+# Ring / text colors per state (RRGGBBAA).
+# Idle & typing: dark translucent inside, blue accent ring.
+inside-color=0c0d12cc
+ring-color=3a5f8aff
+line-color=00000000
+text-color=d3dae3ff
+key-hl-color=5a8fceff
+bs-hl-color=cc575dff
+
+# While verifying the password.
+inside-ver-color=0c0d12cc
+ring-ver-color=5a8fceff
+text-ver-color=d3dae3ff
+
+# Wrong password.
+inside-wrong-color=0c0d12cc
+ring-wrong-color=cc575dff
+text-wrong-color=cc575dff
+
+# Cleared / no input.
+inside-clear-color=0c0d12cc
+ring-clear-color=3a5f8aff
+text-clear-color=d3dae3ff
+
+# Caps-lock highlight segments.
+caps-lock-key-hl-color=cc575dff
+caps-lock-bs-hl-color=cc575dff

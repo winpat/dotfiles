@@ -1,0 +1,42 @@
+# Arc-Darker window decorations, recreated for labwc.
+#
+# arc-theme no longer ships an Openbox theme, so labwc can't load "Arc-Darker"
+# by name. These values reproduce the Arc-Darker palette (dark titlebars, light
+# text, Arc blue #5294e2 accent) for labwc's decorations, menus and OSD.
+# Applied on top of the built-in theme; tweak the hex values to taste.
+
+border.width: 1
+
+# Titlebar button size (incl. the app-icon/menu "logo"). Default is 26.
+window.button.width: 20
+window.button.height: 20
+
+# Compact titlebar to match the old Openbox proportions. Default is 0.
+window.titlebar.padding.height: 2
+
+# Titlebar + borders
+window.active.title.bg.color: #2f343f
+window.active.label.text.color: #d3dae3
+window.active.border.color: #2f343f
+window.active.button.unpressed.image.color: #d3dae3
+
+window.inactive.title.bg.color: #2f343f
+window.inactive.label.text.color: #7c818c
+window.inactive.border.color: #2f343f
+window.inactive.button.unpressed.image.color: #7c818c
+
+# Root / client menus
+menu.border.width: 1
+menu.border.color: #21252b
+menu.items.bg.color: #383c4a
+menu.items.text.color: #d3dae3
+menu.items.active.bg.color: #5294e2
+menu.items.active.text.color: #ffffff
+menu.title.bg.color: #2f343f
+menu.title.text.color: #d3dae3
+
+# On-screen display (workspace switch / window cycle popup)
+osd.bg.color: #2f343f
+osd.border.width: 1
+osd.border.color: #5294e2
+osd.label.text.color: #d3dae3

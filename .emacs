@@ -12,7 +12,7 @@
 
 ;; Font type and size — use default-frame-alist so daemon-spawned frames
 ;; pick up the font (set-face-attribute doesn't survive daemon init).
-(add-to-list 'default-frame-alist '(font . "JetBrains Mono-14"))
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono-13"))
 
 ;; Disable message in scratch buffer
 (setq initial-scratch-message nil)
@@ -243,6 +243,7 @@
 	 ("C-c d h" . (lambda () (interactive) (dired "~")))
 	 ("C-c d d" . (lambda () (interactive) (dired "~/downloads/")))
 	 ("C-c d s" . (lambda () (interactive) (dired sync-directory)))
+	 ("C-c d m" . (lambda () (interactive) (dired "/run/media/patrick/")))
 	 ("C-c d v" . (lambda () (interactive) (dired vcs-directory)))))
 
 (defun dired-start-process (cmd &optional file-list)

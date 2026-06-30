@@ -1,0 +1,8 @@
+# Keyboard layout (was Hyprland input { kb_layout/kb_variant/kb_options })
+XKB_DEFAULT_LAYOUT=ch
+XKB_DEFAULT_VARIANT=de
+XKB_DEFAULT_OPTIONS=ctrl:nocaps
+
+# Cursor
+XCURSOR_THEME=Adwaita
+XCURSOR_SIZE=24

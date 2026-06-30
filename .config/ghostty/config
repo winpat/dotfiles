@@ -1,6 +1,6 @@
-theme = Elegant
+theme = Aizen Dark
 font-family = JetBrains Mono
-font-size = 14
+font-size = 13
 window-decoration = server
 confirm-close-surface = false
 keybind = clear

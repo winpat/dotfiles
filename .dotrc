@@ -9,8 +9,10 @@ all:
 
 tron|clu:
  - .config/ghostty
- - .config/hypr
- - .config/waybar
+ - .config/labwc
+ - .config/kanshi
+ - .config/sfwbar
+ - .config/swaylock
  - .config/rofi
  - nixos/configuration.nix -> /etc/nixos/configuration.nix
 

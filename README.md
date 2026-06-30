@@ -3,7 +3,7 @@
 Here are my dotfiles which I reuse across all my systems.
 
 * I use [NixOS](https://nixos.org/) as my operating system.
-* I use [Hyprland](https://hyprland.org/) as my Wayland compositor.
+* I use [labwc](https://labwc.github.io/) as my Wayland compositor.
 * I pretty much live in [Emacs](https://www.gnu.org/software/emacs/) and [tmux](https://github.com/tmux/tmux).
 
 

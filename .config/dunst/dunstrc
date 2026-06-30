@@ -1,0 +1,95 @@
+# dunst theme, matching rofi / sfwbar / labwc (Arc-Darker palette).
+#
+# Colours mirror .config/rofi/config.rasi and .config/sfwbar/sfwbar.config:
+#   near-black background #0c0d12, Arc-blue accent #3a5f8a, light text
+#   #d3dae3, muted #7c818c, urgent uses labwc's brighter OSD blue #5294e2.
+# Geometry mirrors rofi: 1px accent frame, 10px corners, JetBrains Mono.
+
+[global]
+    monitor = 0
+    follow = mouse
+
+    # Geometry / placement
+    width = 360
+    height = (0, 200)
+    origin = top-right
+    offset = (12, 12)
+    scale = 0
+    notification_limit = 5
+
+    # Progress bar
+    progress_bar = true
+    progress_bar_height = 10
+    progress_bar_frame_width = 1
+    progress_bar_min_width = 150
+    progress_bar_max_width = 336
+
+    # Frame / corners (matches rofi window: 1px accent border, 10px radius)
+    frame_width = 1
+    frame_color = "#3a5f8a"
+    corner_radius = 10
+    gap_size = 6
+    separator_height = 2
+    separator_color = frame
+
+    # Text
+    font = JetBrains Mono 11
+    line_height = 0
+    markup = full
+    format = "<b>%s</b>\n%b"
+    alignment = left
+    vertical_alignment = center
+    word_wrap = yes
+    ellipsize = middle
+    ignore_newline = no
+    show_age_threshold = 60
+    hide_duplicate_count = false
+    show_indicators = yes
+
+    # Icons
+    enable_recursive_icon_lookup = true
+    icon_theme = "Arc, Adwaita, hicolor"
+    icon_position = left
+    min_icon_size = 32
+    max_icon_size = 48
+
+    # Padding
+    padding = 12
+    horizontal_padding = 12
+    text_icon_padding = 8
+
+    # History / misc
+    sort = yes
+    idle_threshold = 0
+    stack_duplicates = true
+    sticky_history = yes
+    history_length = 20
+    dmenu = /usr/bin/rofi -dmenu -p dunst
+    browser = /usr/bin/xdg-open
+    always_run_script = true
+    title = Dunst
+    class = Dunst
+    ignore_dbusclose = false
+
+    # Mouse
+    mouse_left_click = do_action, close_current
+    mouse_middle_click = close_all
+    mouse_right_click = context
+
+[urgency_low]
+    background = "#0c0d12"
+    foreground = "#7c818c"
+    frame_color = "#3a5f8a"
+    timeout = 6
+
+[urgency_normal]
+    background = "#0c0d12"
+    foreground = "#d3dae3"
+    frame_color = "#3a5f8a"
+    timeout = 10
+
+[urgency_critical]
+    background = "#2f343f"
+    foreground = "#ffffff"
+    frame_color = "#5294e2"
+    timeout = 0

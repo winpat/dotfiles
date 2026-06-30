@@ -8,12 +8,13 @@ configuration {
 }
 
 * {
-    bg:      #14151fee;
-    surface: #2a2535ff;
-    accent:  #b85040ff;
-    bright:  #d96a4fff;
-    muted:   #7a5260ff;
-    text:    #e3d8d2ff;
+    /* Arc-Darker palette (matches labwc themerc-override / GTK Arc-Darker) */
+    bg:      #0e0f16d9;
+    surface: #1b1d27f2;
+    accent:  #3a5f8aff;
+    bright:  #ffffffff;
+    muted:   #7c818cff;
+    text:    #d3dae3ff;
 
     background-color: transparent;
     text-color:       @text;
@@ -46,6 +47,8 @@ prompt {
 }
 
 entry {
+    text-color:        @text;
+    cursor-color:      @accent;
     placeholder:       "search";
     placeholder-color: @muted;
 }
@@ -85,7 +88,7 @@ element selected.normal,
 element selected.active,
 element selected.urgent {
     background-color: @accent;
-    text-color:       @bg;
+    text-color:       @bright;
 }
 
 element-text {

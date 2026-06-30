@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# Wallpaper
+swaybg -i ~/shared/media/images/Wallpaper/2650x1440/john-towner-JgOeRuGD_Y4-unsplash.jpg -m fill &
+
+# Multi-monitor output profiles
+kanshi &
+
+# Bar, network applet, notifications
+sfwbar &
+nm-applet &
+dunst &
+
+# Removable media: auto-mount USB drives (udisks2 does the mounting; udiskie is
+# the session daemon that watches for insert events). -a automount, -n notify,
+# -t tray icon (shows in sfwbar's tray; click to unmount/eject). Mounts land
+# under /run/media/patrick/.
+udiskie -a -n -t &
+
+# Clipboard manager (copyq monitors the Wayland clipboard itself via the
+# wlr-data-control protocol; no wl-paste watchers needed).
+copyq &
+
+# Idle management: lock the screen after 5 min idle, and lock before the system
+# suspends (so resuming always asks for the password). Uses the same swaylock
+# as the W-u keybind. `-f` daemonizes swaylock so swayidle's timeout fires it
+# without blocking. Guarded on swayidle being installed (added to the NixOS
+# config; needs a rebuild) so login doesn't error before then.
+command -v swayidle >/dev/null && swayidle -w \
+  timeout 300 'swaylock -f -c 1a1a2e' \
+  before-sleep 'swaylock -f -c 1a1a2e' &
+
+# Restart emacs daemon after wayland is available. Otherwise emacsclient
+# can't launch in GUI mode.
+dbus-update-activation-environment --systemd --all
+systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
+systemctl --user restart emacs.service
+
+# Terminal on login
+ghostty &

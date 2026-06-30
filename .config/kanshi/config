@@ -1,0 +1,24 @@
+# Monitor profiles (ported from the Hyprland hl.monitor blocks).
+# kanshi activates the profile whose listed outputs are all connected.
+# Identify outputs with `wlr-randr` and adjust names/modes if needed.
+
+# Home office: AOC AG271QG
+profile home-office {
+    output "AOC AG271QG" mode 2560x1440 scale 1.0 position 0,0
+}
+
+# Laptop internal display
+profile laptop {
+    output eDP-1 mode 2560x1440 scale 1.6 position 0,0
+}
+
+# Parashift office: Dell S2817Q 4K over HDMI (main screen, laptop as secondary).
+# The Dell only advertises 30Hz at 3840x2160 over this HDMI link (HDMI 1.4
+# bandwidth limit) -- not fixable in config. scale 1.33 gives a ~2887x1624
+# logical workspace so everything is a bit bigger.
+# Laptop sits to the left; external is the primary work surface on the right.
+# Logical widths: eDP-1 2560/1.6 = 1600, so the Dell starts at x=1600.
+profile parashift-office {
+    output "Dell Inc. DELL S2817Q J42MC64C087M" mode 3840x2160@30Hz scale 1.33 position 1600,0
+    output eDP-1 mode 2560x1440 scale 1.6 position 0,0
+}

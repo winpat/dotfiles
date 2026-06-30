@@ -1,20 +1,5 @@
 " .vimrc of Patrick Winter <patrickwinter@posteo.ch>
-
-" Load theme
-colorscheme retrobox
-
-" Ergnomic replacement for esc
-:imap jk <Esc>
-:imap kj <Esc>
-
-" leader
-let mapleader = " "
-
-" leader mappings
-nnoremap <silent> <leader>s :split<CR>
-nnoremap <silent> <leader>v :vsplit<CR>
-nnoremap <silent> <leader>q :close<CR>
-
+"
 " unsorted
 set nocompatible
 
@@ -34,19 +19,8 @@ set tabstop=4
 " indent when moving to the next line while writing code
 set autoindent
 
-" spellchecking
-"set spell spelllang=de,en
-
 " controls
-let mapleader=","
 set backspace=indent,eol,start
-
-" disable arrow keys
-for prefix in ['i', 'n', 'v']
-  for key in ['<Up>', '<Down>', '<Left>', '<Right>']
-    exe prefix . "noremap " . key . " <Nop>"
-  endfor
-endfor
 
 " line numbering
 set number
@@ -57,17 +31,20 @@ syntax on
 " highlight searches
 set hlsearch
 
-" show a visual line under the cursor's current line
-" set cursorline
-
 " show the matching part of the pair for [] {} and ()
 set showmatch
 
-" Enable folding
-set foldmethod=indent
-set foldlevel=99
-" Enable folding with the spacebar
-nnoremap <space> za
+" Ergnomic replacement for esc
+:imap jk <Esc>
+:imap kj <Esc>
+
+" leader
+let mapleader = " "
+
+" leader mappings
+nnoremap <silent> <leader>s :split<CR>
+nnoremap <silent> <leader>v :vsplit<CR>
+nnoremap <silent> <leader>q :close<CR>
 
 "split navigations
 nnoremap <C-J> <C-W><C-J>

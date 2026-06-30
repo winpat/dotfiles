@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<labwc_config>
+
+  <core>
+    <gap>0</gap>
+    <adaptiveSync>no</adaptiveSync>
+  </core>
+
+  <!-- Let maximized/tiled windows move immediately on drag (Openbox-like).
+       Default unMaximizeThreshold is 150px, which makes Alt+drag feel dead
+       on a maximized window until you've dragged that far. -->
+  <resistance>
+    <unSnapThreshold>10</unSnapThreshold>
+    <unMaximizeThreshold>10</unMaximizeThreshold>
+  </resistance>
+
+  <theme>
+    <cornerRadius>0</cornerRadius>
+    <dropShadows>yes</dropShadows>
+    <!-- Match the old Openbox titlebar: sans, size 8, bold. -->
+    <font place="ActiveWindow">
+      <name>sans</name>
+      <size>8</size>
+      <weight>bold</weight>
+    </font>
+    <font place="InactiveWindow">
+      <name>sans</name>
+      <size>8</size>
+      <weight>bold</weight>
+    </font>
+  </theme>
+
+  <desktops>
+    <number>4</number>
+    <names>
+      <name>1</name>
+      <name>2</name>
+      <name>3</name>
+      <name>4</name>
+    </names>
+    <popupTime>0</popupTime>
+  </desktops>
+
+  <focus>
+    <followMouse>yes</followMouse>
+    <raiseOnFocus>no</raiseOnFocus>
+  </focus>
+
+  <!-- Snap regions for the ported Openbox tiling binds (percentages of the
+       output's usable area). -->
+  <regions>
+    <region name="reading"    x="30%" y="0%" width="40%" height="100%" />
+    <region name="left-third" x="0%"  y="0%" width="35%" height="100%" />
+    <region name="right-2-3"  x="35%" y="0%" width="65%" height="100%" />
+  </regions>
+
+  <keyboard>
+    <!-- Launchers -->
+    <keybind key="W-Return">
+      <action name="Execute" command="ghostty" />
+    </keybind>
+    <keybind key="W-d">
+      <action name="Execute" command="rofi -show drun" />
+    </keybind>
+    <!-- Searchable picker for all open windows across desktops (complements the
+         raise-or-launch binds and A-Tab cycling). -->
+    <keybind key="W-Tab">
+      <action name="Execute" command="rofi -show window" />
+    </keybind>
+    <!-- Open the root (desktop) context menu at the pointer, even when a window
+         covers the desktop. (client-menu / window ops is already on A-space.) -->
+    <keybind key="W-g">
+      <action name="ShowMenu" menu="root-menu" atCursor="yes" />
+    </keybind>
+    <!-- pass: search password-store in rofi, copy selection to clipboard
+         tagged as a password-manager secret so copyq keeps it out of history -->
+    <keybind key="W-p">
+      <action name="Execute" command="~/.config/labwc/scripts/passmenu-rofi" />
+    </keybind>
+    <!-- copyq clipboard manager. Global hotkeys don't work on Wayland, so we
+         toggle copyq's window from labwc instead. (`copyq menu` popups don't
+         work under native Wayland, so W-c toggles the main window.) -->
+    <keybind key="W-c">
+      <action name="Execute" command="copyq toggle" />
+    </keybind>
+    <!-- Raise-or-launch emacs: focus an existing emacs window if one exists,
+         otherwise start a new client. ForEach scans all windows; the <none>
+         branch runs only when the query matched nothing. -->
+    <keybind key="W-e">
+      <action name="ForEach">
+        <query identifier="emacs" />
+        <then>
+          <action name="Focus" />
+          <action name="Raise" />
+        </then>
+        <none>
+          <action name="Execute" command="emacsclient -c -a emacs" />
+        </none>
+      </action>
+    </keybind>
+    <!-- Raise-or-launch firefox (matched by app_id). -->
+    <keybind key="W-f">
+      <action name="ForEach">
+        <query identifier="firefox" />
+        <then>
+          <action name="Focus" />
+          <action name="Raise" />
+        </then>
+        <none>
+          <action name="Execute" command="firefox" />
+        </none>
+      </action>
+    </keybind>
+    <!-- Raise-or-launch the main terminal. Both terminals are ghostty, so
+         these match on the fixed window title (pinned via ghostty's title
+         flag) rather than app_id. -->
+    <keybind key="W-r">
+      <action name="ForEach">
+        <query title="terminal" />
+        <then>
+          <action name="Focus" />
+          <action name="Raise" />
+        </then>
+        <none>
+          <action name="Execute" command='ghostty --title=terminal --command="tmux new-session -A -s main"' />
+        </none>
+      </action>
+    </keybind>
+    <!-- Raise-or-launch the mcp terminal. -->
+    <keybind key="W-t">
+      <action name="ForEach">
+        <query title="mcp" />
+        <then>
+          <action name="Focus" />
+          <action name="Raise" />
+        </then>
+        <none>
+          <action name="Execute" command='ghostty --title=mcp --command="ssh -X -t mcp tmux new-session -A -s main"' />
+        </none>
+      </action>
+    </keybind>
+
+    <!-- Window / session management -->
+    <keybind key="W-q">
+      <action name="Close" />
+    </keybind>
+    <keybind key="W-a">
+      <action name="ToggleFullscreen" />
+    </keybind>
+    <keybind key="W-k">
+      <action name="ToggleMaximize" />
+    </keybind>
+    <keybind key="W-j">
+      <action name="Iconify" />
+    </keybind>
+    <keybind key="W-u">
+      <action name="Execute" command="swaylock" />
+    </keybind>
+    <keybind key="W-m">
+      <action name="Exit" />
+    </keybind>
+    <keybind key="A-Tab">
+      <action name="NextWindow" />
+    </keybind>
+    <keybind key="A-S-Tab">
+      <action name="PreviousWindow" />
+    </keybind>
+    <keybind key="A-space">
+      <action name="ShowMenu" menu="client-menu" />
+    </keybind>
+    <keybind key="A-Escape">
+      <action name="Lower" />
+      <action name="Unfocus" />
+    </keybind>
+
+    <!-- Screenshot: Print = quick region grab straight to a file;
+         Super+s = region grab into the satty annotation editor (flameshot-like:
+         annotate, then copy to clipboard / save via ~/screenshot-<timestamp>.png). -->
+    <keybind key="Print">
+      <action name="Execute" command="sh -c 'grim -g &quot;$(slurp)&quot; ~/screenshot-$(date +%Y%m%d-%H%M%S).png'" />
+    </keybind>
+    <keybind key="W-s">
+      <action name="Execute" command="sh -c 'grim -g &quot;$(slurp)&quot; - | satty --filename - --output-filename ~/screenshot-%Y%m%d-%H%M%S.png --copy-command wl-copy --early-exit'" />
+    </keybind>
+
+    <!-- Virtual desktops: W-[1-4] switch, W-S-[1-4] send active window -->
+    <keybind key="W-1"><action name="GoToDesktop" to="1" /></keybind>
+    <keybind key="W-2"><action name="GoToDesktop" to="2" /></keybind>
+    <keybind key="W-3"><action name="GoToDesktop" to="3" /></keybind>
+    <keybind key="W-4"><action name="GoToDesktop" to="4" /></keybind>
+    <keybind key="W-S-1"><action name="SendToDesktop" to="1" /></keybind>
+    <keybind key="W-S-2"><action name="SendToDesktop" to="2" /></keybind>
+    <keybind key="W-S-3"><action name="SendToDesktop" to="3" /></keybind>
+    <keybind key="W-S-4"><action name="SendToDesktop" to="4" /></keybind>
+    <!-- Switch/move to adjacent desktop -->
+    <keybind key="W-Left"><action name="GoToDesktop" to="left" /></keybind>
+    <keybind key="W-Right"><action name="GoToDesktop" to="right" /></keybind>
+    <keybind key="W-S-h"><action name="SendToDesktop" to="left" /></keybind>
+    <keybind key="W-S-l"><action name="SendToDesktop" to="right" /></keybind>
+
+    <!-- Window tiling (ported from the Openbox MoveResizeTo binds) -->
+    <keybind key="W-h"><action name="SnapToEdge" direction="left" /></keybind>    <!-- 50% left -->
+    <keybind key="W-l"><action name="SnapToEdge" direction="right" /></keybind>   <!-- 50% right -->
+    <keybind key="W-i"><action name="SnapToRegion" region="left-third" /></keybind> <!-- 33% left -->
+    <keybind key="W-o"><action name="SnapToRegion" region="right-2-3" /></keybind>  <!-- 66% right -->
+    <keybind key="W-x"><action name="SnapToRegion" region="reading" /></keybind>    <!-- centered -->
+
+    <!-- Multimedia / brightness keys -->
+    <keybind key="XF86AudioRaiseVolume">
+      <action name="Execute" command="wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+" />
+    </keybind>
+    <keybind key="XF86AudioLowerVolume">
+      <action name="Execute" command="wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-" />
+    </keybind>
+    <keybind key="XF86AudioMute">
+      <action name="Execute" command="wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" />
+    </keybind>
+    <keybind key="XF86AudioMicMute">
+      <action name="Execute" command="wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle" />
+    </keybind>
+    <keybind key="XF86MonBrightnessUp">
+      <action name="Execute" command="brightnessctl -e4 -n2 set 5%+" />
+    </keybind>
+    <keybind key="XF86MonBrightnessDown">
+      <action name="Execute" command="brightnessctl -e4 -n2 set 5%-" />
+    </keybind>
+    <keybind key="XF86AudioNext">
+      <action name="Execute" command="playerctl next" />
+    </keybind>
+    <keybind key="XF86AudioPause">
+      <action name="Execute" command="playerctl play-pause" />
+    </keybind>
+    <keybind key="XF86AudioPlay">
+      <action name="Execute" command="playerctl play-pause" />
+    </keybind>
+    <keybind key="XF86AudioPrev">
+      <action name="Execute" command="playerctl previous" />
+    </keybind>
+
+    <keybind key="W-b">
+      <action name="ToggleDecorations" />
+    </keybind>
+
+  </keyboard>
+
+  <mouse>
+    <!-- Load labwc's built-in mousebinds (titlebar, decoration buttons,
+         resize edges, double-click maximize, root menu, desktop scroll). -->
+    <default />
+
+    <!-- Additions: Super + drag to move/resize windows (alongside the
+         Alt-drag defaults). -->
+    <context name="Frame">
+      <!-- Openbox-style: Alt+left drag = move, Alt+right drag = resize -->
+      <mousebind button="A-Left" action="Press">
+        <action name="Focus" />
+        <action name="Raise" />
+      </mousebind>
+      <mousebind button="A-Left" action="Drag">
+        <action name="Move" />
+      </mousebind>
+      <mousebind button="A-Right" action="Press">
+        <action name="Focus" />
+        <action name="Raise" />
+      </mousebind>
+      <mousebind button="A-Right" action="Drag">
+        <action name="Resize" />
+      </mousebind>
+      <!-- Same on Super, kept from the earlier labwc setup -->
+      <mousebind button="W-Left" action="Press">
+        <action name="Focus" />
+        <action name="Raise" />
+      </mousebind>
+      <mousebind button="W-Left" action="Drag">
+        <action name="Move" />
+      </mousebind>
+      <mousebind button="W-Right" action="Press">
+        <action name="Focus" />
+        <action name="Raise" />
+      </mousebind>
+      <mousebind button="W-Right" action="Drag">
+        <action name="Resize" />
+      </mousebind>
+    </context>
+  </mouse>
+
+  <libinput>
+    <device category="touchpad">
+      <naturalScroll>no</naturalScroll>
+    </device>
+  </libinput>
+
+</labwc_config>
