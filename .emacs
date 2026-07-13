@@ -444,8 +444,6 @@
   :hook ((python-mode zig-mode) . eglot-ensure)
   :config (setq eglot-ignored-server-capabilities '(:inlayHintProvider)))
 
-(add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
-
 (use-package ispell
   :ensure t
   :config
@@ -495,6 +493,12 @@
       (apply orig-fun cmd source (append args '("--color" "on")))))
 
   (advice-add 'zig--run-cmd :around #'my/zig--run-cmd-no-pty))
+
+(use-package compile
+  :config
+  (setq compilation-auto-jump-to-first-error t)
+  (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
+  (add-hook 'compilation-mode-hook (lambda () (pop-to-buffer (current-buffer)))))
 
 (use-package python
   :config (define-key python-mode-map (kbd "C-c C-p") nil))
