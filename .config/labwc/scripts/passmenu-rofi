@@ -2,11 +2,13 @@
 # rofi-based passmenu for `pass` (Wayland/labwc replacement for X11 `passmenu`).
 #
 # Lists password-store entries in rofi, then COPIES the selected password to the
-# clipboard for pasting. The copy is tagged with the password-manager hint
-# (application/x-kde-passwordManagerHint = secret), which copyq honors: the
-# password is pasteable but is NOT recorded in copyq's clipboard history. The
-# password is fed to copyq via stdin, so it never appears in process arguments.
-# The clipboard is cleared after 45s (like `pass -c`) if still unchanged.
+# clipboard for pasting. A flag file suppresses the cliphist wl-paste watchers
+# (see scripts/cliphist-store) while the copy is in flight, so the password is
+# pasteable but NOT recorded in the clipboard history. wl-copy can't attach the
+# application/x-kde-passwordManagerHint mime type copyq used for this, hence
+# the flag file. The password is fed to wl-copy via stdin, so it never appears
+# in process arguments. The clipboard is cleared after 45s (like `pass -c`) if
+# still unchanged.
 #
 # Bound to Super+p in ~/.config/labwc/rc.xml.
 
@@ -24,7 +26,16 @@ entry=$(
 pw=$(pass show "$entry" | head -n 1)
 [ -n "$pw" ] || exit 0
 
-printf '%s' "$pw" | copyq copy text/plain - application/x-kde-passwordManagerHint secret
+skip="${XDG_RUNTIME_DIR:-/tmp}/cliphist-skip"
+touch "$skip"
+printf '%s' "$pw" | wl-copy
+
+# The watcher fires within milliseconds of the copy; keep the flag up briefly,
+# then remove it so normal copies are recorded again.
+( sleep 2; rm -f "$skip" ) &
 
 # Clear the clipboard after 45s, but only if it still holds this password.
-( sleep 45; [ "$(copyq clipboard 2>/dev/null)" = "$pw" ] && wl-copy --clear ) &
+# Overwrite with empty content instead of `wl-copy --clear`: a cleared
+# selection is indistinguishable from a crashed source client, so
+# wl-clip-persist would re-offer the password.
+( sleep 45; [ "$(wl-paste --no-newline 2>/dev/null)" = "$pw" ] && printf '' | wl-copy ) &

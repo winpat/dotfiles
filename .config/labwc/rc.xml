@@ -72,16 +72,19 @@
     <keybind key="W-g">
       <action name="ShowMenu" menu="root-menu" atCursor="yes" />
     </keybind>
-    <!-- pass: search password-store in rofi, copy selection to clipboard
-         tagged as a password-manager secret so copyq keeps it out of history -->
+    <!-- pass: search password-store in rofi, copy selection to clipboard;
+         the script keeps the password out of the cliphist history -->
     <keybind key="W-p">
       <action name="Execute" command="~/.config/labwc/scripts/passmenu-rofi" />
     </keybind>
-    <!-- copyq clipboard manager. Global hotkeys don't work on Wayland, so we
-         toggle copyq's window from labwc instead. (`copyq menu` popups don't
-         work under native Wayland, so W-c toggles the main window.) -->
+    <!-- cliphist clipboard history in a rofi picker (script mode, so image
+         entries get thumbnails). W-S-c deletes a single entry from the
+         history instead. -->
     <keybind key="W-c">
-      <action name="Execute" command="copyq toggle" />
+      <action name="Execute" command="rofi -modi clipboard:/home/patrick/.config/labwc/scripts/cliphist-rofi -show clipboard -show-icons" />
+    </keybind>
+    <keybind key="W-S-c">
+      <action name="Execute" command="~/.config/labwc/scripts/cliphist-delete" />
     </keybind>
     <!-- Raise-or-launch emacs: focus an existing emacs window if one exists,
          otherwise start a new client. ForEach scans all windows; the <none>

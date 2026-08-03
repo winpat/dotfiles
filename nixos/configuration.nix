@@ -101,7 +101,8 @@
     grim           # screenshot backend
     slurp          # region selector
     satty          # screenshot annotation editor (flameshot-like)
-    copyq          # clipboard manager
+    cliphist        # clipboard history (watchers in labwc autostart, rofi picker)
+    wl-clip-persist # keep clipboard alive after the source window closes
     gammastep      # color temperature
     imv            # image viewer
     dunst

@@ -60,6 +60,25 @@
 ;; Always trim trailing whitespace.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+;; Clipboard integration. labwc mirrors the primary selection and the clipboard
+;; onto each other (~/.config/labwc/scripts/clipboard-sync), so there is only
+;; one system clipboard as far as Emacs is concerned.
+;;
+;; select-active-regions is the one place where that mirroring bites: at its
+;; default of t, merely having a region active publishes it to the primary
+;; selection, so C-SPC followed by a few arrow keys would push each
+;; intermediate region into the clipboard and destroy whatever was copied
+;; there. nil keeps Emacs quiet until an explicit kill or copy. The cost is
+;; that middle-click-pasting an Emacs region into another window no longer
+;; works — set this back to t if that is the trade you prefer.
+(setq select-active-regions nil)
+(setq select-enable-clipboard t)   ; kill/yank use the system clipboard
+(setq select-enable-primary nil)   ; ...and only that, since both are in sync
+(setq mouse-drag-copy-region nil)  ; dragging in Emacs does not copy either
+;; Push a clipboard value copied elsewhere onto the kill-ring before a kill
+;; overwrites it, so an external copy is never lost to M-w.
+(setq save-interprogram-paste-before-kill t)
+
 ;; TODO Emacs keybinding improvements
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-i") 'delete-other-windows)

@@ -1,0 +1,115 @@
+#!/bin/sh
+# Keep the two Wayland selections identical: PRIMARY (mouse select /
+# middle-click) and CLIPBOARD (Ctrl+C / Ctrl+V). This restores the
+# "synchronize clipboard and selection" behaviour copyq used to provide and
+# that cliphist alone does not — cliphist only ever looks at CLIPBOARD.
+#
+# Run as a wl-paste --watch callback, once per direction (see labwc/autostart):
+#   wl-paste             --type text --watch clipboard-sync to-primary
+#   wl-paste  --primary  --type text --watch clipboard-sync to-clipboard
+#
+# wl-paste pipes the new content to the callback on stdin, but this script
+# deliberately throws that copy away and re-reads the selection itself. stdin
+# is a snapshot from the moment the event fired; by the time a run reaches the
+# front of the lock the selection may have moved on several times (one mouse
+# drag emits an event per character it sweeps over), and writing a snapshot
+# that old puts a superseded value back into the other selection. Re-reading
+# means a run always propagates the newest value, so a burst converges on
+# whatever was selected last instead of on whichever event won the race.
+#
+# Two mirrored watchers that write into each other's selection will otherwise
+# spin forever, in two distinct ways, and both have to be shut down:
+#
+#   Echo. Our own write wakes the opposite watcher. Killed by comparing
+#   against what the target already holds and doing nothing when they match,
+#   so the echo run stops instead of bouncing back.
+#
+#   Swap. Whenever the two selections already differ — at login, or when both
+#   change at once — both watchers fire together, each reads the other's old
+#   value, and the two values simply trade places, forever, several times a
+#   second. Killed by the lock: the runs are serialised, so the second one
+#   re-reads its source and finds the first run's write already there,
+#   matching its target, and stops.
+#
+# Beyond the loops there is a clobbering problem, which is why the last
+# propagated value is remembered in a state file. Mid-drag the two selections
+# are legitimately different: primary is racing ahead character by character
+# while the clipboard trails one step behind it. Both watchers see "source and
+# target differ" and both want to write, so the trailing mirror gets pushed
+# back over the newer selection and the drag ends on the second-to-last value.
+# A source that still equals the last value this script propagated has not
+# changed — it *is* the mirror — so the other side is the one that moved and
+# the write is skipped.
+#
+# Comparisons are on raw bytes (cmp on temp files, not shell variables) so
+# trailing newlines and NUL bytes survive intact.
+
+runtime="${XDG_RUNTIME_DIR:-/tmp}"
+
+# --no-newline everywhere below: plain `wl-paste` appends a newline that is not
+# part of the selection, while --watch hands the callback the exact bytes, so
+# without it every comparison here mismatches by one byte — which reads as
+# "these differ", i.e. sync endlessly or never, depending on the check.
+# --no-newline suppresses the addition rather than trimming content, so a
+# selection that genuinely ends in a newline still round-trips intact.
+case "$1" in
+  to-primary)   read_source="wl-paste --no-newline"
+                read_target="wl-paste --primary --no-newline"
+                write_target="wl-copy --primary" ;;
+  to-clipboard) read_source="wl-paste --primary --no-newline"
+                read_target="wl-paste --no-newline"
+                write_target="wl-copy" ;;
+  *) echo "usage: ${0##*/} to-primary|to-clipboard" >&2; exit 2 ;;
+esac
+
+# Shared between both directions and across runs; guarded by the lock below.
+propagated="$runtime/clipboard-sync.propagated"
+
+source=$(mktemp "$runtime/clipboard-sync.src.XXXXXX")     || exit 1
+target=$(mktemp "$runtime/clipboard-sync.tgt.XXXXXX")     || exit 1
+trap 'rm -f "$source" "$target"' EXIT INT TERM
+
+# Drain the event. Its payload is not used — see the note above — but wl-paste
+# blocks on the pipe until the callback consumes it.
+cat >/dev/null
+
+# Keep passwords out of PRIMARY. passmenu-rofi raises this flag around its
+# copy (see cliphist-store); without the guard the password would sit in
+# PRIMARY, middle-click-pasteable, until the next mouse selection replaced it
+# — the 45s clear only ever touches CLIPBOARD.
+[ -e "$runtime/cliphist-skip" ] && exit 0
+
+# One direction at a time, so the reads below see the other direction's writes
+# instead of racing them. Bail rather than queue if a burst of selections backs
+# up: a dropped run costs nothing, since whichever run does get through reads
+# the same current value this one would have.
+exec 9>"$runtime/clipboard-sync.lock"
+flock -w 2 9 || exit 0
+
+$read_source >"$source" 2>/dev/null
+
+# Never propagate an empty selection. Emptiness is how passmenu-rofi wipes a
+# password after 45s, and also what a client that died mid-copy looks like;
+# neither should clear the other side.
+[ -s "$source" ] || exit 0
+
+# Already in sync — nothing to do, and this is where the echo of our own write
+# stops rather than bouncing back.
+$read_target >"$target" 2>/dev/null
+if cmp -s "$source" "$target"; then
+    cp -- "$source" "$propagated"
+    exit 0
+fi
+
+# The two differ, but this side is holding the value we ourselves mirrored
+# there, so it is the stale one and the other side is what changed. Writing
+# now would undo it. (See the clobbering note above.)
+cmp -s "$source" "$propagated" && exit 0
+
+# Record before writing: the opposite watcher is about to wake up on this
+# write and is already queued on the lock we still hold.
+cp -- "$source" "$propagated"
+
+# wl-copy forks a daemon that owns the selection until something replaces it.
+# It must not inherit the lock fd, or the lock would never be released.
+$write_target <"$source" 9>&-

@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# wl-paste --watch callback: store the new clipboard content in cliphist's
+# history. Invoked as `cliphist-store text` or `cliphist-store image`, one per
+# watcher (see labwc/autostart).
+#
+# Two things happen here beyond a plain `cliphist store`:
+#
+# 1. Password copies are skipped. passmenu-rofi drops a flag file around its
+#    copy because wl-copy can only offer a single mime type, so the
+#    application/x-kde-passwordManagerHint tag that copyq honored to mark an
+#    entry as a secret is not available to us.
+#
+# 2. Incremental selections are collapsed. Now that PRIMARY is mirrored into
+#    CLIPBOARD (scripts/clipboard-sync), a single mouse drag emits a new
+#    clipboard value per character it sweeps over, and every one of them would
+#    land in the history. So when the entry we are about to store is a
+#    prefix/suffix extension of the entry stored moments ago, the older,
+#    shorter one is dropped and only the completed selection survives. The
+#    5s window keeps this from touching deliberate copies: "foo" copied now
+#    and "foobar" copied a minute later are both kept.
+
+runtime="${XDG_RUNTIME_DIR:-/tmp}"
+collapse_window=5   # seconds
+collapse_limit=65536  # bytes; do not slurp large pastes into shell variables
+
+[ -e "$runtime/cliphist-skip" ] && exit 0
+
+# Images have no meaningful prefix relation and must not go through command
+# substitution, which would mangle them at the first NUL byte.
+[ "$1" = text ] || exec cliphist store
+
+stamp="$runtime/cliphist-last-store"
+buffer=$(mktemp "$runtime/cliphist-store.XXXXXX") || exit 1
+trap 'rm -f "$buffer"' EXIT INT TERM
+
+cat >"$buffer"
+
+# The candidate for collapsing has to be read before we store, while it is
+# still the newest entry. `cliphist list` yields "<id>\t<single-line preview>";
+# the id is what `decode` and `delete` consume, so keep the whole line.
+previous=""
+if [ -s "$buffer" ] && [ "$(stat -c%s "$buffer")" -le "$collapse_limit" ] &&
+   [ $(( $(date +%s) - $(cat "$stamp" 2>/dev/null || echo 0) )) -le "$collapse_window" ]; then
+    previous=$(cliphist list | head -n1)
+    case "$previous" in *"[[ binary data"*) previous="" ;; esac
+fi
+
+cliphist store <"$buffer"
+date +%s >"$stamp"
+
+[ -n "$previous" ] || exit 0
+
+old=$(printf '%s' "$previous" | cliphist decode)
+new=$(cat "$buffer")
+[ -n "$old" ] && [ "$old" != "$new" ] || exit 0
+
+# Grows forward on a normal drag, backward when selecting right-to-left.
+if [ "${new#"$old"}" != "$new" ] || [ "${new%"$old"}" != "$new" ] ||
+   [ "${old#"$new"}" != "$old" ] || [ "${old%"$new"}" != "$old" ]; then
+    printf '%s' "$previous" | cliphist delete
+fi

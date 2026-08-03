@@ -17,9 +17,25 @@ dunst &
 # under /run/media/patrick/.
 udiskie -a -n -t &
 
-# Clipboard manager (copyq monitors the Wayland clipboard itself via the
-# wlr-data-control protocol; no wl-paste watchers needed).
-copyq &
+# Clipboard history (cliphist): wl-paste watchers feed clipboard changes into
+# cliphist's database; the store wrapper skips password-manager copies and
+# collapses incremental mouse selections (see scripts/cliphist-store).
+wl-paste --type text --watch ~/.config/labwc/scripts/cliphist-store text &
+wl-paste --type image --watch ~/.config/labwc/scripts/cliphist-store image &
+
+# Selection sync: mirror PRIMARY (mouse select / middle-click) and CLIPBOARD
+# (Ctrl+C / Ctrl+V) onto each other, the way copyq used to. Only CLIPBOARD is
+# recorded in the history — a primary selection reaches cliphist by way of the
+# clipboard it gets mirrored into. See scripts/clipboard-sync for the loop
+# guard that keeps the two watchers from ping-ponging.
+wl-paste --type text --watch ~/.config/labwc/scripts/clipboard-sync to-primary &
+wl-paste --primary --type text --watch ~/.config/labwc/scripts/clipboard-sync to-clipboard &
+
+# wl-clip-persist re-owns a selection when the source window closes, since
+# wlroots drops it otherwise. `both` rather than `regular`, so a closed window
+# does not leave PRIMARY empty while CLIPBOARD keeps the content — that
+# divergence is exactly what the sync above exists to prevent.
+wl-clip-persist --clipboard both &
 
 # Idle management: lock the screen after 5 min idle, and lock before the system
 # suspends (so resuming always asks for the password). Uses the same swaylock

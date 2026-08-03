@@ -1,0 +1,5 @@
+#!/bin/sh
+# Pick a clipboard history entry in rofi and delete it from cliphist.
+# (`cliphist wipe` clears the whole history if it's ever needed.)
+selection=$(cliphist list | rofi -dmenu -i -p clip-delete)
+[ -n "$selection" ] && printf '%s' "$selection" | cliphist delete

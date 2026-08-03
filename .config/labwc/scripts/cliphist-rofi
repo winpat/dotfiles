@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# rofi script-mode backend for cliphist. rofi calls it twice: with no
+# arguments to produce the list, and with the selected line as $1 to act on
+# it (decode to the clipboard). Image entries get a thumbnail via rofi's
+# \0icon\x1f escape; thumbnails are cached per history id in the runtime dir,
+# which the OS clears on logout.
+#
+# Invoked as: rofi -modi clipboard:<this script> -show clipboard -show-icons
+
+thumbs="${XDG_RUNTIME_DIR:-/tmp}/cliphist-thumbs"
+
+if [ -n "$1" ]; then
+    printf '%s' "$1" | cliphist decode | wl-copy
+    exit 0
+fi
+
+mkdir -p "$thumbs"
+cliphist list | gawk -v thumbs="$thumbs" '
+    match($0, /^([0-9]+)\t\[\[ binary data .* (png|jpg|jpeg|bmp)/, m) {
+        file = thumbs "/" m[1] "." m[2]
+        if (system("[ -f \"" file "\" ]") != 0)
+            system("printf \"%s\\t\" \"" m[1] "\" | cliphist decode > \"" file "\"")
+        printf "%s\000icon\037%s\n", $0, file
+        next
+    }
+    { print }
+'
