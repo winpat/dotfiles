@@ -1,26 +1,25 @@
+;;; -*- lexical-binding: t; -*-
+
 ;; Increase GC threshold to speed up startup
 (setq gc-cons-threshold 100000000)
-
-;; Increase the default line width
-(setq-default fill-column 80)
-
-;; Paths to frequently used directories
-(setq sync-directory "~/shared"
-      notes-directory (format "%s/notes" sync-directory)
-      todo-list-directory (format "%s/todo" sync-directory)
-      vcs-directory "~/vcs")
 
 ;; Font type and size — use default-frame-alist so daemon-spawned frames
 ;; pick up the font (set-face-attribute doesn't survive daemon init).
 (add-to-list 'default-frame-alist '(font . "JetBrains Mono-13"))
 
-;; Disable message in scratch buffer
-(setq initial-scratch-message nil)
+;; Increase the default line width
+(setq-default fill-column 80)
 
 ;; Disable the Emacs startup screen and show *scratch* buffer instead
 (setq inhibit-startup-screen t)
 
-;; Disable the scoll, tool and menu bar
+;; Disable message in scratch buffer
+(setq initial-scratch-message nil)
+
+;; Enable text mode by default
+(setq initial-major-mode 'text-mode)
+
+;; Declutter the user interface
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -29,93 +28,281 @@
 (line-number-mode 1)
 (column-number-mode 1)
 
+;; Allow to resize emacs to exactly 50% on openbox
+(setq frame-resize-pixelwise t)
+
 ;; Don't emit sounds
-(setq visible-bell 1)
+(setq visible-bell t)
 
 ;; Disable the blinking cursor in GUI
-(setq blink-cursor-mode nil)
+(blink-cursor-mode -1)
 
 ;; Disable the blinking cursor in TUI
 (setq visible-cursor nil)
 
-;; Allow to answer even important questions with "y" or "n"
-(defalias 'yes-or-no-p 'y-or-n-p)
-
 ;; Emacs...  Don't break lines for me, thx
 (setq-default truncate-lines t)
 
-;; Automatically follow symlinks and don't ask ab2out it
+;; Allow to answer even important questions with "y" or "n"
+(setq use-short-answers t)
+
+;; Automatically follow symlinks and don't ask about it
 (setq vc-follow-symlinks t)
 
-;; Allow to resize emacs to exactly 50% on openbox
-(setq frame-resize-pixelwise t)
-
-;; Don't create backup and auto-save files
-(setq make-backup-files nil)
-(setq auto-save-default nil)
+;; Keep backup and auto-save files out of project directories.
+(let ((backup-directory (expand-file-name "backups/" user-emacs-directory))
+      (auto-save-directory (expand-file-name "auto-save/" user-emacs-directory)))
+  (make-directory backup-directory t)
+  (make-directory auto-save-directory t)
+  (setq make-backup-files t
+	auto-save-default t
+	backup-directory-alist `(("." . ,backup-directory))
+	auto-save-file-name-transforms `((".*" ,auto-save-directory t))
+	auto-save-list-file-prefix (expand-file-name ".saves-" auto-save-directory)
+	version-control t
+	kept-new-versions 6
+	kept-old-versions 2
+	delete-old-versions t))
 
 ;; Save customizations to a different file
 (setq custom-file "~/.emacs.d/custom.el")
+(load custom-file 'noerror)
 
-;; Always trim trailing whitespace.
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+;; Trim trailing whitespace unless it is meaningful in the current mode.
+(defun pat/delete-trailing-whitespace ()
+  "Delete trailing whitespace, except in Markdown-derived modes."
+  (unless (derived-mode-p 'markdown-mode)
+    (delete-trailing-whitespace)))
 
-;; Clipboard integration. labwc mirrors the primary selection and the clipboard
-;; onto each other (~/.config/labwc/scripts/clipboard-sync), so there is only
-;; one system clipboard as far as Emacs is concerned.
-;;
-;; select-active-regions is the one place where that mirroring bites: at its
-;; default of t, merely having a region active publishes it to the primary
-;; selection, so C-SPC followed by a few arrow keys would push each
-;; intermediate region into the clipboard and destroy whatever was copied
-;; there. nil keeps Emacs quiet until an explicit kill or copy. The cost is
-;; that middle-click-pasting an Emacs region into another window no longer
-;; works — set this back to t if that is the trade you prefer.
-(setq select-active-regions nil)
-(setq select-enable-clipboard t)   ; kill/yank use the system clipboard
-(setq select-enable-primary nil)   ; ...and only that, since both are in sync
-(setq mouse-drag-copy-region nil)  ; dragging in Emacs does not copy either
-;; Push a clipboard value copied elsewhere onto the kill-ring before a kill
-;; overwrites it, so an external copy is never lost to M-w.
-(setq save-interprogram-paste-before-kill t)
+(add-hook 'before-save-hook #'pat/delete-trailing-whitespace)
 
-;; TODO Emacs keybinding improvements
-(global-set-key (kbd "M-o") 'other-window)
-(global-set-key (kbd "M-i") 'delete-other-windows)
-(global-set-key (kbd "M-j") (lambda () (interactive) (join-line 1)))
-(global-set-key (kbd "M-n") 'comment-dwim)
-(global-set-key (kbd "C-M-r") 'replace-regexp)
-(global-set-key (kbd "C-o") 'switch-to-buffer)
-(global-set-key (kbd "C-.") 'xref-find-definitions)
-(global-set-key (kbd "C-,") 'xref-go-back)
-;; (global-set-key (kbd "M-m") 'comment-dwim)
-(global-set-key (kbd "C-c s") 'save-buffer)
-(global-set-key (kbd "C-c o") 'occur)
-(global-set-key (kbd "M-h") 'ff-find-other-file)
-(global-set-key (kbd "C-c <SPC>") 'set-mark-command)
-(global-set-key (kbd "C-c f") 'find-file)
-(global-set-key (kbd "C-c t") 'open-todo-list)
-(global-set-key (kbd "C-c n") 'open-note)
-(global-set-key (kbd "C-c b ,") (lambda () (interactive) (global-text-scale-adjust 1)))
-(global-set-key (kbd "C-c b .") (lambda () (interactive) (global-text-scale-adjust -1)))
-(global-set-key (kbd "C-c b 0") (lambda () (interactive) (global-text-scale-adjust (- text-scale-mode-amount)) (global-text-scale-mode -1)))
-(global-set-key (kbd "C-c b R") 'rename-file-and-buffer)
-(global-set-key (kbd "C-c b k") 'kill-buffer)
-(global-set-key (kbd "C-c b l") 'ibuffer)
-(global-set-key (kbd "C-c b r") (lambda () (interactive) (revert-buffer t t)))
-(global-set-key (kbd "C-c b n") (lambda () (interactive) (kill-new (buffer-name))))
-(global-set-key (kbd "C-c b w") (lambda () (interactive) (kill-new (buffer-file-name))))
-(global-set-key (kbd "C-c b p") (lambda () (interactive) (kill-new (f-relative (buffer-file-name) (projectile-project-root)))))
-(global-set-key (kbd "C-c i u") (lambda () (interactive) (string-chop-newline (shell-command "uuidgen" t))))
-(global-set-key (kbd "C-c i i") 'create-init-py-file)
-(global-set-key (kbd "C-c 1") 'delete-other-windows)
-(global-set-key (kbd "C-c 2") (lambda () (interactive) (split-window-vertically) (other-window 1)))
-(global-set-key (kbd "C-c 3") (lambda () (interactive) (split-window-horizontally) (other-window 1)))
-(global-set-key (kbd "C-c =") 'balance-windows)
-(global-set-key (kbd "C-c w d") 'delete-window)
-(global-set-key (kbd "C-c w o") 'other-window)
-(global-set-key (kbd "C-c w s") 'toggle-window-split)
-(global-set-key (kbd "C-c w t") 'swap-windows)
+;; Paths to frequently used directories
+(defgroup pat nil
+  "Personal Emacs configuration."
+  :group 'environment)
+
+(defcustom pat/sync-directory "~/shared"
+  "Directory containing synchronized files."
+  :type 'directory
+  :group 'pat)
+
+(defcustom pat/notes-directory (file-name-concat pat/sync-directory "notes")
+  "Directory containing notes."
+  :type 'directory
+  :group 'pat)
+
+(defcustom pat/todo-list-directory (file-name-concat pat/sync-directory "todo")
+  "Directory containing todo lists."
+  :type 'directory
+  :group 'pat)
+
+(defcustom pat/vcs-directory "~/vcs"
+  "Directory containing version-controlled projects."
+  :type 'directory
+  :group 'pat)
+
+(defun pat/query-replace-buffer (command)
+  "Run query-replacement COMMAND throughout the entire buffer."
+  (save-restriction
+    (widen)
+    (goto-char (point-min))
+    (let ((mark-active nil))
+      (call-interactively command))))
+
+(defun pat/search-and-replace ()
+  "Query-replace throughout the entire buffer."
+  (interactive)
+  (pat/query-replace-buffer #'query-replace))
+
+(defun pat/search-and-replace-regexp ()
+  "Regexp query-replace throughout the entire buffer."
+  (interactive)
+  (pat/query-replace-buffer #'query-replace-regexp))
+
+(defun pat/join-following-line ()
+  "Join the following line onto the current line."
+  (interactive) (join-line 1))
+
+(defun pat/rename-file-and-buffer ()
+  "Rename the current buffer and file it is visiting."
+  (interactive)
+  (let ((file-name (buffer-file-name)))
+    (unless (and file-name (file-exists-p file-name))
+      (user-error "Buffer is not visiting a file"))
+    (let ((new-name (read-file-name "New name: " file-name)))
+      (if (vc-backend file-name)
+	  (vc-rename-file file-name new-name)
+	(rename-file file-name new-name)
+	(set-visited-file-name new-name t t)))))
+
+(defun pat/filter-hidden-files (files)
+  "Return FILES without entries whose names begin with a dot."
+  (seq-filter (lambda (file) (not (string-prefix-p "." file))) files))
+
+(defun pat/open-todo-list ()
+  "Open todo list."
+  (interactive)
+  (let* ((files      (directory-files pat/todo-list-directory))
+	 (todo-lists (pat/filter-hidden-files files))
+	 (target     (completing-read "To Do List: " todo-lists)))
+    (find-file (file-name-concat pat/todo-list-directory target))))
+
+(defun pat/open-note ()
+  "Open note."
+  (interactive)
+  (let* ((files  (directory-files pat/notes-directory))
+	 (notes  (pat/filter-hidden-files files))
+	 (target (completing-read "Note: " notes)))
+    (find-file (file-name-concat pat/notes-directory target))))
+
+(defun pat/revert-buffer ()
+  "Revert current buffer from disk, discarding unsaved edits."
+  (interactive)
+  (revert-buffer t t))
+
+(defun pat/toggle-other-buffer ()
+  "Switch to the most recently visited other buffer.
+Repeating the command toggles back, unlike `previous-buffer', which
+keeps walking further back through the window history."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) t)))
+
+(defun pat/copy-buffer-name ()
+  "Copy buffer name."
+  (interactive)
+  (kill-new (buffer-name)))
+
+(defun pat/copy-absolute-buffer-path ()
+  "Copy absolute path to file buffer."
+  (interactive)
+  (let ((file-name (buffer-file-name)))
+    (unless file-name
+      (user-error "Current buffer is not visiting a file"))
+    (kill-new file-name)))
+
+(defun pat/copy-project-buffer-path ()
+  "Copy path to file buffer relative to project root."
+  (interactive)
+  (let ((file-name (buffer-file-name)))
+    (unless file-name
+      (user-error "Current buffer is not visiting a file"))
+    (kill-new (file-relative-name file-name
+				  (projectile-project-root)))))
+
+(defun pat/insert-uuid ()
+  "Insert UUID at point."
+  (interactive)
+  (insert (string-trim-right (shell-command-to-string "uuidgen"))))
+
+(defun pat/split-window-vertically ()
+  "Split window vertically and switch to window below."
+  (interactive)
+  (split-window-vertically)
+  (other-window 1))
+
+(defun pat/split-window-horizontally ()
+  "Split window horizontally and switch to window below."
+  (interactive)
+  (split-window-horizontally)
+  (other-window 1))
+
+(defun pat/toggle-window-split ()
+  "Toggle a two-window frame between vertical and horizontal splits."
+  (interactive)
+  (unless (= (count-windows) 2)
+    (user-error "Exactly two windows are required"))
+  (let* ((this-win-buffer (window-buffer))
+	 (next-win-buffer (window-buffer (next-window)))
+	 (this-win-edges (window-edges (selected-window)))
+	 (next-win-edges (window-edges (next-window)))
+	 (this-win-2nd (not (and (<= (car this-win-edges)
+				     (car next-win-edges))
+				 (<= (cadr this-win-edges)
+				     (cadr next-win-edges)))))
+	 (splitter
+	  (if (= (car this-win-edges)
+		 (car (window-edges (next-window))))
+	      #'split-window-horizontally
+	    #'split-window-vertically)))
+    (delete-other-windows)
+    (let ((first-win (selected-window)))
+      (funcall splitter)
+      (if this-win-2nd (other-window 1))
+      (set-window-buffer (selected-window) this-win-buffer)
+      (set-window-buffer (next-window) next-win-buffer)
+      (select-window first-win)
+      (if this-win-2nd (other-window 1)))))
+
+
+(defun pat/swap-windows (arg)
+  "Swap buffers between windows ARG times.
+Negative ARG moves through previous windows instead of next windows."
+  (interactive "p")
+  (let ((selector (if (>= arg 0) #'next-window #'previous-window)))
+    (while (/= arg 0)
+      (let ((this-win (window-buffer))
+	    (next-win (window-buffer (funcall selector))))
+	(set-window-buffer (selected-window) next-win)
+	(set-window-buffer (funcall selector) this-win)
+	(select-window (funcall selector)))
+      (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
+
+;; Emacs keybindings
+;;; Window Navigation
+(global-set-key (kbd "M-o")     #'other-window)
+(global-set-key (kbd "M-i")     #'delete-other-windows)
+(global-set-key (kbd "C-o")     #'switch-to-buffer)
+(global-set-key (kbd "C-c 1")   #'delete-other-windows)
+(global-set-key (kbd "C-c =")   #'balance-windows)
+(global-set-key (kbd "C-c w d") #'delete-window)
+(global-set-key (kbd "C-c w o") #'other-window)
+(global-set-key (kbd "C-c w s") #'pat/toggle-window-split)
+(global-set-key (kbd "C-c w t") #'pat/swap-windows)
+(global-set-key (kbd "C-c 2")   #'pat/split-window-vertically)
+(global-set-key (kbd "C-c 3")   #'pat/split-window-horizontally)
+;;; Text Editing
+(global-set-key (kbd "C-c s") #'save-buffer)
+(global-set-key (kbd "M-j")   #'pat/join-following-line)
+
+;;; Search
+(global-set-key (kbd "M-s r")   #'pat/search-and-replace)
+(global-set-key (kbd "M-s M-r") #'pat/search-and-replace-regexp)
+
+;;; Ergonomic Remappings
+;; Preserve the case commands on shifted variants, freeing the easier
+;; lowercase chords for more frequently used operations.
+(global-set-key (kbd "M-U") #'upcase-word)
+(global-set-key (kbd "M-L") #'downcase-word)
+(global-set-key (kbd "M-C") #'capitalize-word)
+(global-set-key (kbd "M-u") #'undo-tree-undo)
+(global-set-key (kbd "M-c") #'comment-dwim)
+(global-unset-key (kbd "M-l"))
+
+;; RET remains available for newlines.  A prefix argument makes `recompile'
+;; prompt for an edited compilation command.
+(global-set-key (kbd "C-j") #'recompile)
+;;; Code Navigation
+(global-set-key (kbd "C-.") #'xref-find-definitions)
+(global-set-key (kbd "C-,") #'xref-go-back)
+;;; Buffer Manipulation
+(global-set-key (kbd "M-z") #'pat/toggle-other-buffer)
+(global-set-key (kbd "C-c b l") #'ibuffer)
+(global-set-key (kbd "C-c b k") #'kill-buffer)
+(global-set-key (kbd "C-c b R") #'pat/rename-file-and-buffer)
+(global-set-key (kbd "C-c b r") #'pat/revert-buffer)
+(global-set-key (kbd "C-c b n") #'pat/copy-buffer-name)
+(global-set-key (kbd "C-c b w") #'pat/copy-absolute-buffer-path)
+(global-set-key (kbd "C-c b p") #'pat/copy-project-buffer-path)
+;;; Insert data at point
+(global-set-key (kbd "C-c i u") #'pat/insert-uuid)
+;;; Open files
+(global-set-key (kbd "C-c f") #'find-file)
+(global-set-key (kbd "C-c t") #'pat/open-todo-list)
+(global-set-key (kbd "C-c n") #'pat/open-note)
+;;; Text Scale
+(global-set-key (kbd "<C-wheel-up>")   (lambda () (interactive) (global-text-scale-adjust 1)))
+(global-set-key (kbd "<C-wheel-down>") (lambda () (interactive) (global-text-scale-adjust -1)))
+(global-set-key (kbd "C-c 0")        (lambda () (interactive) (global-text-scale-adjust 0)))
 
 (setq package-archives
       '(("gnu"   . "https://elpa.gnu.org/packages/")
@@ -125,8 +312,9 @@
 (package-initialize)
 
 (use-package naysayer-theme
- :ensure t
- :init (load-theme 'naysayer t))
+  :ensure t
+  :config
+  (load-theme 'naysayer t))
 
 (use-package helpful
   :ensure t
@@ -140,16 +328,16 @@
 	 ("C-h v" . helpful-variable)
 	 ("C-h k" . helpful-key)
 	 ("C-h x" . helpful-command)
-	 ("C-h F" . 'helpful-function)
+	 ("C-h F" . helpful-function)
 	 ("C-c C-d" . helpful-at-point)))
-
-(use-package which-key
-  :diminish which-key-mode
-  :init (which-key-mode))
-
 
 (use-package diminish
   :ensure t)
+
+(use-package which-key
+  :diminish which-key-mode
+  :config
+  (which-key-mode 1))
 
 (use-package eldoc
   :diminish eldoc-mode)
@@ -157,13 +345,14 @@
 (use-package autorevert
   :diminish auto-revert-mode)
 
-(use-package display-line-numbers-mode
-  :hook (prog-mode git-timemachine-mode))
+(use-package display-line-numbers
+  :hook ((prog-mode . display-line-numbers-mode)
+	 (git-timemachine-mode . display-line-numbers-mode)))
 
 (use-package rainbow-mode
   :ensure t
-  :diminish (rainbow-mode)
-  :init (rainbow-mode))
+  :hook (prog-mode . rainbow-mode)
+  :diminish rainbow-mode)
 
 (use-package rainbow-delimiters
   :ensure t
@@ -171,67 +360,51 @@
 
 (use-package paredit
   :ensure t
-  :diminish (paredit-mode)
-  :hook ((emacs-lisp-mode clojure-mode janet-mode)))
+  :hook ((emacs-lisp-mode . paredit-mode)
+	 (clojure-mode . paredit-mode)
+	 (janet-mode . paredit-mode))
+  :diminish paredit-mode)
 
 (use-package undo-tree
   :ensure t
-  :diminish (undo-tree-mode)
-  :init (undo-tree-mode)
-  :bind (("C-c U" . undo-tree-undo)))
+  :demand t
+  :bind (("C-c U" . undo-tree-visualize)
+	 :map undo-tree-map
+	 ("C-x u" . undo-tree-undo))
+  :diminish undo-tree-mode
+  :init
+  (let ((history-directory
+	 (expand-file-name "undo-tree-history/" user-emacs-directory)))
+    (make-directory history-directory t)
+    (setq undo-tree-history-directory-alist
+	  `(("." . ,history-directory))))
+  :config
+  (global-undo-tree-mode 1))
 
 (use-package windmove
-  :bind (("C-c l" . 'windmove-right)
-	 ("C-c k" . 'windmove-up)
-	 ("C-c j" . 'windmove-down)
-	 ("C-c h" . 'windmove-left)))
+  :bind (("C-c l" . windmove-right)
+	 ("C-c k" . windmove-up)
+	 ("C-c j" . windmove-down)
+	 ("C-c h" . windmove-left)))
 
 (use-package winner
-  :init (winner-mode 1)
+  :demand t
   :bind (("C-c u" . winner-undo)
-	 ("C-c r" . winner-redo)))
-
-(defun toggle-window-split ()
-  (interactive)
-  (if (= (count-windows) 2)
-      (let* ((this-win-buffer (window-buffer))
-	     (next-win-buffer (window-buffer (next-window)))
-	     (this-win-edges (window-edges (selected-window)))
-	     (next-win-edges (window-edges (next-window)))
-	     (this-win-2nd (not (and (<= (car this-win-edges)
-					 (car next-win-edges))
-				     (<= (cadr this-win-edges)
-					 (cadr next-win-edges)))))
-	     (splitter
-	      (if (= (car this-win-edges)
-		     (car (window-edges (next-window))))
-		  'split-window-horizontally
-		'split-window-vertically)))
-	(delete-other-windows)
-	(let ((first-win (selected-window)))
-	  (funcall splitter)
-	  (if this-win-2nd (other-window 1))
-	  (set-window-buffer (selected-window) this-win-buffer)
-	  (set-window-buffer (next-window) next-win-buffer)
-	  (select-window first-win)
-	  (if this-win-2nd (other-window 1))))))
-
-
-;; TODO Refactor and study
-(defun swap-windows (arg)
-  "Transpose the buffers shown in two windows."
-  (interactive "p")
-  (let ((selector (if (>= arg 0) 'next-window 'previous-window)))
-    (while (/= arg 0)
-      (let ((this-win (window-buffer))
-	    (next-win (window-buffer (funcall selector))))
-	(set-window-buffer (selected-window) next-win)
-	(set-window-buffer (funcall selector) this-win)
-	(select-window (funcall selector)))
-      (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
+	 ("C-c w r" . winner-redo))
+  :config
+  (winner-mode 1))
 
 (use-package dired
   :defer t
+  :defines dired-omit-files
+  :functions dired-omit-mode
+  :bind (("C-c d ." . dired)
+	 ("C-c d h" . (lambda () (interactive) (dired "~")))
+	 ("C-c d d" . (lambda () (interactive) (dired "~/downloads/")))
+	 ("C-c d s" . (lambda () (interactive) (dired pat/sync-directory)))
+	 ("C-c d m" . (lambda () (interactive) (dired "/run/media/patrick/")))
+	 ("C-c d v" . (lambda () (interactive) (dired pat/vcs-directory))))
+  :hook (dired-mode . (lambda () (dired-omit-mode 1)))
   :config
   (setq dired-guess-shell-alist-user
 	'(("\\.pdf\\'" "zathura")
@@ -255,68 +428,12 @@
 
   ;; Hide hidden files
   (require 'dired-x)
-  (setq dired-omit-files (rx (seq bol "." (not (any ".")))))
-  (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
-
-  :bind (("C-c d ." . dired)
-	 ("C-c d h" . (lambda () (interactive) (dired "~")))
-	 ("C-c d d" . (lambda () (interactive) (dired "~/downloads/")))
-	 ("C-c d s" . (lambda () (interactive) (dired sync-directory)))
-	 ("C-c d m" . (lambda () (interactive) (dired "/run/media/patrick/")))
-	 ("C-c d v" . (lambda () (interactive) (dired vcs-directory)))))
-
-(defun dired-start-process (cmd &optional file-list)
-    (interactive
-     (let ((files (dired-get-marked-files t current-prefix-arg)))
-       (list
-	(dired-read-shell-command "& on %s: " current-prefix-arg files)
-	files)))
-    (apply
-     #'start-process
-     (list cmd nil shell-file-name shell-command-switch
-	   (format "nohup 1>/dev/null 2>/dev/null %s \"%s\""
-		   (if (> (length file-list) 1)
-		       (format "%s %s"
-			       cmd
-			       (cadr (assoc cmd dired-filelist-cmd)))
-		     cmd)
-		   (mapconcat #'expand-file-name file-list "\" \"")))))
-
-;; Taken from http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
-(defun rename-file-and-buffer ()
-  "Rename the current buffer and file it is visiting."
-  (interactive)
-  (let ((filename (buffer-file-name)))
-    (if (not (and filename (file-exists-p filename)))
-	(message "Buffer is not visiting a file!")
-      (let ((new-name (read-file-name "New name: " filename)))
-	(cond
-	 ((vc-backend filename) (vc-rename-file filename new-name))
-	 (t
-	  (rename-file filename new-name t)
-	  (set-visited-file-name new-name t t)))))))
-
-(defun open-todo-list ()
-  (interactive)
-  (let* ((files (directory-files todo-list-directory))
-	 (todo-lists (seq-filter (lambda (f) (not (string-prefix-p "." f))) files))
-	 (target (completing-read "To Do List: " todo-lists)))
-    (find-file (concat todo-list-directory "/" target))))
-
-(defun open-note ()
-  (interactive)
-  (let* ((files (directory-files notes-directory))
-	 (notes (seq-filter (lambda (f) (not (string-prefix-p "." f))) files))
-	 (target (completing-read "Note: " notes)))
-    (find-file (concat notes-directory "/" target))))
+  (setq dired-omit-files (rx (seq bol "." (not (any "."))))))
 
 (use-package projectile
   :ensure t
-  :diminish projectile-mode
-  :init (projectile-mode 1)
-  (setq projectile-enable-caching t
-	projectile-switch-project-action #'magit-status
-	projectile-project-search-path '(vcs-directory))
+  :demand t
+  :functions projectile-project-root
   :bind (("C-c p p" . projectile-switch-project)
 	 ("C-c p f" . projectile-find-file)
 	 ("C-c p o" . projectile-find-other-file)
@@ -325,21 +442,33 @@
 	 ("C-c p !" . projectile-run-shell-command-in-root)
 	 ("C-c p k" . projectile-kill-buffers)
 	 ("C-c p s" . projectile-save-project-buffers)
-	 ("C-c p r" . projectile-replace)))
+	 ("C-c p r" . projectile-replace))
+  :diminish projectile-mode
+  :init
+  (setq projectile-enable-caching t
+	projectile-switch-project-action #'magit-status
+	projectile-project-search-path (list pat/vcs-directory))
+  :config
+  (projectile-mode 1))
 
 (use-package vertico
   :ensure t
-  :config (vertico-mode 1))
+  :config
+  (vertico-mode 1))
 
 (use-package vertico-prescient
   :ensure t
+  :after vertico
+  :functions prescient-persist-mode
   :config
   (vertico-prescient-mode 1)
   (prescient-persist-mode 1))
 
 (use-package consult
   :ensure t
-  :bind (("M-g"   . consult-goto-line)
+  :bind (("M-s l" . consult-line)
+	 ("M-s g" . consult-ripgrep)
+	 ("M-g" . consult-goto-line)
 	 ("C-c r" . consult-ripgrep)))
 
 (use-package marginalia
@@ -349,10 +478,9 @@
 
 (use-package embark
   :ensure t
-  :bind
-  (("C-." . embark-act)
-   ("M-." . embark-dwim)
-   ("C-h B" . embark-bindings))
+  :bind (("C-c e" . embark-act)
+	 ("M-." . embark-dwim)
+	 ("C-h B" . embark-bindings))
   :init
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
@@ -367,7 +495,8 @@
                  (window-parameters (mode-line-format . none)))))
 
 (use-package embark-consult
-  :ensure t)
+  :ensure t
+  :after (embark consult))
 
 (use-package company
   :ensure t
@@ -383,18 +512,25 @@
 	   company-yasnippet))))
 
 (use-package abbrev
-  :init (abbrev-mode)
+  :demand t
+  :hook ((python-mode . abbrev-mode)
+	 (python-ts-mode . abbrev-mode))
   :diminish abbrev-mode
-  :hook (python-ts-mode)
-  :config (define-abbrev-table 'python-ts-mode-abbrev-table
-	    '(("bp" "breakpoint()  # FIXME"))))
+  :config
+  (abbrev-mode 1)
+  (dolist (table '(python-mode-abbrev-table
+		   python-ts-mode-abbrev-table))
+    (define-abbrev-table table
+      '(("bp" "breakpoint()  # FIXME")))))
 
 (use-package yasnippet
   :ensure t
+  :functions yas-reload-all
   :diminish yas-minor-mode
-  :init (yas-global-mode)
-  :config
+  :init
   (setq yas-snippet-dirs '("~/shared/snippets"))
+  :config
+  (yas-global-mode 1)
   (yas-reload-all))
 
 (use-package direnv
@@ -404,7 +540,9 @@
 
 (use-package persistent-scratch
   :ensure t
-  :init (persistent-scratch-setup-default))
+  :demand t
+  :config
+  (persistent-scratch-setup-default))
 
 (use-package unfill
   :ensure t
@@ -412,13 +550,14 @@
 
 (use-package markdown-mode
   :ensure t
+  :mode ("\\.md\\'" . markdown-mode)
   :config
   ;; Allow to open wiki links with " " in their file name.
   (setq markdown-enable-wiki-links t)
   (setq markdown-link-space-sub-char " "))
 
 (use-package org
-  :mode "\\.org\\'"
+  :mode ("\\.org\\'" . org-mode)
   :config
   ;; Allow to modify image size
   (setq org-image-actual-width nil)
@@ -439,65 +578,81 @@
 
 (use-package git-timemachine
   :ensure t
-  :commands git-timemachine-toggle)
+  :commands (git-timemachine-toggle))
 
 ;; Magit <3
 (use-package magit
   :ensure t
+  :bind (("C-c g" . magit))
   :config
   (transient-append-suffix 'magit-commit "c" '("a" "Absorb" magit-commit-absorb))
   (transient-append-suffix 'magit-commit "c" '("A" "Amend" magit-commit-amend))
   (setq magit-diff-refine-hunk t
-	magit-repository-directories '(("~/vcs/" . 2)))
-  :bind (("C-c g" . magit)))
+	magit-repository-directories '(("~/vcs/" . 2))))
 
 (use-package smerge-mode
-  :init (setq smerge-command-prefix (kbd "C-c v")))
+  :init
+  (setq smerge-command-prefix (kbd "C-c v")))
 
 (use-package hl-todo
   :ensure t
-  :hook (prog-mode))
+  :hook (prog-mode . hl-todo-mode))
+
+(use-package calc
+  :bind (("C-c c" . calc)))
 
 (use-package eglot
   :ensure t
-  :hook ((python-mode zig-mode) . eglot-ensure)
-  :config (setq eglot-ignored-server-capabilities '(:inlayHintProvider)))
+  :functions (eglot-code-action-organize-imports eglot-managed-p)
+  :hook ((python-mode . eglot-ensure)
+	 (python-ts-mode . eglot-ensure)
+	 (zig-mode . eglot-ensure))
+  :config
+  (setq eglot-ignored-server-capabilities '(:inlayHintProvider)))
 
 (use-package ispell
   :ensure t
-  :config
+  :defer t
+  :init
   (when (executable-find "hunspell")
     (setq-default ispell-program-name "hunspell")
     (setq ispell-really-hunspell t)))
 
 (use-package flyspell
   :ensure t
-  :after (ispell)
-  :hook ((markdown-mode org-mode) . flyspell-mode)
+  :hook ((markdown-mode . flyspell-mode)
+	 (org-mode . flyspell-mode))
   :config
   (setq flyspell-default-dictionary "en_US"))
 
-(use-package c-mode
-  :mode "\\.c\\'"
+(use-package cc-mode
+  :mode ("\\.c\\'" . c-mode)
   :hook (c-mode . (lambda ()
 		    (setq comment-start "// "
 			  comment-end   ""))))
 
+(defun pat/zig-test-buffer-from-project-root (orig-fun &rest args)
+  "Run ORIG-FUN from the current project root with ARGS."
+  (let ((default-directory (project-root (project-current t))))
+    (apply orig-fun args)))
+
+(defun pat/zig--run-cmd-no-pty (orig-fun cmd &optional source &rest args)
+  "Run Zig ORIG-FUN for CMD and SOURCE with a pipe and color enabled.
+Pass any remaining arguments as ARGS."
+  (let ((process-connection-type nil))
+    (apply orig-fun cmd source (append args '("--color" "on")))))
+
 (use-package zig-mode
   :ensure t
-  :mode (("\\.zig\\'" . zig-mode))
-  :hook ((zig-mode . (lambda ()
-                       (add-hook 'before-save-hook
-                                 (lambda ()
-                                   (when (eglot-managed-p)
-                                     (eglot-code-action-organize-imports nil)))
-                                 nil t))))
+  :mode ("\\.zig\\'" . zig-mode)
+  :hook (zig-mode . (lambda ()
+		      (add-hook 'before-save-hook
+				(lambda ()
+				  (when (eglot-managed-p)
+				    (eglot-code-action-organize-imports nil)))
+				nil t)))
   :config
-  (defun my/zig-test-buffer-from-project-root (orig-fun &rest args)
-    (let ((default-directory (project-root (project-current t))))
-      (apply orig-fun args)))
-
-  (advice-add 'zig-test-buffer :around #'my/zig-test-buffer-from-project-root)
+  (advice-add 'zig-test-buffer :around #'pat/zig-test-buffer-from-project-root)
 
   ;; The Zig compiler renders an in-place progress display (tree drawing,
   ;; cursor moves, OSC taskbar progress) whenever it writes to a TTY.  Emacs'
@@ -507,31 +662,45 @@
   ;; pipe so Zig sees no TTY and skips the progress UI, and pass `--color on'
   ;; so real diagnostic colors still come through for
   ;; `ansi-color-compilation-filter'.
-  (defun my/zig--run-cmd-no-pty (orig-fun cmd &optional source &rest args)
-    (let ((process-connection-type nil))
-      (apply orig-fun cmd source (append args '("--color" "on")))))
+  (advice-add 'zig--run-cmd :around #'pat/zig--run-cmd-no-pty))
 
-  (advice-add 'zig--run-cmd :around #'my/zig--run-cmd-no-pty))
+(defun pat/compilation-focus-on-error (buffer status)
+  "Focus BUFFER when compilation reports errors or abnormal STATUS."
+  (when (buffer-live-p buffer)
+    (with-current-buffer buffer
+      (when (or (> compilation-num-errors-found 0)
+		(string-prefix-p "exited abnormally" status))
+	(pop-to-buffer buffer)))))
 
 (use-package compile
+  :defer t
+  :defines compilation-num-errors-found
+  :functions recompile
   :config
-  (setq compilation-auto-jump-to-first-error t)
-  (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
-  (add-hook 'compilation-mode-hook (lambda () (pop-to-buffer (current-buffer)))))
+  (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
+  (add-hook 'compilation-finish-functions
+	    #'pat/compilation-focus-on-error))
 
 (use-package python
-  :config (define-key python-mode-map (kbd "C-c C-p") nil))
+  :mode ("\\.py\\'" . python-mode)
+  :init
+  ;; An installed ELPA `python-mode' package can replace this autoload during
+  ;; package activation.  Point it explicitly at Emacs' built-in `python.el'.
+  (autoload 'python-mode "python" nil t)
+  :config
+  (define-key python-mode-map (kbd "C-c C-p") nil))
 
 (use-package cython-mode
   :ensure t
-  :mode (("\\.pyx\\'" . cython-mode)))
+  :mode ("\\.pyx\\'" . cython-mode))
 
 (use-package clojure-mode
   :ensure t
-  :bind (("C-x C-d" . cider-debug-defun-at-point)
-	 ("C-x C-i" . cider-inspect-last-result))
   :mode (("\\.clj\\'" . clojure-mode)
-         ("\\.edn\\'" . clojure-mode)))
+         ("\\.edn\\'" . clojure-mode))
+  :bind (:map clojure-mode-map
+	      ("C-x C-d" . cider-debug-defun-at-point)
+	      ("C-x C-i" . cider-inspect-last-result)))
 
 (use-package cider
   :ensure t
@@ -540,101 +709,46 @@
 
 (use-package flycheck
   :ensure t
-  :hook clojure-mode)
+  :hook (clojure-mode . flycheck-mode))
 
 (use-package flycheck-clj-kondo
-  :ensure t)
+  :ensure t
+  :after flycheck)
 
 (use-package janet-mode
-  :ensure t)
-
-(use-package lua-mode
-  :ensure t)
-
-(use-package calc
-  :bind (("C-c c" . calc)))
-
-(use-package justl
-  :commands justl-exec-recipe-in-dir
-  :ensure t)
-
-(use-package just-mode
-  :ensure t)
-
-(use-package plantuml-mode
   :ensure t
-  :config)
-
-(use-package graphviz-dot-mode
-  :ensure t)
+  :mode ("\\.janet\\'" . janet-mode))
 
 (use-package nix-mode
-  :mode "\\.nix\\'"
-  :ensure t)
-
-(use-package typst-ts-mode
   :ensure t
-  :mode "\\.typ\\'"
-  :hook ((typst-ts-mode . eglot-ensure)
-         (typst-ts-mode . flyspell-mode))
-  :config
-  ;; tinymist is the Typst language server.
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '(typst-ts-mode . ("tinymist")))))
+  :mode ("\\.nix\\'" . nix-mode))
 
 (use-package dockerfile-mode
-  :ensure t)
+  :ensure t
+  :mode ("\\(?:Containerfile\\|Dockerfile\\)\\(?:\\.[^/]*\\)?\\'" . dockerfile-mode))
 
 (use-package yaml-mode
-  :ensure t)
+  :ensure t
+  :mode ("\\.ya?ml\\'" . yaml-mode))
 
 (use-package json-mode
-  :mode "\\.json\\'"
-  :ensure t)
+  :ensure t
+  :mode ("\\.json\\'" . json-mode))
 
 (use-package hcl-mode
-  :ensure t)
-
-(use-package jinja2-mode
-  :ensure t)
+  :ensure t
+  :mode ("\\.\\(?:hcl\\|nomad\\|tf\\)\\'" . hcl-mode))
 
 (use-package protobuf-mode
-  :mode "\\.proto\\'"
-  :ensure t)
+  :ensure t
+  :mode ("\\.proto\\'" . protobuf-mode))
 
 (use-package esup
   :ensure t
-  :pin melpa
+  :commands (esup)
   :config
   ;; https://github.com/jschaf/esup/issues/85#issuecomment-1130110196
   (setq esup-depth 0))
-
-(use-package ascii-table
-  :ensure t)
-
-(use-package f
-  :ensure t)
-
-(defun python/toggle-source-and-test ()
-  (let* ((module-path (buffer-file-name))
-	 (module-name (file-name-nondirectory module-path))
-	 (package-path (file-name-directory module-path)))
-    (if (string-suffix-p "tests/" package-path)
-	(find-file (concat package-path "/../" (string-remove-prefix "test_" module-name)))
-      (find-file (concat package-path "/tests/test_" module-name)))))
-
-(defun create-init-py-file ()
-  "Create an empty __init__.py file in the current directory if it doesn't exist."
-  (interactive)
-  (if (derived-mode-p 'dired-mode)
-      (let ((init-file (expand-file-name "__init__.py" default-directory)))
-	(if (file-exists-p init-file)
-	    (message "__init__.py already exists.")
-	  (progn
-	    (write-region "" nil init-file)
-	    (revert-buffer)
-	    (message "__init__.py file created."))))))
 
 ;; Reset GC threshold to back to default
 (setq gc-cons-threshold 800000)
