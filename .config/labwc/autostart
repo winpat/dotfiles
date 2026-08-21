@@ -37,15 +37,6 @@ wl-paste --primary --type text --watch ~/.config/labwc/scripts/clipboard-sync to
 # divergence is exactly what the sync above exists to prevent.
 wl-clip-persist --clipboard both &
 
-# Idle management: lock the screen after 5 min idle, and lock before the system
-# suspends (so resuming always asks for the password). Uses the same swaylock
-# as the W-u keybind. `-f` daemonizes swaylock so swayidle's timeout fires it
-# without blocking. Guarded on swayidle being installed (added to the NixOS
-# config; needs a rebuild) so login doesn't error before then.
-command -v swayidle >/dev/null && swayidle -w \
-  timeout 300 'swaylock -f -c 1a1a2e' \
-  before-sleep 'swaylock -f -c 1a1a2e' &
-
 # Restart emacs daemon after wayland is available. Otherwise emacsclient
 # can't launch in GUI mode.
 dbus-update-activation-environment --systemd --all

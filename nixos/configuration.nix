@@ -91,7 +91,6 @@
     ghostty
     rofi
     swaylock-effects  # swaylock + clock/date + gaussian blur (styled via ~/.config/swaylock/config)
-    swayidle        # idle management: auto-lock / screen-off / lock-on-suspend
     swaybg
     kanshi          # multi-monitor output profiles
     sfwbar          # tint2-style panel
