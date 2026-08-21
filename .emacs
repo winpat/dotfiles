@@ -76,6 +76,10 @@
 
 (add-hook 'before-save-hook #'pat/delete-trailing-whitespace)
 
+(setq select-active-regions nil
+      save-interprogram-paste-before-kill t
+      kill-do-not-save-duplicates t)
+
 ;; Paths to frequently used directories
 (defgroup pat nil
   "Personal Emacs configuration."
