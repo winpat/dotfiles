@@ -629,7 +629,8 @@ Negative ARG moves through previous windows instead of next windows."
   :mode ("\\.c\\'" . c-mode)
   :hook (c-mode . (lambda ()
 		    (setq comment-start "// "
-			  comment-end   ""))))
+			  comment-end   "")
+		    (c-set-offset 'case-label '+))))
 
 (defun pat/zig-test-buffer-from-project-root (orig-fun &rest args)
   "Run ORIG-FUN from the current project root with ARGS."
