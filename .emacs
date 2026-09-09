@@ -171,6 +171,16 @@ keeps walking further back through the window history."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) t)))
 
+(defun pat/lang-toggle-source-test ()
+  "Toggle between lang.c and test.c in the same directory."
+  (interactive)
+  (let* ((file (or buffer-file-name (user-error "Not visiting a file")))
+         (other (pcase (file-name-nondirectory file)
+                  ("lang.c" "test.c")
+                  ("test.c" "lang.c")
+                  (_ (user-error "Not visiting lang.c or test.c")))))
+    (find-file (expand-file-name other (file-name-directory file)))))
+
 (defun pat/copy-buffer-name ()
   "Copy buffer name."
   (interactive)
@@ -290,6 +300,7 @@ Negative ARG moves through previous windows instead of next windows."
 (global-set-key (kbd "C-,") #'xref-go-back)
 ;;; Buffer Manipulation
 (global-set-key (kbd "M-z") #'pat/toggle-other-buffer)
+(global-set-key (kbd "M-l") #'pat/lang-toggle-source-test)
 (global-set-key (kbd "C-c b l") #'ibuffer)
 (global-set-key (kbd "C-c b k") #'kill-buffer)
 (global-set-key (kbd "C-c b R") #'pat/rename-file-and-buffer)
