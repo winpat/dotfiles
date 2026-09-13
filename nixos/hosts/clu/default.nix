@@ -70,4 +70,13 @@
     enable = true;
     drivers = [ pkgs.hplip ];
   };
+
+  # Canon DR-C225W over USB (SANE's canon_dr backend).
+  hardware.sane.enable = true;
+  users.users.patrick.extraGroups = [ "scanner" ];
+
+  environment.systemPackages = with pkgs; [
+    gscan2pdf   # Batch scanning and blank-page selection/removal.
+    pdfarranger # Visually split batches into individual documents.
+  ];
 }
