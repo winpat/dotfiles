@@ -104,13 +104,13 @@
     <!-- Raise-or-launch firefox (matched by app_id). -->
     <keybind key="W-f">
       <action name="ForEach">
-        <query identifier="firefox" />
+        <query identifier="chromium" />
         <then>
           <action name="Focus" />
           <action name="Raise" />
         </then>
         <none>
-          <action name="Execute" command="firefox" />
+          <action name="Execute" command="chromium" />
         </none>
       </action>
     </keybind>

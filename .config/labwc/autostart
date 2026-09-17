@@ -3,18 +3,10 @@
 # Wallpaper
 swaybg -i ~/shared/media/images/Wallpaper/2650x1440/john-towner-JgOeRuGD_Y4-unsplash.jpg -m fill &
 
-# Multi-monitor output profiles
-kanshi &
-
-# Bar, network applet, notifications
-sfwbar &
-nm-applet &
+# Notifications daemon
 dunst &
 
-# Removable media: auto-mount USB drives (udisks2 does the mounting; udiskie is
-# the session daemon that watches for insert events). -a automount, -n notify,
-# -t tray icon (shows in sfwbar's tray; click to unmount/eject). Mounts land
-# under /run/media/patrick/.
+# Auto-mount USB drives
 udiskie -a -n -t &
 
 # Clipboard history (cliphist): wl-paste watchers feed clipboard changes into
@@ -42,6 +34,3 @@ wl-clip-persist --clipboard both &
 dbus-update-activation-environment --systemd --all
 systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
 systemctl --user restart emacs.service
-
-# Terminal on login
-ghostty &

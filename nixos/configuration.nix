@@ -26,7 +26,6 @@
     };
     hosts = {
       "100.118.247.61" = [ "mcp" ];
-      "127.0.0.1" = [ "postgres" "redis" ];
     };
   };
 
@@ -39,11 +38,6 @@
     enableDefaultPackages = true;
     packages = with pkgs; [ hack-font font-awesome jetbrains-mono ];
   };
-
-  # Required so libreoffice finds the hunspell dicts
-  # https://github.com/NixOS/nixpkgs/pull/80329
-  # https://github.com/NixOS/nixpkgs/pull/80353
-  environment.pathsToLink = [ "/share/hunspell" ];
 
   environment.systemPackages = with pkgs; [
     # Base
@@ -81,19 +75,12 @@
     sqlite
     rlwrap
 
-    # Spell checking
-    hunspell
-    hunspellDicts.de-ch
-    hunspellDicts.en-us-large
-
     # Desktop
     nwg-look
     ghostty
     rofi
     swaylock-effects  # swaylock + clock/date + gaussian blur (styled via ~/.config/swaylock/config)
     swaybg
-    kanshi          # multi-monitor output profiles
-    sfwbar          # tint2-style panel
     wl-clipboard   # clipboard
     wtype          # synthetic keyboard input
     wev            # event viewer
@@ -115,8 +102,6 @@
 
     # Writing
     texlive.combined.scheme-full
-    typst          # Typst compiler
-    tinymist       # Typst language server
     libreoffice
     pandoc
     pdftk
@@ -138,8 +123,8 @@
     arc-theme
     arc-icon-theme
 
-    # Cursor theme
-    kdePackages.breeze
+    # # Cursor theme
+    # kdePackages.breeze
 
     # Compression
     zip
@@ -147,26 +132,18 @@
     unrar
     xarchiver
 
-    # Communication
-    slack
-    discord
-
     # Databases
     postgresql
     pgcli
     pspg
 
-    # Browser
-    firefox
-
-    # Tray applications
-    pasystray
-    networkmanagerapplet
+    # Desktop
+    chromium
+    discord
 
     # Network
     networkmanager
     networkmanager-openvpn
-    openvpn
 
     # Fix missing icon for networkmanageapplet
     # https://github.com/NixOS/nixpkgs/issues/32730
@@ -192,16 +169,10 @@
     # File synchronization
     rsync
 
-    # Ergodox Ez
-    wally-cli
-
-    # C
+    # Systems programming
     gdb
     gcc
     ccls
-    gnumake
-
-    # Zig
     zig
     zls
 
@@ -222,7 +193,6 @@
 
     # AI
     llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code
-    llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pi
     llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex
   ];
 
@@ -246,8 +216,6 @@
   services.openssh.enable = true;
 
   programs.ssh.startAgent = true;
-
-  programs.mosh.enable = true;
 
   services.tailscale.enable = true;
 
